@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+
+@import './fonts.css';
+
+:root {
+  --sans: 'Proxima Nova', Roboto, system-ui, sans-serif;
+
+  font-family: var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
