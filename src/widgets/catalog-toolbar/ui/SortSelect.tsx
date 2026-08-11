@@ -6,8 +6,12 @@ const SORT_OPTIONS = [
 
 export const SortSelect = () => {
   return (
-    <div className="">
-      <button type="button" popoverTarget="sort-menu" className="text-[14px] font-bold">
+    <div>
+      <button
+        type="button"
+        popoverTarget="sort-menu"
+        className="cursor-pointer text-[14px] font-bold"
+      >
         Сортировка по:&nbsp;&nbsp;
         <span className="border-b border-dashed text-orange-400">популярности</span>
       </button>
@@ -22,7 +26,7 @@ export const SortSelect = () => {
             <li key={`${value}_${index}`}>
               <label>
                 <input className="peer sr-only" type="radio" name="sort" value={`${value}`} />
-                <span className="block px-4 py-2 font-bold opacity-50 peer-checked:bg-orange-200/20 peer-checked:text-[#FE5F1E] peer-checked:opacity-100">
+                <span className="block cursor-pointer px-4 py-2 font-bold opacity-50 peer-checked:bg-orange-200/20 peer-checked:text-[#FE5F1E] peer-checked:opacity-100">
                   {label}
                 </span>
               </label>
