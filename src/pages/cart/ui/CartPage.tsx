@@ -1,6 +1,5 @@
 import { Link } from 'react-router';
 
-import bigSpecialPng from '@/entities/product/model/mocks/images/mobile.png';
 import { routes } from '@/shared/routes';
 import { Container } from '@/shared/ui/container';
 import {
@@ -11,6 +10,8 @@ import {
   QtyPlusIcon,
   RemoveItemIcon,
 } from '@/shared/ui/icon';
+
+import bigSpecialPng from './images/mobile.png';
 
 export const CartPage = () => {
   return (

@@ -1,3 +1,5 @@
+import type { Product } from '@/entities/product';
+
 export interface AddToCartButtonProps {
-  productId: number;
+  productId: Product['id'];
 }
