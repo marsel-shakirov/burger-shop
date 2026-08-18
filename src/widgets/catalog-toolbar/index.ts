@@ -1,1 +1,1 @@
-export { CatalogToolbar } from './ui/CatalogToolbar.tsx';
+export { CatalogToolbar } from './ui/CatalogToolbar';

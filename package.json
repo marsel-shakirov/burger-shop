@@ -1,5 +1,5 @@
 {
-  "name": "pizza",
+  "name": "burger",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "react-router": "^7.18.2"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

@@ -1,13 +1,7 @@
 import './styles/index.css';
 
-import { HomePage } from '@/pages/home';
-import { Header } from '@/widgets/header';
+import { AppRouter } from './router/AppRouter';
 
 export const App = () => {
-  return (
-    <>
-      <Header />
-      <HomePage />
-    </>
-  );
+  return <AppRouter />;
 };

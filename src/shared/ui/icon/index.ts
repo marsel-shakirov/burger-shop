@@ -1,3 +1,9 @@
+export { ArrowIcon } from './icons/ArrowIcon';
 export { BurgerIcon } from './icons/BurgerIcon';
 export { CartIcon } from './icons/CartIcon';
+export { DeleteIcon } from './icons/DeleteIcon';
+export { NotFoundIcon } from './icons/NotFoundIcon';
 export { PlusIcon } from './icons/PlusIcon';
+export { QtyMinusIcon } from './icons/QtyMinusIcon';
+export { QtyPlusIcon } from './icons/QtyPlusIcon';
+export { RemoveItemIcon } from './icons/RemoveItemIcon';
