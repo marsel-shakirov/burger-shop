@@ -15,7 +15,7 @@ import tripleWebp from '@/shared/assets/img/product/triple-cheeseburger.webp';
 
 import type { Product } from './product.types';
 
-export const products: Product[] = [
+export const productsMock: Product[] = [
   {
     id: 1,
     name: 'Гамбургер',
