@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 
+import { routes } from '@/shared/routes';
 import { Container } from '@/shared/ui/container';
 import { NotFoundIcon } from '@/shared/ui/icon';
 
@@ -16,7 +17,7 @@ export const NotFoundPage = () => {
           </p>
           <Link
             className="flex cursor-pointer items-center justify-center gap-x-2 rounded-4xl bg-gray-900 p-4 font-bold text-white"
-            to="/"
+            to={routes.home}
           >
             <span>Перейти на главную страницу</span>
           </Link>

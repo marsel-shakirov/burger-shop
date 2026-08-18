@@ -1,19 +1,18 @@
-import bigHitPng from '@/shared/assets/img/product/big-hit.png';
-import bigHitWebp from '@/shared/assets/img/product/big-hit.webp';
-import bigSpecialPng from '@/shared/assets/img/product/big-special.png';
-import bigSpecialWebp from '@/shared/assets/img/product/big-special.webp';
-import doubleBigHitPng from '@/shared/assets/img/product/double-big-hit.png';
-import doubleBigHitWebp from '@/shared/assets/img/product/double-big-hit.webp';
-import doubleCheeseburgerPng from '@/shared/assets/img/product/double-cheeseburger.png';
-import doubleCheeseburgerWebp from '@/shared/assets/img/product/double-cheeseburger.webp';
-import grandDeluxePng from '@/shared/assets/img/product/grand-deluxe.png';
-import grandDeluxeWebp from '@/shared/assets/img/product/grand-deluxe.webp';
-import hamburgerPng from '@/shared/assets/img/product/hamburger.png';
-import hamburgerWebp from '@/shared/assets/img/product/hamburger.webp';
-import triplePng from '@/shared/assets/img/product/triple-cheeseburger.png';
-import tripleWebp from '@/shared/assets/img/product/triple-cheeseburger.webp';
-
-import type { Product } from './product.types';
+import type { Product } from '../product.types';
+import bigHitPng from './images/big-hit.png';
+import bigHitWebp from './images/big-hit.webp';
+import bigSpecialPng from './images/big-special.png';
+import bigSpecialWebp from './images/big-special.webp';
+import doubleBigHitPng from './images/double-big-hit.png';
+import doubleBigHitWebp from './images/double-big-hit.webp';
+import doubleCheeseburgerPng from './images/double-cheeseburger.png';
+import doubleCheeseburgerWebp from './images/double-cheeseburger.webp';
+import grandDeluxePng from './images/grand-deluxe.png';
+import grandDeluxeWebp from './images/grand-deluxe.webp';
+import hamburgerPng from './images/hamburger.png';
+import hamburgerWebp from './images/hamburger.webp';
+import triplePng from './images/triple-cheeseburger.png';
+import tripleWebp from './images/triple-cheeseburger.webp';
 
 export const productsMock: Product[] = [
   {

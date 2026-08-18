@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 
-import bigSpecialPng from '@/shared/assets/img/product/mobile.png';
+import bigSpecialPng from '@/entities/product/model/mocks/images/mobile.png';
+import { routes } from '@/shared/routes';
 import { Container } from '@/shared/ui/container';
 import {
   ArrowIcon,
@@ -99,7 +100,7 @@ export const CartPage = () => {
 
             <div className="flex items-center justify-between">
               <Link
-                to="/"
+                to={routes.home}
                 className="flex cursor-pointer items-center justify-center gap-x-3 rounded-4xl border border-gray-300 px-6 py-3.5 text-gray-300"
                 type="button"
               >
