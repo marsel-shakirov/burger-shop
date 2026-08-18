@@ -1,13 +1,11 @@
 import { Container } from '@/shared/ui/container';
-import { CatalogToolbar } from '@/widgets/catalog-toolbar';
-import { ProductGrid } from '@/widgets/product-grid';
+import { Catalog } from '@/widgets/catalog';
 
 export const HomePage = () => {
   return (
     <main className="">
       <Container>
-        <CatalogToolbar />
-        <ProductGrid />
+        <Catalog />
       </Container>
     </main>
   );
