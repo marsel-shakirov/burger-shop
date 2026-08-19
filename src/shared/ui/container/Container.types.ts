@@ -1,3 +1,5 @@
-export interface ContainerProps extends React.ComponentPropsWithoutRef<'div'> {
-  children: React.ReactNode;
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+
+export interface ContainerProps extends ComponentPropsWithoutRef<'div'> {
+  children: ReactNode;
 }
