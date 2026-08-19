@@ -8,7 +8,7 @@ export const ProductGrid = () => {
       <ul className="grid grid-cols-4 gap-5 pt-3">
         {productsMock.map((product) => (
           <li key={product.id}>
-            <ProductCard product={product} action={<AddToCartButton productId={product.id} />} />
+            <ProductCard product={product} action={<AddToCartButton product={product} />} />
           </li>
         ))}
       </ul>

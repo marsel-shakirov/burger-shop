@@ -7,10 +7,11 @@ export const CartSummary = ({ price, quantity }: CartSummaryProps) => {
     <>
       <span className="">{price}&nbsp;₽</span>
       <span className="w-px bg-white/25"></span>
-      <span className="flex gap-x-2">
+      <div className="flex gap-x-2">
         <CartIcon className="h-5 w-5" />
-        {quantity}
-      </span>
+        {/* <span>Корзина</span> */}
+        <span>{quantity}</span>
+      </div>
     </>
   );
 };

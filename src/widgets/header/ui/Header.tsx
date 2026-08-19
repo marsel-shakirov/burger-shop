@@ -12,7 +12,7 @@ export const Header = () => {
           <Logo
             title="react burger"
             description="самый вкусный бургер во вселенной"
-            href={routes.home}
+            to={routes.home}
           />
           <CartButton />
         </div>

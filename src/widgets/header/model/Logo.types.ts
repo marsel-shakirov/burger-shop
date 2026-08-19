@@ -1,5 +1,7 @@
-export interface LogoProps extends Omit<React.ComponentPropsWithoutRef<'a'>, 'children'> {
+import type { LinkProps } from 'react-router';
+
+export interface LogoProps {
   title?: string;
   description?: string;
-  href: string;
+  to: LinkProps['to'];
 }

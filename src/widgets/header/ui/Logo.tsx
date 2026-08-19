@@ -4,9 +4,9 @@ import { BurgerIcon } from '@/shared/ui/icon';
 
 import type { LogoProps } from '../model/Logo.types';
 
-export const Logo = ({ title, description, href }: LogoProps) => {
+export const Logo = ({ title, description, to }: LogoProps) => {
   return (
-    <Link to={href} className="flex items-center gap-x-4.25">
+    <Link to={to} className="flex items-center gap-x-4.25">
       <BurgerIcon className="size-11" />
       <div>
         <span className="text-2xl font-extrabold uppercase">{title}</span>

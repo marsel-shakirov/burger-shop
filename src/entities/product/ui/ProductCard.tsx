@@ -1,8 +1,10 @@
+import type { ReactNode } from 'react';
+
 import type { Product } from '../model/product.types';
 
 interface ProductCardProps {
   product: Product;
-  action?: React.ReactNode;
+  action?: ReactNode;
 }
 
 export const ProductCard = ({ product, action }: ProductCardProps) => {
