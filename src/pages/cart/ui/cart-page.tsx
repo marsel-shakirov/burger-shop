@@ -18,6 +18,7 @@ export const CartPage = () => {
           <header className="flex items-center gap-x-4 pt-23.5">
             <CartIcon className="h-7.25 w-7.25 text-gray-500" />
             <h1 className="text-[32px] leading-tight font-bold">Товары в корзине</h1>
+
             <button
               onClick={clearCart}
               className="ml-auto flex cursor-pointer items-center gap-x-1.75 text-gray-400"
@@ -52,7 +53,7 @@ export const CartPage = () => {
                 <span>Вернуться назад</span>
               </Link>
               <button
-                className="cursor-pointer rounded-4xl bg-orange-500 px-6 py-3.5 font-bold text-white"
+                className="cursor-pointer rounded-4xl bg-orange-500 px-6 py-3.5 font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
                 type="button"
               >
                 Оплатить сейчас

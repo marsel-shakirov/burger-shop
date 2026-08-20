@@ -1,6 +1,6 @@
-import { CategoryFilter } from './CategoryFilter';
-import { ProductGrid } from './ProductGrid';
-import { SortSelect } from './SortSelect';
+import { CategoryFilter } from './category-filter';
+import { ProductGrid } from './product-grid';
+import { SortSelect } from './sort-select';
 
 export const Catalog = () => {
   return (

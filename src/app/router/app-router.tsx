@@ -5,7 +5,7 @@ import { HomePage } from '@/pages/home';
 import { NotFoundPage } from '@/pages/not-found';
 import { routes } from '@/shared/routes';
 
-import { AppLayout } from '../layouts/AppLayout';
+import { AppLayout } from '../layouts/app-layout';
 
 export const AppRouter = () => {
   return (

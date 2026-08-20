@@ -3,8 +3,8 @@ import { useMatch } from 'react-router';
 import { routes } from '@/shared/routes';
 import { Container } from '@/shared/ui/container';
 
-import { CartButton } from './CartButton';
-import { Logo } from './Logo';
+import { CartButton } from './cart-button';
+import { Logo } from './logo';
 
 export const Header = () => {
   const isCartPage = useMatch(routes.cart);

@@ -2,7 +2,7 @@ import { type CartEntry, MAX_ITEM_QUANTITY, useCartStore } from '@/entities/cart
 import type { Product } from '@/entities/product';
 import { RemoveItemIcon } from '@/shared/ui/icon';
 
-import { QuantityControls } from './QuantityControls';
+import { QuantityControls } from './quantity-controls';
 
 interface CartItemProps {
   product: Product;
@@ -30,6 +30,7 @@ export const CartItem = ({ product, productId, quantity }: CartItemProps) => {
           <div className="flex w-70 flex-col">
             <h2 className="line-clamp-2 text-[20px] leading-5 font-bold">{product.name}</h2>
             <p className="truncate text-lg leading-tight text-gray-400">{product.description}</p>
+            <span className="font-bold text-gray-400">{product.price}&nbsp;₽ за шт.</span>
           </div>
         </div>
 

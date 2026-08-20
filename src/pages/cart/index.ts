@@ -1,1 +1,1 @@
-export { CartPage } from './ui/CartPage.tsx';
+export { CartPage } from './ui/cart-page';
