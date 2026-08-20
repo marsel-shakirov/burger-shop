@@ -1,4 +1,4 @@
 export const routes = {
   home: '/',
-  cart: 'cart',
+  cart: '/cart',
 } as const;

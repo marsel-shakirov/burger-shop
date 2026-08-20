@@ -1,3 +1,5 @@
+import { useMatch } from 'react-router';
+
 import { routes } from '@/shared/routes';
 import { Container } from '@/shared/ui/container';
 
@@ -5,6 +7,8 @@ import { CartButton } from './CartButton';
 import { Logo } from './Logo';
 
 export const Header = () => {
+  const isCartPage = useMatch(routes.cart);
+
   return (
     <header className="border-b border-[#F6F6F6] py-9">
       <Container>
@@ -14,7 +18,7 @@ export const Header = () => {
             description="самый вкусный бургер во вселенной"
             to={routes.home}
           />
-          <CartButton />
+          {!isCartPage && <CartButton />}
         </div>
       </Container>
     </header>

@@ -1,7 +1,10 @@
 import { selectProductQuantity, useCartStore } from '@/entities/cart';
+import type { Product } from '@/entities/product';
 import { PlusIcon } from '@/shared/ui/icon';
 
-import type { AddToCartButtonProps } from '../model/add-to-cart.types';
+export interface AddToCartButtonProps {
+  product: Product;
+}
 
 export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
   const addItem = useCartStore((state) => state.addItem);

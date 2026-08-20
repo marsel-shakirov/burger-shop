@@ -1,3 +1,8 @@
+interface ImageSource {
+  png: string;
+  webp?: string;
+}
+
 export interface Product {
   id: number;
   name: string;
@@ -5,8 +10,8 @@ export interface Product {
   price: number;
   gram: number;
   image: {
-    png: string;
-    webp?: string;
+    card: ImageSource;
+    cart: ImageSource;
     alt: string;
   };
 }

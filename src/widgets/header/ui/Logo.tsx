@@ -1,8 +1,13 @@
+import type { LinkProps } from 'react-router';
 import { Link } from 'react-router';
 
 import { BurgerIcon } from '@/shared/ui/icon';
 
-import type { LogoProps } from '../model/Logo.types';
+export interface LogoProps {
+  title?: string;
+  description?: string;
+  to: LinkProps['to'];
+}
 
 export const Logo = ({ title, description, to }: LogoProps) => {
   return (

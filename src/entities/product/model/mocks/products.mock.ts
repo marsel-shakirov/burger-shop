@@ -1,18 +1,32 @@
 import type { Product } from '../product.types';
-import bigHitPng from './images/big-hit.png';
-import bigHitWebp from './images/big-hit.webp';
-import bigSpecialPng from './images/big-special.png';
-import bigSpecialWebp from './images/big-special.webp';
-import doubleBigHitPng from './images/double-big-hit.png';
-import doubleBigHitWebp from './images/double-big-hit.webp';
-import doubleCheeseburgerPng from './images/double-cheeseburger.png';
-import doubleCheeseburgerWebp from './images/double-cheeseburger.webp';
-import grandDeluxePng from './images/grand-deluxe.png';
-import grandDeluxeWebp from './images/grand-deluxe.webp';
-import hamburgerPng from './images/hamburger.png';
-import hamburgerWebp from './images/hamburger.webp';
-import triplePng from './images/triple-cheeseburger.png';
-import tripleWebp from './images/triple-cheeseburger.webp';
+import bigHitPng from './images/card/big-hit.png';
+import bigHitWebp from './images/card/big-hit.webp';
+import bigSpecialPng from './images/card/big-special.png';
+import bigSpecialWebp from './images/card/big-special.webp';
+import doubleBigHitPng from './images/card/double-big-hit.png';
+import doubleBigHitWebp from './images/card/double-big-hit.webp';
+import doubleCheeseburgerPng from './images/card/double-cheeseburger.png';
+import doubleCheeseburgerWebp from './images/card/double-cheeseburger.webp';
+import grandDeluxePng from './images/card/grand-deluxe.png';
+import grandDeluxeWebp from './images/card/grand-deluxe.webp';
+import hamburgerPng from './images/card/hamburger.png';
+import hamburgerWebp from './images/card/hamburger.webp';
+import triplePng from './images/card/triple-cheeseburger.png';
+import tripleWebp from './images/card/triple-cheeseburger.webp';
+import bigHitCartPng from './images/cart/big-hit.png';
+import bigHitCartWebp from './images/cart/big-hit.webp';
+import bigSpecialCartPng from './images/cart/big-special.png';
+import bigSpecialCartWebp from './images/cart/big-special.webp';
+import doubleBigHitCartPng from './images/cart/double-big-hit.png';
+import doubleBigHitCartWebp from './images/cart/double-big-hit.webp';
+import doubleCheeseburgerCartPng from './images/cart/double-cheeseburger.png';
+import doubleCheeseburgerCartWebp from './images/cart/double-cheeseburger.webp';
+import grandDeluxeCartPng from './images/cart/grand-deluxe.png';
+import grandDeluxeCartWebp from './images/cart/grand-deluxe.webp';
+import hamburgerCartPng from './images/cart/hamburger.png';
+import hamburgerCartWebp from './images/cart/hamburger.webp';
+import tripleCartPng from './images/cart/triple-cheeseburger.png';
+import tripleCartWebp from './images/cart/triple-cheeseburger.webp';
 
 export const productsMock: Product[] = [
   {
@@ -23,8 +37,14 @@ export const productsMock: Product[] = [
     gram: 97,
     price: 91,
     image: {
-      png: hamburgerPng,
-      webp: hamburgerWebp,
+      card: {
+        png: hamburgerPng,
+        webp: hamburgerWebp,
+      },
+      cart: {
+        png: hamburgerCartPng,
+        webp: hamburgerCartWebp,
+      },
       alt: 'Бургер с говяжьей котлетой',
     },
   },
@@ -36,8 +56,14 @@ export const productsMock: Product[] = [
     gram: 202,
     price: 262,
     image: {
-      png: triplePng,
-      webp: tripleWebp,
+      card: {
+        png: triplePng,
+        webp: tripleWebp,
+      },
+      cart: {
+        png: tripleCartPng,
+        webp: tripleCartWebp,
+      },
       alt: 'Тройной Чизбургер Три Сыра',
     },
   },
@@ -50,8 +76,14 @@ export const productsMock: Product[] = [
     gram: 216,
     price: 221,
     image: {
-      png: bigHitPng,
-      webp: bigHitWebp,
+      card: {
+        png: bigHitPng,
+        webp: bigHitWebp,
+      },
+      cart: {
+        png: bigHitCartPng,
+        webp: bigHitCartWebp,
+      },
       alt: 'Биг Хит',
     },
   },
@@ -64,8 +96,14 @@ export const productsMock: Product[] = [
     gram: 240,
     price: 269,
     image: {
-      png: grandDeluxePng,
-      webp: grandDeluxeWebp,
+      card: {
+        png: grandDeluxePng,
+        webp: grandDeluxeWebp,
+      },
+      cart: {
+        png: grandDeluxeCartPng,
+        webp: grandDeluxeCartWebp,
+      },
       alt: 'Гранд Де Люкс',
     },
   },
@@ -78,8 +116,15 @@ export const productsMock: Product[] = [
     gram: 158,
     price: 183,
     image: {
-      png: doubleCheeseburgerPng,
-      webp: doubleCheeseburgerWebp,
+      card: {
+        png: doubleCheeseburgerPng,
+        webp: doubleCheeseburgerWebp,
+      },
+      cart: {
+        png: doubleCheeseburgerCartPng,
+        webp: doubleCheeseburgerCartWebp,
+      },
+
       alt: 'Тройной Чизбургер Три Сыра',
     },
   },
@@ -92,8 +137,15 @@ export const productsMock: Product[] = [
     gram: 311,
     price: 284,
     image: {
-      png: doubleBigHitPng,
-      webp: doubleBigHitWebp,
+      card: {
+        png: doubleBigHitPng,
+        webp: doubleBigHitWebp,
+      },
+      cart: {
+        png: doubleBigHitCartPng,
+        webp: doubleBigHitCartWebp,
+      },
+
       alt: 'Двойной Биг Хит',
     },
   },
@@ -106,8 +158,14 @@ export const productsMock: Product[] = [
     gram: 326,
     price: 335,
     image: {
-      png: bigSpecialPng,
-      webp: bigSpecialWebp,
+      card: {
+        png: bigSpecialPng,
+        webp: bigSpecialWebp,
+      },
+      cart: {
+        png: bigSpecialCartPng,
+        webp: bigSpecialCartWebp,
+      },
       alt: 'Биг Спешиал',
     },
   },
