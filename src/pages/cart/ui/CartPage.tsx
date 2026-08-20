@@ -1,19 +1,16 @@
 import { Link } from 'react-router';
 
+import { selectTotalPrice, selectTotalQuantity, useCartStore } from '@/entities/cart';
 import { routes } from '@/shared/routes';
 import { Container } from '@/shared/ui/container';
-import {
-  ArrowIcon,
-  CartIcon,
-  DeleteIcon,
-  QtyMinusIcon,
-  QtyPlusIcon,
-  RemoveItemIcon,
-} from '@/shared/ui/icon';
-
-import bigSpecialPng from './images/mobile.png';
+import { ArrowIcon, CartIcon, DeleteIcon } from '@/shared/ui/icon';
+import { CartList } from '@/widgets/cart-list';
 
 export const CartPage = () => {
+  const totalPrice = useCartStore(selectTotalPrice);
+  const totalQuantity = useCartStore(selectTotalQuantity);
+  const clearCart = useCartStore((state) => state.clearCart);
+
   return (
     <main className="flex flex-1">
       <Container className="flex flex-1 flex-col">
@@ -22,6 +19,7 @@ export const CartPage = () => {
             <CartIcon className="h-7.25 w-7.25 text-gray-500" />
             <h1 className="text-[32px] leading-tight font-bold">Товары в корзине</h1>
             <button
+              onClick={clearCart}
               className="ml-auto flex cursor-pointer items-center gap-x-1.75 text-gray-400"
               type="button"
             >
@@ -30,72 +28,17 @@ export const CartPage = () => {
             </button>
           </header>
 
-          <ul className="flex flex-1 flex-col gap-y-7">
-            <li className="border-t border-[#F4F4F4] pt-7">
-              <article className="flex cursor-pointer items-center justify-between">
-                <div className="flex items-center gap-x-3">
-                  <img src={bigSpecialPng} alt="" width={81} height={81} />
-                  <div className="flex w-70 flex-col">
-                    <h2 className="line-clamp-2 text-[20px] leading-5 font-bold">
-                      Тройной Чизбургер Три Сыра
-                    </h2>
-                    <p className="truncate text-lg leading-tight text-gray-400">
-                      Описание Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
-                      commodi dicta inventore, et beatae veritatis nostrum assumenda perspiciatis
-                      natus aperiam quasi adipisci delectus quod, repudiandae pariatur ratione
-                      suscipit. Ratione, adipisci.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="inline-flex items-center justify-between gap-x-3">
-                  <button
-                    className="cursor-pointer"
-                    type="button"
-                    aria-label="Уменьшить количество"
-                  >
-                    <QtyMinusIcon className="h-8 w-8 text-orange-500" />
-                  </button>
-                  <output
-                    className="text-center text-[22px] font-bold"
-                    aria-label="Количество товара"
-                    aria-live="polite"
-                  >
-                    {3}
-                  </output>
-                  <button
-                    className="cursor-pointer"
-                    type="button"
-                    aria-label="Увеличить количество"
-                  >
-                    <QtyPlusIcon className="h-8 w-8 text-orange-500" />
-                  </button>
-                </div>
-
-                <data className="text-[22px] font-bold" value={770}>
-                  770&nbsp;₽
-                </data>
-
-                <button
-                  className="cursor-pointer"
-                  type="button"
-                  aria-label="Удалить товар из корзины"
-                >
-                  <RemoveItemIcon className="h-8 w-8 text-gray-400" />
-                </button>
-              </article>
-            </li>
-          </ul>
+          <CartList />
 
           <footer className="flex flex-col gap-y-10 pb-11">
             <div className="flex items-center justify-between text-xl">
               <div>
                 <span>Всего бургеров:</span>&nbsp;
-                <span className="font-bold">3&nbsp;шт</span>
+                <span className="font-bold">{totalQuantity}&nbsp;шт</span>
               </div>
               <div>
                 <span>Сумма заказа:</span>&nbsp;
-                <span className="font-bold text-orange-500">900&nbsp;₽</span>
+                <span className="font-bold text-orange-500">{totalPrice}&nbsp;₽</span>
               </div>
             </div>
 
