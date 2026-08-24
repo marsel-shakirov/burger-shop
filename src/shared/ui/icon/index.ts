@@ -2,6 +2,7 @@ export { ArrowIcon } from './icons/arrow-icon';
 export { BurgerIcon } from './icons/burger-icon';
 export { CartIcon } from './icons/cart-icon';
 export { DeleteIcon } from './icons/delete-icon';
+export { EmptyCartIcon } from './icons/empty-cart-icon.tsx';
 export { NotFoundIcon } from './icons/not-found-icon';
 export { PlusIcon } from './icons/plus-icon';
 export { QtyMinusIcon } from './icons/qty-minus-icon';
