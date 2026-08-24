@@ -15,10 +15,8 @@ export const ArrowIcon = (props: SVGProps<SVGSVGElement>) => {
       <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
 
       <g id="SVGRepo_iconCarrier">
-        {' '}
         <desc>Created with Sketch.</desc> <defs> </defs>
         <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-          {' '}
           <g
             id="Dribbble-Light-Preview"
             transform="translate(-345.000000, -6679.000000)"

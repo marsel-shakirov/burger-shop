@@ -1,2 +1,2 @@
-export { CartItem } from './ui/CartItem';
-export { CartList } from './ui/CartList';
+export { CartItem } from './ui/cart-item';
+export { CartList } from './ui/cart-list';

@@ -6,11 +6,11 @@ const SORT_OPTIONS = [
 
 export const SortSelect = () => {
   return (
-    <div>
+    <div className="flex">
       <button
         type="button"
         popoverTarget="sort-menu"
-        className="cursor-pointer text-[14px] font-bold"
+        className="cursor-pointer text-[14px] font-bold [anchor-name:--sort]"
       >
         Сортировка по:&nbsp;&nbsp;
         <span className="border-b border-dashed text-orange-400">популярности</span>
@@ -19,7 +19,7 @@ export const SortSelect = () => {
       <div
         id="sort-menu"
         popover="auto"
-        className="inset-auto top-[anchor(bottom)] right-[anchor(right)] mt-2 rounded-[10px] shadow-xl/10"
+        className="inset-auto top-[anchor(bottom)] right-[anchor(right)] mt-2 rounded-[10px] shadow-xl/10 [position-anchor:--sort]"
       >
         <ul className="py-3.25 text-[14px]">
           {SORT_OPTIONS.map(({ value, label }, index) => (
