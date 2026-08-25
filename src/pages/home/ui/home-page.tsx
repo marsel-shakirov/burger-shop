@@ -5,7 +5,7 @@ export const HomePage = () => {
   return (
     <main className="">
       <Container>
-        <h1 className="sr-only">Меню Burger Shop</h1>
+        <h1>Меню</h1>
         <Catalog />
       </Container>
     </main>

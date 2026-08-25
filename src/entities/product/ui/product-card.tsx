@@ -14,7 +14,7 @@ export const ProductCard = ({ product, action }: ProductCardProps) => {
         {product.image.card.webp && <source srcSet={product.image.card.webp} type="image/webp" />}
 
         <img
-          className="h-full w-full object-contain"
+          className="h-auto w-full object-contain"
           width={243}
           height={243}
           src={product.image.card.png}

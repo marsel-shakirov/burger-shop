@@ -13,7 +13,7 @@ export const CartContent = () => {
     <section className="flex flex-1 flex-col gap-y-9 px-56">
       <header className="flex items-center gap-x-4 pt-23.5">
         <CartIcon className="h-7.25 w-7.25 text-gray-500" />
-        <h1 className="text-[32px] leading-tight font-bold">Товары в корзине</h1>
+        <h1 className="text-[32px] font-bold">Товары в корзине</h1>
 
         <button
           onClick={clearCart}
@@ -21,7 +21,7 @@ export const CartContent = () => {
           type="button"
         >
           <DeleteIcon className="h-6 w-6" />
-          <span className="leading-tight">Очистить корзину</span>
+          <span>Очистить корзину</span>
         </button>
       </header>
 
