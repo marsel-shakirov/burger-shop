@@ -10,17 +10,15 @@ export const CartSummary = () => {
 
   return (
     <>
-      {hasItems && (
-        <>
-          <span>{totalPrice}&nbsp;₽</span>
-          <span className="w-px bg-white/25" />
-        </>
-      )}
-
-      <div className="flex gap-x-2">
-        <CartIcon className="h-5 w-5" />
-        <span>{hasItems ? totalQuantity : 'Корзина'}</span>
+      <div className="relative">
+        <CartIcon className="size-[clamp(1.25rem,5vw,2rem)] shrink-0" />
+        {hasItems && (
+          <span className="absolute -top-1 -right-1.75 grid size-[clamp(1rem,4vw,1.25rem)] shrink-0 place-items-center rounded-full border border-orange-500 bg-red-600 p-0.5 text-[clamp(0.5rem,2vw,0.62rem)] leading-0 font-bold">
+            {totalQuantity}
+          </span>
+        )}
       </div>
+      <span className="text-[clamp(10px,3vw,18px)]">Корзина</span>
     </>
   );
 };

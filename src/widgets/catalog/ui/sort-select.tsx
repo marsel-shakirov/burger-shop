@@ -10,7 +10,7 @@ export const SortSelect = () => {
       <button
         type="button"
         popoverTarget="sort-menu"
-        className="cursor-pointer text-[14px] font-bold [anchor-name:--sort]"
+        className="cursor-pointer text-[clamp(10px,3vw,16px)] font-bold [anchor-name:--sort]"
       >
         Сортировка по:&nbsp;&nbsp;
         <span className="border-b border-dashed text-orange-400">популярности</span>

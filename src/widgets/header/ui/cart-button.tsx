@@ -7,7 +7,7 @@ export const CartButton = () => {
   return (
     <Link
       to={routes.cart}
-      className="flex cursor-pointer justify-between gap-x-3 rounded-4xl bg-orange-500 px-5.75 py-3 font-bold text-white"
+      className="flex cursor-pointer items-center justify-between gap-x-2 rounded-4xl bg-orange-500 p-2 font-bold text-white sm:p-2.5"
     >
       <CartSummary />
     </Link>

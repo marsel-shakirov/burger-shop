@@ -8,7 +8,7 @@ export const EmptyCart = () => {
     <section className="flex flex-1 flex-col gap-y-14 px-56">
       <header className="flex items-center gap-x-4 pt-23.5">
         <CartIcon className="h-7.25 w-7.25 text-gray-500" />
-        <h1 className="text-[32px] leading-tight font-bold">Корзина пуста</h1>
+        <h1 className="text-[32px] font-bold">Корзина пуста</h1>
       </header>
       <EmptyCartIcon className="h-48 w-48 self-center text-orange-400" />
       <div className="flex items-center gap-x-6">

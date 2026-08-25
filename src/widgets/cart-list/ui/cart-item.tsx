@@ -29,7 +29,7 @@ export const CartItem = ({ product, productId, quantity }: CartItemProps) => {
 
           <div className="flex w-70 flex-col">
             <h2 className="line-clamp-2 text-[20px] leading-5 font-bold">{product.name}</h2>
-            <p className="truncate text-lg leading-tight text-gray-400">{product.description}</p>
+            <p className="truncate text-lg text-gray-400">{product.description}</p>
             <span className="font-bold text-gray-400">{product.price}&nbsp;₽ за шт.</span>
           </div>
         </div>

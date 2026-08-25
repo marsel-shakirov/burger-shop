@@ -4,38 +4,25 @@ export const CartIcon = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
+      width="64"
+      height="64"
       fill="none"
+      viewBox="0 0 24 24"
       aria-hidden="true"
       {...props}
     >
-      <g id="SVGRepo_bgCarrier" strokeWidth="0" />
-
-      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
-
-      <g id="SVGRepo_iconCarrier">
+      <g stroke="currentColor" strokeWidth="1.5">
+        <path d="M3.864 16.455c-.858-3.432-1.287-5.147-.386-6.301S6.148 9 9.685 9h4.63c3.538 0 5.306 0 6.207 1.154s.472 2.87-.386 6.301c-.546 2.183-.818 3.274-1.632 3.91-.814.635-1.939.635-4.189.635h-4.63c-2.25 0-3.375 0-4.189-.635-.814-.636-1.087-1.727-1.632-3.91Z" />
         <path
-          d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
+          d="m19.5 9.5-.71-2.605c-.274-1.005-.411-1.507-.692-1.886A2.5 2.5 0 0 0 17 4.172C16.56 4 16.04 4 15 4M4.5 9.5l.71-2.605c.274-1.005.411-1.507.692-1.886A2.5 2.5 0 0 1 7 4.172C7.44 4 7.96 4 9 4"
+          opacity=".5"
         />
+        <path d="M9 4a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1Z" />
         <path
-          d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        />
-        <path d="M11 9H8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <path
-          d="M2 3L2.26491 3.0883C3.58495 3.52832 4.24497 3.74832 4.62248 4.2721C5 4.79587 5 5.49159 5 6.88304V9.5C5 12.3284 5 13.7426 5.87868 14.6213C6.75736 15.5 8.17157 15.5 11 15.5H13M19 15.5H17"
-          stroke="currentColor"
-          strokeWidth="1.5"
           strokeLinecap="round"
-        />
-        <path
-          d="M5 6H8M5.5 13H16.0218C16.9812 13 17.4609 13 17.8366 12.7523C18.2123 12.5045 18.4013 12.0636 18.7792 11.1818L19.2078 10.1818C20.0173 8.29294 20.4221 7.34853 19.9775 6.67426C19.5328 6 18.5054 6 16.4504 6H12"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M8 13v4M16 13v4M12 13v4"
+          opacity=".5"
         />
       </g>
     </svg>

@@ -10,11 +10,11 @@ export const Header = () => {
   const isCartPage = useMatch(routes.cart);
 
   return (
-    <header className="border-b border-[#F6F6F6] py-9">
+    <header className="border-b border-neutral-100 py-[clamp(10px,4vw,36px)]">
       <Container>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-x-4">
           <Logo
-            title="react burger"
+            title="burger shop"
             description="самый вкусный бургер во вселенной"
             to={routes.home}
           />
