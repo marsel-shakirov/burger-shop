@@ -1,11 +1,12 @@
-import type { ContainerProps } from './container.types';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+
+export interface ContainerProps extends ComponentPropsWithoutRef<'div'> {
+  children: ReactNode;
+}
 
 export const Container = ({ children, className = '', ...props }: ContainerProps) => {
   return (
-    <div
-      className={`mx-auto w-full max-w-7xl px-[clamp(5px,calc(2.8125vw-4px),32px)] ${className}`}
-      {...props}
-    >
+    <div {...props} className={`mx-auto w-full max-w-7xl px-[clamp(16px,5vw,40px)] ${className}`}>
       {children}
     </div>
   );
