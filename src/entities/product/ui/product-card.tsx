@@ -9,27 +9,27 @@ export interface ProductCardProps {
 
 export const ProductCard = ({ product, action }: ProductCardProps) => {
   return (
-    <article className="cursor-pointer rounded-xl p-5 shadow-(--shadow-base) transition-shadow duration-300 ease-out hover:shadow-xl">
-      <picture className="mx-auto block aspect-square w-full">
+    <article className="grid grid-cols-2 rounded-xl p-3 shadow-(--shadow-base) transition-shadow duration-300 ease-out hover:shadow-xl min-[375px]:grid-cols-1 md:p-4 lg:p-5">
+      <picture className="row-span-2 mx-auto block aspect-square w-full">
         {product.image.card.webp && <source srcSet={product.image.card.webp} type="image/webp" />}
 
         <img
           className="h-auto w-full object-contain"
-          width={243}
-          height={243}
+          width={124}
+          height={124}
           src={product.image.card.png}
           alt={product.description}
         />
       </picture>
 
-      <div className="flex min-h-15 items-center justify-center text-center text-[17px]">
+      <div className="flex min-h-15 items-center justify-center text-center text-sm">
         <h3 className="line-clamp-3 leading-5">{product.name}</h3>
       </div>
 
-      <div className="mt-3 flex items-center justify-between">
+      <div className="mt-3 flex items-end-safe justify-between">
         <div className="flex flex-col">
-          <span className="text-sm/3.25">{product.gram}&nbsp;г</span>
-          <span className="text-lg/5 font-extrabold">от {product.price}&nbsp;₽</span>
+          <span className="text-sm/4 opacity-60">{product.gram}&nbsp;г</span>
+          <span className="text-base/5 font-extrabold">от&nbsp;{product.price}&nbsp;₽</span>
         </div>
         {action}
       </div>

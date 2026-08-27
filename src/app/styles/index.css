@@ -2,7 +2,6 @@
 
 @import './fonts.css';
 
-
 :root {
   --shadow-base: 0 5px 20px 0 rgb(0 0 0 / 7%);
 
@@ -14,4 +13,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@theme {
+  --color-primary: #ffab08;
+  --color-accent: #f9f9f9;
 }
