@@ -1,4 +1,3 @@
-export { CartItem } from '../../widgets/cart-list/ui/cart-item';
 export { MAX_ITEM_QUANTITY } from './model/cart.constants';
 export {
   selectProductQuantity,

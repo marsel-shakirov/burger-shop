@@ -3,7 +3,7 @@ import { useMatch } from 'react-router';
 import { routes } from '@/shared/routes';
 import { Container } from '@/shared/ui/container';
 
-import { CartButton } from './cart-button';
+import { CartLink } from './cart-link';
 import { Logo } from './logo';
 
 export const Header = () => {
@@ -18,7 +18,7 @@ export const Header = () => {
             description="самый вкусный бургер во вселенной"
             to={routes.home}
           />
-          {!isCartPage && <CartButton />}
+          {!isCartPage && <CartLink />}
         </div>
       </Container>
     </header>

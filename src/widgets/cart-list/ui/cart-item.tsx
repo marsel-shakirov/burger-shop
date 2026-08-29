@@ -6,14 +6,15 @@ import { QuantityControls } from './quantity-controls';
 
 interface CartItemProps {
   product: Product;
-  productId: CartEntry['productId'];
-  quantity: CartEntry['quantity'];
+  entry: CartEntry;
 }
 
-export const CartItem = ({ product, productId, quantity }: CartItemProps) => {
-  const price = product.price * quantity;
+export const CartItem = ({ product, entry }: CartItemProps) => {
+  const price = entry.unitPrice * entry.quantity;
   const { cart: cartImage, alt } = product.image;
-  const { decrementItem, incrementItem, removeItem } = useCartStore((state) => state);
+  const decrementItem = useCartStore((state) => state.decrementItem);
+  const incrementItem = useCartStore((state) => state.incrementItem);
+  const removeItem = useCartStore((state) => state.removeItem);
 
   return (
     <li className="border-neutral-100 not-first:border-t">
@@ -37,9 +38,9 @@ export const CartItem = ({ product, productId, quantity }: CartItemProps) => {
         <div className="flex items-center gap-x-4 sm:gap-1">
           <div className="inline-flex items-center justify-between gap-x-3">
             <QuantityControls
-              onDecrease={() => decrementItem(productId)}
-              onIncrease={() => incrementItem(productId)}
-              quantity={quantity}
+              onDecrease={() => decrementItem(entry.productId)}
+              onIncrease={() => incrementItem(entry.productId)}
+              quantity={entry.quantity}
               max={MAX_ITEM_QUANTITY}
             />
           </div>
@@ -49,7 +50,7 @@ export const CartItem = ({ product, productId, quantity }: CartItemProps) => {
           </data>
 
           <button
-            onClick={() => removeItem(productId)}
+            onClick={() => removeItem(entry.productId)}
             className="cursor-pointer"
             type="button"
             aria-label="Удалить товар из корзины"
