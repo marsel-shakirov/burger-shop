@@ -1,13 +1,6 @@
 # Burger Shop
 
-A responsive burger shop interface with a product catalog and shopping cart.
-
-## Features
-
-- Browse products from local mock data
-- Add and remove products from the cart
-- Change product quantities and calculate totals
-- Navigate between the catalog, cart, and fallback page
+- My burger project
 
 ## Tech Stack
 
