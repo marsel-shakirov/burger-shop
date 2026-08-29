@@ -17,7 +17,7 @@ export const QuantityControls = ({
 
   return (
     <div
-      className="inline-flex items-center gap-x-3"
+      className="inline-flex items-center gap-x-2 md:gap-x-5"
       role="group"
       aria-label="Изменение количества товара"
     >
@@ -27,11 +27,11 @@ export const QuantityControls = ({
         className="cursor-pointer disabled:opacity-40"
         aria-label="Уменьшить количество"
       >
-        <QtyMinusIcon className="size-8 text-orange-500" />
+        <QtyMinusIcon className="size-7 text-orange-500 md:size-9" />
       </button>
 
       <output
-        className="min-w-6 text-center text-[22px] font-bold"
+        className="min-w-3 text-center font-bold md:text-xl"
         aria-label="Количество товара"
         aria-live="polite"
       >
@@ -45,7 +45,7 @@ export const QuantityControls = ({
         className="cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
         aria-label="Увеличить количество"
       >
-        <QtyPlusIcon className="size-8 text-orange-500" />
+        <QtyPlusIcon className="size-7 text-orange-500 md:size-9" />
       </button>
     </div>
   );

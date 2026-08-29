@@ -5,7 +5,7 @@ export const CartList = () => {
   const items = useCartStore((state) => state.items);
 
   return (
-    <ul className="flex flex-1 flex-col gap-y-7">
+    <ul className="flex flex-1 flex-col gap-y-5">
       {items.map((entry) => {
         const product = productsMock.find((product) => product.id === entry.productId);
 

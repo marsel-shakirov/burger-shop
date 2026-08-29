@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 import { selectTotalPrice, selectTotalQuantity, useCartStore } from '@/entities/cart';
 import { routes } from '@/shared/routes';
-import { ArrowIcon, CartIcon, DeleteIcon } from '@/shared/ui/icon';
+import { ArrowIcon, DeleteIcon } from '@/shared/ui/icon';
 import { CartList } from '@/widgets/cart-list';
 
 export const CartContent = () => {
@@ -10,25 +10,28 @@ export const CartContent = () => {
   const totalQuantity = useCartStore(selectTotalQuantity);
   const clearCart = useCartStore((state) => state.clearCart);
   return (
-    <section className="flex flex-1 flex-col gap-y-9 px-56">
-      <header className="flex items-center gap-x-4 pt-23.5">
-        <CartIcon className="h-7.25 w-7.25 text-gray-500" />
-        <h1 className="text-[32px] font-bold">Товары в корзине</h1>
+    <section className="flex flex-1 flex-col gap-y-2 sm:px-[clamp(20px,9vw,60px)]">
+      <h1 className="pt-[clamp(12px,4vw,32px)] text-2xl font-bold sm:text-3xl">Товары в корзине</h1>
+      {/* <header className="flex justify-end-safe gap-x-2 px-5 pt-4"> */}
+      {/* <div className="flex items-center gap-x-1.5">
+          <CartIcon className="size-5 text-gray-500 md:size-6" />
+          <h2 className="text font-bold md:text-xl">Заказы</h2>
+        </div> */}
 
-        <button
-          onClick={clearCart}
-          className="ml-auto flex cursor-pointer items-center gap-x-1.75 text-gray-400"
-          type="button"
-        >
-          <DeleteIcon className="h-6 w-6" />
-          <span>Очистить корзину</span>
-        </button>
-      </header>
+      <button
+        onClick={clearCart}
+        className="flex cursor-pointer items-center justify-end-safe gap-x-1 px-5 pt-4 text-gray-400"
+        type="button"
+      >
+        <DeleteIcon className="size-5 md:size-6" />
+        <span className="text-sm md:text-lg">Очистить корзину</span>
+      </button>
+      {/* </header> */}
 
       <CartList />
 
-      <footer className="flex flex-col gap-y-10 pb-11">
-        <div className="flex items-center justify-between text-xl">
+      <footer className="flex flex-col gap-y-5 px-3 pb-11">
+        <div className="flex flex-col items-end-safe justify-between gap-y-1 text-lg">
           <div>
             <span>Всего бургеров:</span>&nbsp;
             <span className="font-bold">{totalQuantity}&nbsp;шт</span>
@@ -39,17 +42,17 @@ export const CartContent = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="inline-flex items-center justify-between gap-x-3.5">
           <Link
             to={routes.home}
-            className="flex cursor-pointer items-center justify-center gap-x-3 rounded-4xl border border-gray-300 px-6 py-3.5 text-gray-300"
+            className="flex cursor-pointer items-center justify-center gap-x-2 rounded-4xl border border-gray-300 p-3 text-gray-300"
             type="button"
           >
-            <ArrowIcon className="h-3 w-3" />
-            <span>Вернуться назад</span>
+            <ArrowIcon className="size-3" />
+            <span className="sr-only text-sm min-[425px]:not-sr-only">Вернуться за покупками</span>
           </Link>
           <button
-            className="cursor-pointer rounded-4xl bg-orange-500 px-6 py-3.5 font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
+            className="cursor-pointer rounded-4xl bg-orange-500 p-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
             type="button"
           >
             Оплатить сейчас
