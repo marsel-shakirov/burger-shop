@@ -16,8 +16,8 @@ export const NotFoundPage = () => {
             она устарела, была удалена, или был введен неверный адрес в адресной стоке.
           </p>
           <Link
-            className="flex cursor-pointer items-center justify-center gap-x-2 rounded-4xl bg-gray-900 p-4 font-bold text-white"
             to={routes.home}
+            className="flex cursor-pointer items-center justify-center gap-x-2 rounded-4xl bg-gray-900 p-4 font-bold text-white"
           >
             <span>Перейти на главную страницу</span>
           </Link>

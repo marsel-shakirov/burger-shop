@@ -12,11 +12,6 @@ export const CartContent = () => {
   return (
     <section className="flex flex-1 flex-col gap-y-2 sm:px-[clamp(20px,9vw,60px)]">
       <h1 className="pt-[clamp(12px,4vw,32px)] text-2xl font-bold sm:text-3xl">Товары в корзине</h1>
-      {/* <header className="flex justify-end-safe gap-x-2 px-5 pt-4"> */}
-      {/* <div className="flex items-center gap-x-1.5">
-          <CartIcon className="size-5 text-gray-500 md:size-6" />
-          <h2 className="text font-bold md:text-xl">Заказы</h2>
-        </div> */}
 
       <button
         onClick={clearCart}
@@ -26,7 +21,6 @@ export const CartContent = () => {
         <DeleteIcon className="size-5 md:size-6" />
         <span className="text-sm md:text-lg">Очистить корзину</span>
       </button>
-      {/* </header> */}
 
       <CartList />
 
@@ -46,7 +40,6 @@ export const CartContent = () => {
           <Link
             to={routes.home}
             className="flex cursor-pointer items-center justify-center gap-x-2 rounded-4xl border border-gray-300 p-3 text-gray-300"
-            type="button"
           >
             <ArrowIcon className="size-3" />
             <span className="sr-only text-sm min-[425px]:not-sr-only">Вернуться за покупками</span>

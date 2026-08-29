@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { CartSummary } from '@/entities/cart';
 import { routes } from '@/shared/routes';
 
-export const CartButton = () => {
+export const CartLink = () => {
   return (
     <Link
       to={routes.cart}

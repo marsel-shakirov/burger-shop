@@ -1,5 +1,7 @@
-import { CartItem, useCartStore } from '@/entities/cart';
+import { useCartStore } from '@/entities/cart';
 import { productsMock } from '@/entities/product';
+
+import { CartItem } from './cart-item';
 
 export const CartList = () => {
   const items = useCartStore((state) => state.items);
@@ -11,14 +13,7 @@ export const CartList = () => {
 
         if (!product) return null;
 
-        return (
-          <CartItem
-            key={entry.productId}
-            product={product}
-            productId={entry.productId}
-            quantity={entry.quantity}
-          />
-        );
+        return <CartItem key={entry.productId} product={product} entry={entry} />;
       })}
     </ul>
   );
