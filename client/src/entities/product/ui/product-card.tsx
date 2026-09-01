@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import { getImageUrl } from '@/shared/utils/getImagesUrl';
+
 import type { Product } from '../model/product.types';
 
 export interface ProductCardProps {
@@ -10,17 +12,15 @@ export interface ProductCardProps {
 export const ProductCard = ({ product, action }: ProductCardProps) => {
   return (
     <article className="grid grid-cols-2 rounded-xl p-3 shadow-(--shadow-base) transition-shadow duration-300 ease-out hover:shadow-xl min-[375px]:grid-cols-1 md:p-4 lg:p-5">
-      <picture className="row-span-2 mx-auto block aspect-square w-full">
-        {product.image.card.webp && <source srcSet={product.image.card.webp} type="image/webp" />}
-
+      <div className="row-span-2 mx-auto block aspect-square w-full">
         <img
-          className="h-auto w-full object-contain"
           width={124}
           height={124}
-          src={product.image.card.png}
-          alt={product.description}
+          src={getImageUrl(product.image.card.path)}
+          alt={product.image.alt}
+          className="h-auto w-full object-contain"
         />
-      </picture>
+      </div>
 
       <div className="flex min-h-15 items-center justify-center text-center text-sm">
         <h3 className="line-clamp-3 leading-5">{product.name}</h3>

@@ -1,6 +1,7 @@
 import { type CartEntry, MAX_ITEM_QUANTITY, useCartStore } from '@/entities/cart';
 import type { Product } from '@/entities/product';
 import { RemoveItemIcon } from '@/shared/ui/icon';
+import { getImageUrl } from '@/shared/utils/getImagesUrl';
 
 import { QuantityControls } from './quantity-controls';
 
@@ -11,7 +12,7 @@ interface CartItemProps {
 
 export const CartItem = ({ product, entry }: CartItemProps) => {
   const price = entry.unitPrice * entry.quantity;
-  const { cart: cartImage, alt } = product.image;
+
   const decrementItem = useCartStore((state) => state.decrementItem);
   const incrementItem = useCartStore((state) => state.incrementItem);
   const removeItem = useCartStore((state) => state.removeItem);
@@ -21,11 +22,11 @@ export const CartItem = ({ product, entry }: CartItemProps) => {
       <article className="flex flex-col items-center justify-center gap-x-3 p-1.5 min-[500px]:justify-between sm:flex-row">
         <div className="flex items-center gap-x-2">
           <img
-            className="aspect-square w-[clamp(90px,12vw,140px)] object-contain"
-            src={cartImage.png}
-            alt={alt}
             width={90}
             height={90}
+            src={getImageUrl(product.image.cart.path)}
+            alt={product.image.alt}
+            className="aspect-square w-[clamp(90px,12vw,140px)] object-contain"
           />
 
           <div className="flex flex-col justify-between">
