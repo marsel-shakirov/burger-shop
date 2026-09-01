@@ -3,6 +3,12 @@
   "private": true,
   "scripts": {
     "dev:client": "npm --prefix client run dev",
-    "dev:server": "npm --prefix server run dev"
+    "dev:server": "npm --prefix server run dev",
+    "format": "prettier --write client server",
+    "format:check": "prettier --check client server"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1"
   }
 }
