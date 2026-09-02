@@ -1,7 +1,7 @@
 import { type CartEntry, MAX_ITEM_QUANTITY, useCartStore } from '@/entities/cart';
 import type { Product } from '@/entities/product';
+import { getImageUrl } from '@/shared/lib/get-image-url';
 import { RemoveItemIcon } from '@/shared/ui/icon';
-import { getImageUrl } from '@/shared/utils/getImagesUrl';
 
 import { QuantityControls } from './quantity-controls';
 

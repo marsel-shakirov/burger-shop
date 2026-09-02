@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { getImageUrl } from '@/shared/utils/getImagesUrl';
+import { getImageUrl } from '@/shared/lib/get-image-url';
 
 import type { Product } from '../model/product.types';
 

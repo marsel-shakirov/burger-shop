@@ -1,6 +1,10 @@
 import { findCartEntryByProductId } from './cart.lib';
 import type { CartEntry, CartState } from './cart.types';
 
+export const selectCartItems = (state: CartState) => state.items;
+
+export const selectClearCart = (state: CartState) => state.clearCart;
+
 export const selectProductQuantity = (productId: CartEntry['productId']) => (state: CartState) =>
   findCartEntryByProductId(state.items, productId)?.quantity ?? 0;
 

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { getProducts } from '@/shared/api';
+import { productsQueryOptions } from '@/entities/product';
 
 import { CategoryFilter } from './category-filter';
 import { ProductGrid } from './product-grid';
@@ -10,10 +10,15 @@ import { SortSelect } from './sort-select';
 export const Catalog = () => {
   const [activeCategory, setActiveCategory] = useState('all');
 
-  const { isPending, data } = useQuery({
-    queryKey: ['products', activeCategory],
-    queryFn: () => getProducts(activeCategory),
-  });
+  const { isPending, isError, data } = useQuery(productsQueryOptions(activeCategory));
+
+  if (isPending) {
+    return <div>loading</div>;
+  }
+
+  if (isError) {
+    return <div>Failed to load products</div>;
+  }
 
   return (
     <>
@@ -21,7 +26,7 @@ export const Catalog = () => {
         <CategoryFilter activeCategory={activeCategory} onClick={setActiveCategory} />
         <SortSelect />
       </div>
-      {isPending && isPending ? <div>loading</div> : <ProductGrid products={data} />}
+      <ProductGrid products={data} />
     </>
   );
 };
