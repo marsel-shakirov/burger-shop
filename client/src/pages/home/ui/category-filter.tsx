@@ -1,22 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getCategories } from '../api/get-categories';
-
-const ALL_CATEGORY = {
-  id: 'all',
-  name: 'Все',
-  category: 'all',
-};
+import { ALL_CATEGORY } from '../model/category.constants';
 
 interface CategoryFilterProps {
-  activeCategory: string;
-  onClick: (category: string) => void;
+  selectedCategoryId: string;
+  onClick: (id: string) => void;
 }
 
-export const CategoryFilter = ({ activeCategory, onClick }: CategoryFilterProps) => {
+export const CategoryFilter = ({ selectedCategoryId, onClick }: CategoryFilterProps) => {
   const { isPending, isError, data } = useQuery({
     queryKey: ['categories'],
     queryFn: getCategories,
+    staleTime: 1000 * 60 * 60,
   });
 
   if (isPending) {
@@ -31,13 +27,13 @@ export const CategoryFilter = ({ activeCategory, onClick }: CategoryFilterProps)
 
   return (
     <div className="flex items-center gap-x-2.5">
-      {categories.map(({ id, name, category }) => (
+      {categories.map(({ id, name }) => (
         <button
           key={id}
           type="button"
-          onClick={() => onClick(category)}
+          onClick={() => onClick(id)}
           className={`cursor-pointer rounded-4xl px-[clamp(8px,4vw,29px)] py-2 text-[clamp(0.625rem,3vw,1rem)] font-bold transition-colors ${
-            activeCategory === category ? 'bg-primary' : 'bg-accent hover:bg-primary/50'
+            selectedCategoryId === id ? 'bg-primary' : 'bg-accent hover:bg-primary/50'
           }`}
         >
           {name}

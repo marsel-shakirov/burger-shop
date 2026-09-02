@@ -2,11 +2,13 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { getProducts } from './get-products';
 
+const PRODUCTS_STALE_TIME_MS = 1000 * 60 * 5;
+
 const productQueryKeys = {
-  list: (categoryId: string) => ['products', categoryId] as const,
+  list: (categoryId?: string) => ['products', categoryId ?? 'all'] as const,
 };
 
-export const productsQueryOptions = (categoryId: string) =>
+export const productsQueryOptions = (categoryId?: string) =>
   queryOptions({
     queryKey: productQueryKeys.list(categoryId),
 
@@ -15,5 +17,5 @@ export const productsQueryOptions = (categoryId: string) =>
         categoryId,
         signal,
       }),
-    staleTime: 1000 * 60 * 5,
+    staleTime: PRODUCTS_STALE_TIME_MS,
   });

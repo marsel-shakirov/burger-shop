@@ -1,7 +1,7 @@
 import type { Product } from '../model/product.types';
 
 type GetProductsParams = {
-  categoryId: string;
+  categoryId?: string;
   signal: AbortSignal;
 };
 
@@ -11,7 +11,7 @@ export const getProducts = async ({
 }: GetProductsParams): Promise<Product[]> => {
   const params = new URLSearchParams();
 
-  if (categoryId && categoryId !== 'all') {
+  if (categoryId) {
     params.set('categoryId', categoryId);
   }
 

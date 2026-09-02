@@ -1,4 +1,4 @@
-import type { Category } from '../model/categories.types';
+import type { Category } from '../model/category.types';
 
 export const getCategories = async (): Promise<Category[]> => {
   const response = await fetch('/api/categories');

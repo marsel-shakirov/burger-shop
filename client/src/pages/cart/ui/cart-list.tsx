@@ -6,9 +6,9 @@ import { productsQueryOptions } from '@/entities/product';
 import { CartItem } from './cart-item';
 
 export const CartList = () => {
-  const items = useCartStore(selectCartItems);
+  const cartEntry = useCartStore(selectCartItems);
 
-  const { isPending, isError, data } = useQuery(productsQueryOptions('all'));
+  const { isPending, isError, data: products } = useQuery(productsQueryOptions('all'));
 
   if (isPending) {
     return <div>Loading products</div>;
@@ -20,8 +20,8 @@ export const CartList = () => {
 
   return (
     <ul className="flex flex-1 flex-col gap-y-5">
-      {items.map((entry) => {
-        const product = data.find((product) => product.id === entry.productId);
+      {cartEntry.map((entry) => {
+        const product = products.find((product) => product.id === entry.productId);
 
         if (!product) return null;
 
