@@ -7,7 +7,7 @@ interface SortOptionItem {
   label: string;
 }
 
-interface ProductSortSelectProps {
+interface ProductSortMenuProps {
   sortBy: ProductSort;
   onChange: (value: ProductSort) => void;
 }
@@ -18,7 +18,7 @@ const SORT_OPTIONS = [
   { value: 'rating', label: 'рейтингу' },
 ] satisfies SortOptionItem[];
 
-export const ProductSortSelect = ({ sortBy, onChange }: ProductSortSelectProps) => {
+export const ProductSortMenu = ({ sortBy, onChange }: ProductSortMenuProps) => {
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = SORT_OPTIONS.find((option) => option.value === sortBy);
