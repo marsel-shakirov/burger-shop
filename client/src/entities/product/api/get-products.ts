@@ -1,12 +1,12 @@
-import type { Product } from '../model/product.types';
+import type { Product, ProductsQuery } from '../model/product.types';
 
-type GetProductsParams = {
-  categoryId?: string;
+type GetProductsParams = ProductsQuery & {
   signal: AbortSignal;
 };
 
 export const getProducts = async ({
   categoryId,
+  sortBy,
   signal,
 }: GetProductsParams): Promise<Product[]> => {
   const params = new URLSearchParams();
@@ -15,8 +15,9 @@ export const getProducts = async ({
     params.set('categoryId', categoryId);
   }
 
-  const query = params.size > 0 ? `?${params}` : '';
-  const response = await fetch(`/api/products${query}`, { signal });
+  params.set('sortBy', sortBy);
+
+  const response = await fetch(`/api/products?${params.toString()}`, { signal });
 
   if (!response.ok) {
     throw new Error('Failed to load products');
