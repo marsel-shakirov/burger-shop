@@ -9,7 +9,7 @@ const publicDirectoryPath = path.resolve(process.cwd(), 'public');
 
 app.use(express.json());
 
-app.use('/images', express.static(path.join(publicDirectoryPath, 'images')));
+app.use('/api/images', express.static(path.join(publicDirectoryPath, 'images')));
 
 app.use('/api', router);
 

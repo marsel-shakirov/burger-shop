@@ -1,5 +1,4 @@
-import { ProductCard } from '@/entities/product';
-import type { Product } from '@/entities/product/model/product.types';
+import { type Product, ProductCard } from '@/entities/product';
 import { AddToCartButton } from '@/features/add-to-cart';
 
 interface ProductGridProps {

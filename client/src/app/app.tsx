@@ -1,15 +1,12 @@
 import './styles/index.css';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
+import { QueryProvider } from './providers/query-provider.tsx';
 import { AppRouter } from './router/app-router.tsx';
 
 export const App = () => {
-  const queryClient = new QueryClient();
-
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryProvider>
       <AppRouter />
-    </QueryClientProvider>
+    </QueryProvider>
   );
 };

@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { getCategories } from '../api/get-categories';
+
 const ALL_CATEGORY = {
   id: 'all',
   name: 'Все',
@@ -12,17 +14,7 @@ interface CategoryFilterProps {
 }
 
 export const CategoryFilter = ({ activeCategory, onClick }: CategoryFilterProps) => {
-  const getCategories = async () => {
-    const response = await fetch('/api/categories');
-
-    if (!response.ok) {
-      throw new Error('Failed to load categories');
-    }
-
-    return response.json();
-  };
-
-  const { isPending, data } = useQuery({
+  const { isPending, isError, data } = useQuery({
     queryKey: ['categories'],
     queryFn: getCategories,
   });
@@ -31,23 +23,26 @@ export const CategoryFilter = ({ activeCategory, onClick }: CategoryFilterProps)
     return <div>Hello</div>;
   }
 
+  if (isError) {
+    return <div>Failed to load categories</div>;
+  }
+
   const categories = [ALL_CATEGORY, ...data];
 
   return (
-    <ul className="flex items-center gap-x-2.5">
+    <div className="flex items-center gap-x-2.5">
       {categories.map(({ id, name, category }) => (
-        <li
-          onClick={() => onClick(category)}
+        <button
           key={id}
+          type="button"
+          onClick={() => onClick(category)}
           className={`cursor-pointer rounded-4xl px-[clamp(8px,4vw,29px)] py-2 text-[clamp(0.625rem,3vw,1rem)] font-bold transition-colors ${
             activeCategory === category ? 'bg-primary' : 'bg-accent hover:bg-primary/50'
           }`}
         >
-          <button type="button" className="cursor-pointer">
-            {name}
-          </button>
-        </li>
+          {name}
+        </button>
       ))}
-    </ul>
+    </div>
   );
 };

@@ -1,5 +1,7 @@
 export { MAX_ITEM_QUANTITY } from './model/cart.constants';
 export {
+  selectCartItems,
+  selectClearCart,
   selectProductQuantity,
   selectTotalPrice,
   selectTotalQuantity,

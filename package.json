@@ -1,13 +1,19 @@
 {
   "name": "burger-shop",
   "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
-    "dev:client": "npm --prefix client run dev",
-    "dev:server": "npm --prefix server run dev",
+    "dev": "concurrently -n SERVER,CLIENT \"npm run dev -w server\" \"npm run dev -w client\"",
+    "dev:server": "npm run dev -w server",
+    "dev:client": "npm run dev -w client",
     "format": "prettier --write client server",
     "format:check": "prettier --check client server"
   },
   "devDependencies": {
+    "concurrently": "^10.0.5",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1"
   }
