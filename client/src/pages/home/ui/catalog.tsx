@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import type { ProductSort } from '@/entities/product';
+import type { ProductSorting } from '@/entities/product';
 import { productsQueryOptions } from '@/entities/product';
 
 import { getCategories } from '../api/get-categories';
@@ -15,7 +15,7 @@ import { ProductSortMenu } from './product-sort-menu';
 export const Catalog = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(ALL_CATEGORY.id);
 
-  const [sortBy, setSortBy] = useState<ProductSort>('popularity');
+  const [sorting, setSorting] = useState<ProductSorting>({ sortBy: 'popularity', orderBy: 'desc' });
 
   const categoryId = selectedCategoryId === ALL_CATEGORY.id ? undefined : selectedCategoryId;
 
@@ -23,7 +23,7 @@ export const Catalog = () => {
     isError: isProductsError,
     isPending: isProductsPending,
     data: products,
-  } = useQuery(productsQueryOptions({ categoryId, sortBy }));
+  } = useQuery(productsQueryOptions({ categoryId, ...sorting }));
 
   const {
     isError: isCategoriesError,
@@ -56,7 +56,7 @@ export const Catalog = () => {
           />
         )}
 
-        <ProductSortMenu sortBy={sortBy} onChange={setSortBy} />
+        <ProductSortMenu sorting={sorting} onChange={setSorting} />
       </div>
       {isProductsPending ? (
         <ProductGridSkeleton />

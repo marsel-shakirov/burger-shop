@@ -15,6 +15,7 @@ export const CartList = () => {
   } = useQuery(
     productsQueryOptions({
       sortBy: 'popularity',
+      orderBy: 'asc',
     }),
   );
 

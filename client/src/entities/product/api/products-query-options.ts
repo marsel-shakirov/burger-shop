@@ -6,12 +6,13 @@ import { getProducts } from './get-products';
 const PRODUCTS_STALE_TIME_MS = 1000 * 60 * 5;
 
 const productQueryKeys = {
-  list: ({ categoryId, sortBy }: ProductsQuery) =>
+  list: ({ categoryId, orderBy, sortBy }: ProductsQuery) =>
     [
       'products',
       {
         categoryId: categoryId ?? null,
         sortBy,
+        orderBy,
       },
     ] as const,
 };

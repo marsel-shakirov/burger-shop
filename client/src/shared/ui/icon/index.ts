@@ -1,4 +1,5 @@
 export { ArrowIcon } from './icons/arrow-icon';
+export { ArrowSortMenu } from './icons/arrow-sort-menu';
 export { BurgerIcon } from './icons/burger-icon';
 export { CartIcon } from './icons/cart-icon';
 export { DeleteIcon } from './icons/delete-icon';
@@ -8,4 +9,5 @@ export { NotFoundIcon } from './icons/not-found-icon';
 export { PlusIcon } from './icons/plus-icon';
 export { QtyMinusIcon } from './icons/qty-minus-icon';
 export { QtyPlusIcon } from './icons/qty-plus-icon';
+export { RatingStarIcon } from './icons/rating-star-icon.tsx';
 export { RemoveItemIcon } from './icons/remove-item-icon';
