@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 
-export const ArrowSortMenu = (props: SVGProps<SVGSVGElement>) => {
+export const ArrowDownSort = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +12,7 @@ export const ArrowSortMenu = (props: SVGProps<SVGSVGElement>) => {
       {...props}
     >
       <g fill="currentColor">
-        <path d="M0 11h3V0h2v11h3v1l-4 4-4-4zM16 0h-6v2h6zM10 4h4v2h-4zM12 8h-2v2h2z" />
+        <path d="M0 5h3v11h2V5h3V4L4 0 0 4zM16 16h-6v-2h6zM10 12h4v-2h-4zM12 8h-2V6h2z" />
       </g>
     </svg>
   );

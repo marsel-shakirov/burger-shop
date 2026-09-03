@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
 import type { ProductSortBy, ProductSorting, ProductSortOrder } from '@/entities/product';
-import { ArrowSortMenu } from '@/shared/ui/icon';
+import { ArrowDownSort, ArrowTopSort } from '@/shared/ui/icon';
 
 interface SortOptionItem {
   value: ProductSortBy;
@@ -21,13 +21,18 @@ const SORT_OPTIONS = [
     label: 'популярности',
   },
   {
-    value: 'price',
+    value: 'popularity',
     order: 'asc',
-    label: 'цене',
+    label: 'популярности',
   },
   {
     value: 'price',
     order: 'desc',
+    label: 'цене',
+  },
+  {
+    value: 'price',
+    order: 'asc',
     label: 'цене',
   },
   {
@@ -88,7 +93,11 @@ export const ProductSortMenu = ({ sorting, onChange }: ProductSortMenuProps) => 
                     className="peer sr-only"
                   />
                   <span className="flex cursor-pointer items-center gap-x-1 px-4 py-2 font-bold opacity-50 transition-colors duration-300 peer-checked:bg-orange-200/20 peer-checked:text-orange-500 peer-checked:opacity-100 peer-not-checked:hover:text-orange-500">
-                    <ArrowSortMenu className="size-4" />
+                    {option.order === 'desc' ? (
+                      <ArrowTopSort className="size-4" />
+                    ) : (
+                      <ArrowDownSort className="size-4" />
+                    )}
 
                     {option.label}
                   </span>
