@@ -12,7 +12,7 @@ export interface ProductCardProps {
 export const ProductCard = ({ product, action }: ProductCardProps) => {
   return (
     <article className="grid grid-cols-2 rounded-xl p-3 shadow-(--shadow-base) transition-shadow duration-300 ease-out hover:shadow-xl min-[375px]:grid-cols-1 md:p-4 lg:p-5">
-      <div className="row-span-2 mx-auto block aspect-square w-full">
+      <div className="row-span-2 mx-auto aspect-square w-full">
         <img
           width={124}
           height={124}
