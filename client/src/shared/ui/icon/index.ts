@@ -1,13 +1,14 @@
+export { ArrowDownSort } from './icons/arrow-down-sort';
 export { ArrowIcon } from './icons/arrow-icon';
-export { ArrowSortMenu } from './icons/arrow-sort-menu';
+export { ArrowTopSort } from './icons/arrow-top-sort';
 export { BurgerIcon } from './icons/burger-icon';
 export { CartIcon } from './icons/cart-icon';
 export { DeleteIcon } from './icons/delete-icon';
-export { EmptyCartIcon } from './icons/empty-cart-icon.tsx';
+export { EmptyCartIcon } from './icons/empty-cart-icon';
 export { FilterIcon } from './icons/filter-icon';
 export { NotFoundIcon } from './icons/not-found-icon';
 export { PlusIcon } from './icons/plus-icon';
 export { QtyMinusIcon } from './icons/qty-minus-icon';
 export { QtyPlusIcon } from './icons/qty-plus-icon';
-export { RatingStarIcon } from './icons/rating-star-icon.tsx';
+export { RatingStarIcon } from './icons/rating-star-icon';
 export { RemoveItemIcon } from './icons/remove-item-icon';
