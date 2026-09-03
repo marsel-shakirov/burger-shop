@@ -1,8 +1,14 @@
-export type ProductSort = 'popularity' | 'price' | 'rating';
+export type ProductSortBy = 'popularity' | 'price' | 'rating';
 
-export interface ProductsQuery {
+export type ProductSortOrder = 'asc' | 'desc';
+
+export interface ProductSorting {
+  sortBy: ProductSortBy;
+  orderBy: ProductSortOrder;
+}
+
+export interface ProductsQuery extends ProductSorting {
   categoryId?: string;
-  sortBy: ProductSort;
 }
 
 export interface Product {
@@ -11,6 +17,8 @@ export interface Product {
   description: string;
   price: number;
   gram: number;
+  rating: number;
+  popularity: number;
   image: {
     card: {
       path: string;

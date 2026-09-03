@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { getImageUrl } from '@/shared/lib/get-image-url';
+import { RatingStarIcon } from '@/shared/ui/icon';
 
 import type { Product } from '../model/product.types';
 
@@ -11,8 +12,8 @@ export interface ProductCardProps {
 
 export const ProductCard = ({ product, action }: ProductCardProps) => {
   return (
-    <article className="grid grid-cols-2 rounded-xl p-3 shadow-(--shadow-base) transition-shadow duration-300 ease-out hover:shadow-xl min-[375px]:grid-cols-1 md:p-4 lg:p-5">
-      <div className="row-span-2 mx-auto block aspect-square w-full">
+    <article className="relative grid grid-cols-2 rounded-xl p-3 shadow-(--shadow-base) transition-shadow duration-300 ease-out hover:shadow-xl min-[375px]:grid-cols-1 md:p-4 lg:p-5">
+      <div className="row-span-2 mx-auto aspect-square w-full">
         <img
           width={124}
           height={124}
@@ -20,6 +21,10 @@ export const ProductCard = ({ product, action }: ProductCardProps) => {
           alt={product.image.alt}
           className="h-auto w-full object-contain"
         />
+      </div>
+      <div className="absolute top-3 left-2 flex items-center gap-x-1">
+        <RatingStarIcon className="size-5 text-primary" />
+        <span className="text-sm/4 font-bold opacity-60">{product.rating}</span>
       </div>
 
       <div className="flex min-h-15 items-center justify-center text-center text-sm">

@@ -6,6 +6,9 @@ const CATEGORY_IDS = new Set(['fish', 'beef', 'chicken']);
 
 const PRODUCT_SORT_OPTIONS = ['popularity', 'price', 'rating'] as const;
 
+const PRODUCT_SORT_ORDERS = ['asc', 'desc'] as const;
+
+type ProductSortOrder = (typeof PRODUCT_SORT_ORDERS)[number];
 type ProductSort = (typeof PRODUCT_SORT_OPTIONS)[number];
 type ProductCategory = (typeof PRODUCT_SORT_OPTIONS)[number];
 
@@ -17,11 +20,15 @@ const isProductSort = (value: unknown): value is ProductSort => {
   return typeof value === 'string' && PRODUCT_SORT_OPTIONS.includes(value as ProductSort);
 };
 
+const isProductSortOrder = (value: unknown): value is ProductSortOrder => {
+  return typeof value === 'string' && PRODUCT_SORT_ORDERS.includes(value as ProductSortOrder);
+};
+
 export async function getProducts(req: Request, res: Response, next: NextFunction) {
   try {
     const categoryId = req.query.categoryId;
-
     const sortBy = req.query.sortBy ?? 'popularity';
+    const order = req.query.order ?? 'desc';
 
     if (!isProductSort(sortBy)) {
       res.status(400).json({ message: `Invalid sortBy value: ${sortBy}` });
@@ -33,6 +40,13 @@ export async function getProducts(req: Request, res: Response, next: NextFunctio
       return;
     }
 
+    if (!isProductSortOrder(order)) {
+      res.status(400).json({
+        message: `Invalid order value: ${order}`,
+      });
+      return;
+    }
+
     const url = new URL(MOCK_API_URL);
 
     if (categoryId) {
@@ -40,6 +54,7 @@ export async function getProducts(req: Request, res: Response, next: NextFunctio
     }
 
     url.searchParams.set('sortBy', sortBy);
+    url.searchParams.set('order', order);
 
     const response = await fetch(url);
 

@@ -7,6 +7,7 @@ type GetProductsParams = ProductsQuery & {
 export const getProducts = async ({
   categoryId,
   sortBy,
+  orderBy,
   signal,
 }: GetProductsParams): Promise<Product[]> => {
   const params = new URLSearchParams();
@@ -16,7 +17,8 @@ export const getProducts = async ({
   }
 
   params.set('sortBy', sortBy);
-
+  params.set('order', orderBy);
+  
   const response = await fetch(`/api/products?${params.toString()}`, { signal });
 
   if (!response.ok) {

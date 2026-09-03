@@ -1,30 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
-
-import { getCategories } from '../api/get-categories';
-import { ALL_CATEGORY } from '../model/category.constants';
+import type { Category } from '../model/category.types';
 
 interface CategoryFilterProps {
+  categories: Category[];
   selectedCategoryId: string;
   onClick: (id: string) => void;
 }
 
-export const CategoryFilter = ({ selectedCategoryId, onClick }: CategoryFilterProps) => {
-  const { isPending, isError, data } = useQuery({
-    queryKey: ['categories'],
-    queryFn: getCategories,
-    staleTime: 1000 * 60 * 60,
-  });
-
-  if (isPending) {
-    return <div>Hello</div>;
-  }
-
-  if (isError) {
-    return <div>Failed to load categories</div>;
-  }
-
-  const categories = [ALL_CATEGORY, ...data];
-
+export const CategoryFilter = ({
+  selectedCategoryId,
+  categories,
+  onClick,
+}: CategoryFilterProps) => {
   return (
     <div className="flex items-center gap-x-2.5">
       {categories.map(({ id, name }) => (

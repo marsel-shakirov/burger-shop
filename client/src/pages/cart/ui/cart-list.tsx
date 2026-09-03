@@ -8,7 +8,16 @@ import { CartItem } from './cart-item';
 export const CartList = () => {
   const cartEntry = useCartStore(selectCartItems);
 
-  const { isPending, isError, data: products } = useQuery(productsQueryOptions('all'));
+  const {
+    isPending,
+    isError,
+    data: products,
+  } = useQuery(
+    productsQueryOptions({
+      sortBy: 'popularity',
+      orderBy: 'asc',
+    }),
+  );
 
   if (isPending) {
     return <div>Loading products</div>;
