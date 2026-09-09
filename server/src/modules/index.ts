@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import categoryRouter from './categories.routes.ts';
-import productsRouter from './products.routes.ts';
+import categoryRouter from './categories/categories.routes.ts';
+import productsRouter from './products/products.routes.ts';
 
 const router = Router();
 

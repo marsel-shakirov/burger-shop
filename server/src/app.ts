@@ -1,7 +1,12 @@
-import express from 'express';
+import 'dotenv/config';
+
 import path from 'node:path';
 
-import router from './routes/index.ts';
+import type { NextFunction, Request, Response } from 'express';
+import express from 'express';
+
+import { CustomError } from './errors/custom.error.ts';
+import router from './modules/index.ts';
 
 const app = express();
 
@@ -13,8 +18,11 @@ app.use('/images', express.static(path.join(publicDirectoryPath, 'images')));
 
 app.use('/api', router);
 
-app.use((_req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  if (err instanceof CustomError) {
+    return res.status(err.statusCode).json(err.serializeErrors());
+  }
+  res.status(500).json({ message: 'Internal server error' });
 });
 
 export default app;

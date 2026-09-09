@@ -1,6 +1,7 @@
 {
   "name": "burger-shop",
   "private": true,
+  "type": "module",
   "workspaces": [
     "client",
     "server"
@@ -9,12 +10,18 @@
     "dev": "concurrently -n SERVER,CLIENT \"npm run dev -w server\" \"npm run dev -w client\"",
     "dev:server": "npm run dev -w server",
     "dev:client": "npm run dev -w client",
+    "lint": "npm run lint -ws",
     "format": "prettier --write client server",
     "format:check": "prettier --check client server"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "concurrently": "^10.0.5",
+    "eslint": "^10.6.0",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
+    "globals": "^17.7.0",
     "prettier": "^3.9.6",
-    "prettier-plugin-tailwindcss": "^0.8.1"
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "typescript-eslint": "^8.62.0"
   }
 }
