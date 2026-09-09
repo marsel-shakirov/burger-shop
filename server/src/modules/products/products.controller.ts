@@ -2,13 +2,9 @@ import type { Request, Response } from 'express';
 
 import { pool } from '../../db.ts';
 import { BadRequest } from '../../errors/bad-request.error.ts';
+import { PRODUCT_SORT_COLUMNS } from './products.constants.ts';
+import { toProductResponse } from './products.mapper.ts';
 import { getProductsQuerySchema } from './products.schema.ts';
-
-const PRODUCT_SORT_COLUMNS = {
-  popularity: 'popularity',
-  price: 'price',
-  rating: 'rating',
-} as const;
 
 export async function getProducts(req: Request, res: Response) {
   const result = getProductsQuerySchema.safeParse(req.query);
@@ -39,5 +35,5 @@ export async function getProducts(req: Request, res: Response) {
     values,
   );
 
-  res.json(products.rows);
+  res.json(products.rows.map(toProductResponse));
 }
