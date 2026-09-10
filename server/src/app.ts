@@ -1,7 +1,5 @@
 import 'dotenv/config';
 
-import path from 'node:path';
-
 import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 
@@ -10,11 +8,7 @@ import router from './modules/index.ts';
 
 const app = express();
 
-const publicDirectoryPath = path.resolve(process.cwd(), 'public');
-
 app.use(express.json());
-
-app.use('/images', express.static(path.join(publicDirectoryPath, 'images')));
 
 app.use('/api', router);
 
