@@ -1,6 +1,5 @@
 import { type CartEntry, MAX_ITEM_QUANTITY, useCartStore } from '@/entities/cart';
 import type { Product } from '@/entities/product';
-import { getImageUrl } from '@/shared/lib/get-image-url';
 import { RemoveItemIcon } from '@/shared/ui/icon';
 
 import { QuantityControls } from './quantity-controls';
@@ -24,8 +23,8 @@ export const CartItem = ({ product, entry }: CartItemProps) => {
           <img
             width={90}
             height={90}
-            src={getImageUrl(product.image.cart.path)}
-            alt={product.image.alt}
+            src={product.imageUrl}
+            alt={product.name}
             className="aspect-square w-[clamp(90px,12vw,140px)] object-contain"
           />
 

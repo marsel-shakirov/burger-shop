@@ -1,7 +1,7 @@
 import type { Category } from '../model/category.types';
 
-export const getCategories = async (): Promise<Category[]> => {
-  const response = await fetch('/api/categories');
+export const getCategories = async ({ signal }: { signal: AbortSignal }): Promise<Category[]> => {
+  const response = await fetch('/api/categories', { signal });
 
   if (!response.ok) {
     throw new Error('Failed to load categories');

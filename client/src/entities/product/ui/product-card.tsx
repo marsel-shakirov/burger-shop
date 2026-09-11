@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 
-import { getImageUrl } from '@/shared/lib/get-image-url';
 import { RatingStarIcon } from '@/shared/ui/icon';
 
 import type { Product } from '../model/product.types';
@@ -17,8 +16,8 @@ export const ProductCard = ({ product, action }: ProductCardProps) => {
         <img
           width={124}
           height={124}
-          src={getImageUrl(product.image.card.path)}
-          alt={product.image.alt}
+          src={product.imageUrl}
+          alt={product.name}
           className="h-auto w-full object-contain"
         />
       </div>

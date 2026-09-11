@@ -1,45 +1,91 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useSearchParams } from 'react-router';
 
-import type { ProductSorting } from '@/entities/product';
-import { productsQueryOptions } from '@/entities/product';
+import {
+  PRODUCT_SORT_BY,
+  PRODUCT_SORT_ORDER,
+  type ProductSorting,
+  productsQueryOptions,
+} from '@/entities/product';
+import { isOneOf } from '@/shared/lib/is-one-of';
 
-import { getCategories } from '../api/get-categories';
-import { ALL_CATEGORY } from '../model/category.constants';
+import { categoriesQueryOptions } from '../api/categoriesQueryOptions';
+import type { Category } from '../model/catalog.types';
 import { CategoryFilter } from './category-filter';
 import { CategoryFilterSkeleton } from './category-filter-skeleton';
 import { ProductGrid } from './product-grid';
 import { ProductGridSkeleton } from './product-grid-skeleton';
 import { ProductSortMenu } from './product-sort-menu';
 
+const DEFAULT_SORTING: ProductSorting = { sort: 'rating', order: 'desc' };
+const ALL_CATEGORY: Category = {
+  id: 'all',
+  slug: 'all',
+  name: 'Все',
+};
+const DEFAULT_PRODUCT_GRID_TITLE: string = 'Все бургеры';
+
+const parseSorting = (searchParams: URLSearchParams): ProductSorting => {
+  const sort = searchParams.get('sort');
+  const order = searchParams.get('order');
+
+  return {
+    sort: isOneOf(PRODUCT_SORT_BY, sort) ? sort : DEFAULT_SORTING.sort,
+    order: isOneOf(PRODUCT_SORT_ORDER, order) ? order : DEFAULT_SORTING.order,
+  };
+};
+
 export const Catalog = () => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState(ALL_CATEGORY.id);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categorySlug = searchParams.get('category') ?? undefined;
+  const sorting = parseSorting(searchParams);
 
-  const [sorting, setSorting] = useState<ProductSorting>({ sortBy: 'popularity', orderBy: 'desc' });
+  const activeCategory = categorySlug ?? ALL_CATEGORY.slug;
 
-  const categoryId = selectedCategoryId === ALL_CATEGORY.id ? undefined : selectedCategoryId;
+  const handleSelectedCategory = (categorySlug: string) => {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (categorySlug === ALL_CATEGORY.slug) {
+          next.delete('category');
+        } else {
+          next.set('category', categorySlug);
+        }
+        return next;
+      },
+      { replace: true },
+    );
+  };
+
+  const handleSortChange = (nextSorting: ProductSorting) => {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.set('sort', nextSorting.sort);
+        next.set('order', nextSorting.order);
+        return next;
+      },
+      { replace: true },
+    );
+  };
 
   const {
     isError: isProductsError,
     isPending: isProductsPending,
     data: products,
-  } = useQuery(productsQueryOptions({ categoryId, ...sorting }));
+  } = useQuery(productsQueryOptions({ sorting, category: categorySlug }));
 
   const {
     isError: isCategoriesError,
     isPending: isCategoriesPending,
     data: categories = [],
-  } = useQuery({
-    queryKey: ['categories'],
-    queryFn: getCategories,
-    staleTime: 1000 * 60 * 60,
-  });
+  } = useQuery(categoriesQueryOptions());
 
-  const categoryOptions = [ALL_CATEGORY, ...categories];
-  const selectedCategory =
-    categoryOptions.find((category) => category.id === selectedCategoryId) ?? ALL_CATEGORY;
-  const productGridTitle =
-    selectedCategory.id === ALL_CATEGORY.id ? 'Все бургеры' : selectedCategory.name;
+  const categoryOptions: Category[] = [ALL_CATEGORY, ...categories];
+
+  const productGridTitle: string =
+    categories.find((category) => category.slug === categorySlug)?.name ??
+    DEFAULT_PRODUCT_GRID_TITLE;
 
   return (
     <>
@@ -51,12 +97,12 @@ export const Catalog = () => {
         ) : (
           <CategoryFilter
             categories={categoryOptions}
-            selectedCategoryId={selectedCategoryId}
-            onClick={setSelectedCategoryId}
+            selectedCategorySlug={activeCategory}
+            onClick={handleSelectedCategory}
           />
         )}
 
-        <ProductSortMenu sorting={sorting} onChange={setSorting} />
+        <ProductSortMenu sorting={sorting} onChange={handleSortChange} />
       </div>
       {isProductsPending ? (
         <ProductGridSkeleton />

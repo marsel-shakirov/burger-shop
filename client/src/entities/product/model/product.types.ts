@@ -1,14 +1,16 @@
-export type ProductSortBy = 'popularity' | 'price' | 'rating';
+import { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER } from './product.constants';
 
-export type ProductSortOrder = 'asc' | 'desc';
+export type ProductSortBy = (typeof PRODUCT_SORT_BY)[number];
+export type ProductSortOrder = (typeof PRODUCT_SORT_ORDER)[number];
 
 export interface ProductSorting {
-  sortBy: ProductSortBy;
-  orderBy: ProductSortOrder;
+  sort: ProductSortBy;
+  order: ProductSortOrder;
 }
 
-export interface ProductsQuery extends ProductSorting {
-  categoryId?: string;
+export interface ProductsQueryParams {
+  sorting: ProductSorting;
+  category?: string;
 }
 
 export interface Product {
@@ -19,13 +21,5 @@ export interface Product {
   gram: number;
   rating: number;
   popularity: number;
-  image: {
-    card: {
-      path: string;
-    };
-    cart: {
-      path: string;
-    };
-    alt: string;
-  };
+  imageUrl: string;
 }
