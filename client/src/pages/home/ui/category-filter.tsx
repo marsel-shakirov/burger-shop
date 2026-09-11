@@ -1,4 +1,4 @@
-import type { Category } from '../model/catalog.types';
+import type { Category } from '../model/category.types';
 
 interface CategoryFilterProps {
   categories: Category[];

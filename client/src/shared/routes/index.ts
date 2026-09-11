@@ -1,1 +1,1 @@
-export { routes } from './routes.ts';
+export { routes } from './routes';

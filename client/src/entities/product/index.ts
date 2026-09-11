@@ -1,5 +1,5 @@
-export { productsQueryOptions } from './api/products-query-options.ts';
-export { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER } from './model/product.constants.ts';
+export { productsQueryOptions } from './api/products-query-options';
+export { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER } from './model/product.constants';
 export type {
   Product,
   ProductSortBy,

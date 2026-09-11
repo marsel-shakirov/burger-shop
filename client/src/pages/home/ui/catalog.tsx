@@ -1,39 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 
-import {
-  PRODUCT_SORT_BY,
-  PRODUCT_SORT_ORDER,
-  type ProductSorting,
-  productsQueryOptions,
-} from '@/entities/product';
-import { isOneOf } from '@/shared/lib/is-one-of';
+import { type ProductSorting, productsQueryOptions } from '@/entities/product';
 
-import { categoriesQueryOptions } from '../api/categoriesQueryOptions';
-import type { Category } from '../model/catalog.types';
+import { categoriesQueryOptions } from '../api/categories-query-options';
+import type { Category } from '../model/category.types';
+import { parseSorting } from '../model/parse-sorting';
 import { CategoryFilter } from './category-filter';
 import { CategoryFilterSkeleton } from './category-filter-skeleton';
 import { ProductGrid } from './product-grid';
 import { ProductGridSkeleton } from './product-grid-skeleton';
 import { ProductSortMenu } from './product-sort-menu';
 
-const DEFAULT_SORTING: ProductSorting = { sort: 'rating', order: 'desc' };
 const ALL_CATEGORY: Category = {
   id: 'all',
   slug: 'all',
   name: 'Все',
 };
 const DEFAULT_PRODUCT_GRID_TITLE: string = 'Все бургеры';
-
-const parseSorting = (searchParams: URLSearchParams): ProductSorting => {
-  const sort = searchParams.get('sort');
-  const order = searchParams.get('order');
-
-  return {
-    sort: isOneOf(PRODUCT_SORT_BY, sort) ? sort : DEFAULT_SORTING.sort,
-    order: isOneOf(PRODUCT_SORT_ORDER, order) ? order : DEFAULT_SORTING.order,
-  };
-};
 
 export const Catalog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
