@@ -53,3 +53,4 @@ server/  Express API и статические изображения
 ```
 
 Для деплоя на Vercel используются два проекта из одного репозитория: `client` и `server` задаются как отдельные Root Directory. Запросы `/api/*` с клиента перенаправляются на backend через `client/vercel.json`.
+Проект на Vercel https://burger-shop-indol.vercel.app/
