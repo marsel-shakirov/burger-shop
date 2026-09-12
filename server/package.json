@@ -1,8 +1,9 @@
 {
   "name": "burger-server",
   "type": "module",
-  "version": "1.0.0",
   "main": "index.js",
+  "author": "mars",
+  "description": "my burger client",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
@@ -10,9 +11,7 @@
     "lint": "eslint ."
   },
   "keywords": [],
-  "author": "mars",
   "license": "ISC",
-  "description": "my burger server",
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
