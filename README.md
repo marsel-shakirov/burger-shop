@@ -5,7 +5,7 @@
 ## Стек
 
 - Client: React, TypeScript, Vite, Tailwind CSS, TanStack Query, React Router, Zustand
-- Server: Node.js, Express, TypeScript, Zod validation
+- Server: Node.js, Express, TypeScript, Zod validation, PostgreSQL
 - Архитектура клиента: Feature-Sliced Design
 - Архитектура сервера: REST api
 

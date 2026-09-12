@@ -16,6 +16,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof CustomError) {
     return res.status(err.statusCode).json(err.serializeErrors());
   }
+  console.error(err);
   res.status(500).json({ message: 'Internal server error' });
 });
 
