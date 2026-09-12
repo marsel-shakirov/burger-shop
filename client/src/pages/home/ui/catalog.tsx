@@ -73,7 +73,7 @@ export const Catalog = () => {
 
   return (
     <>
-      <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 pt-2.5 sm:gap-y-6 sm:pt-5">
+      <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-5 pt-2.5 sm:gap-y-6 sm:pt-5">
         {isCategoriesPending ? (
           <CategoryFilterSkeleton />
         ) : isCategoriesError ? (
@@ -82,7 +82,7 @@ export const Catalog = () => {
           <CategoryFilter
             categories={categoryOptions}
             selectedCategorySlug={activeCategory}
-            onClick={handleSelectedCategory}
+            onChange={handleSelectedCategory}
           />
         )}
 

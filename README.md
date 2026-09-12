@@ -5,7 +5,7 @@
 ## Стек
 
 - Client: React, TypeScript, Vite, Tailwind CSS, TanStack Query, React Router, Zustand
-- Server: Node.js, Express, TypeScript
+- Server: Node.js, Express, TypeScript, Zod validation
 - Архитектура клиента: Feature-Sliced Design
 - Архитектура сервера: REST api
 
@@ -15,12 +15,6 @@
 
 ```bash
 npm install
-```
-
-Создайте `client/.env`:
-
-```env
-VITE_SERVER_URL=http://localhost:3000
 ```
 
 Запустите client и server одновременно:
@@ -48,7 +42,7 @@ npm run format:check        # проверка форматирования
 
 ```text
 GET /api/categories
-GET /api/products?categoryId=beef&sortBy=popularity&order=desc
+GET /api/products?category=beef&sort=popularity&order=desc
 ```
 
 ## Структура
@@ -59,4 +53,3 @@ server/  Express API и статические изображения
 ```
 
 Для деплоя на Vercel используются два проекта из одного репозитория: `client` и `server` задаются как отдельные Root Directory. Запросы `/api/*` с клиента перенаправляются на backend через `client/vercel.json`.
-VERCEL: https://burger-shop-xi.vercel.app/

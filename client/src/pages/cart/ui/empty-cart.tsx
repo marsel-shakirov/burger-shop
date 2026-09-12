@@ -11,7 +11,6 @@ export const EmptyCart = () => {
       <Link
         to={routes.home}
         className="flex cursor-pointer items-center justify-center gap-x-2 rounded-4xl border border-gray-300 p-3 text-gray-300"
-        type="button"
       >
         <ArrowIcon className="size-3" />
         <span className="text-sm">Вернуться за покупками</span>

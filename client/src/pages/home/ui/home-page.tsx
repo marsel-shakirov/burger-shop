@@ -6,7 +6,7 @@ export const HomePage = () => {
   return (
     <main>
       <Container>
-        <h1 className="pt-[clamp(12px,4vw,32px)] text-2xl font-bold sm:text-4xl">Меню</h1>
+        <h1 className="pt-4 text-2xl font-bold sm:pt-7 sm:text-4xl">Меню</h1>
         <Catalog />
       </Container>
     </main>

@@ -17,4 +17,14 @@
 @theme {
   --color-primary: #ffab08;
   --color-accent: #f9f9f9;
+
+  --breakpoint-xs: 23rem;
+}
+
+@utility focus-ring {
+  @apply focus-visible:ring-2 focus-visible:ring-amber-700 focus-visible:ring-offset-2 focus-visible:outline-none;
+}
+
+@utility peer-focus-ring {
+  @apply peer-focus-visible:ring-2 peer-focus-visible:ring-amber-700 peer-focus-visible:ring-offset-2;
 }

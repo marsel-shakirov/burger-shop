@@ -30,11 +30,7 @@ export const QuantityControls = ({
         <QtyMinusIcon className="size-7 text-orange-500 md:size-9" />
       </button>
 
-      <output
-        className="min-w-3 text-center font-bold md:text-xl"
-        aria-label="Количество товара"
-        aria-live="polite"
-      >
+      <output className="min-w-3 text-center font-bold md:text-xl" aria-label="Количество товара">
         {quantity}
       </output>
 

@@ -27,10 +27,11 @@ export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
       type="button"
       disabled={isMaxQuantity}
       data-product-id={product.id}
+      aria-label={`Добавить ${product.name} в корзину`}
       onClick={handleAddItem}
       className="inline-flex cursor-pointer items-center justify-center gap-x-1.5 bg-transparent font-bold text-orange-500 disabled:opacity-50"
     >
-      <div className="relative size-8 rounded-full border-2 border-orange-500 p-1.5">
+      <span className="relative size-8 rounded-full border-2 border-orange-500 p-1.5">
         <PlusIcon className="h-auto w-full" />
         {hasItems && (
           <QuantityBadge
@@ -38,7 +39,7 @@ export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
             className="absolute top-0 right-0 size-4 translate-x-1/3 -translate-y-1/4 bg-orange-500"
           />
         )}
-      </div>
+      </span>
       <span className="sr-only min-[550px]:not-sr-only md:text-[0.75rem]">Добавить</span>
     </button>
   );

@@ -53,7 +53,7 @@ export const CartItem = ({ product, entry }: CartItemProps) => {
             onClick={() => removeItem(entry.productId)}
             className="cursor-pointer"
             type="button"
-            aria-label="Удалить товар из корзины"
+            aria-label={`Удалить ${product.name} из корзины`}
           >
             <RemoveItemIcon className="size-6 text-gray-400 md:size-8" />
           </button>

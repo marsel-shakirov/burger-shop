@@ -7,7 +7,7 @@ export const CartLink = () => {
   return (
     <Link
       to={routes.cart}
-      className="flex cursor-pointer items-center justify-between gap-x-3 font-bold"
+      className="flex cursor-pointer items-center justify-between gap-x-3 rounded-md font-bold focus-ring"
     >
       <CartSummary />
     </Link>

@@ -1,17 +1,14 @@
-import type { ReactNode } from 'react';
-
 import { RatingStarIcon } from '@/shared/ui/icon';
 
 import type { Product } from '../model/product.types';
 
 export interface ProductCardProps {
   product: Product;
-  action?: ReactNode;
 }
 
-export const ProductCard = ({ product, action }: ProductCardProps) => {
+export const ProductCard = ({ product }: ProductCardProps) => {
   return (
-    <article className="relative grid grid-cols-2 rounded-xl p-3 shadow-(--shadow-base) transition-shadow duration-300 ease-out hover:shadow-xl min-[375px]:grid-cols-1 md:p-4 lg:p-5">
+    <article className="relative grid grid-cols-2 rounded-xl p-3 shadow-(--shadow-base) transition-shadow duration-300 ease-out hover:shadow-xl xs:grid-cols-1 md:p-4 lg:p-5">
       <div className="row-span-2 mx-auto aspect-square w-full">
         <img
           width={124}
@@ -21,7 +18,7 @@ export const ProductCard = ({ product, action }: ProductCardProps) => {
           className="h-auto w-full object-contain"
         />
       </div>
-      <div className="absolute top-3 left-2 flex items-center gap-x-1">
+      <div className="absolute top-3 left-3 flex items-center gap-x-1">
         <RatingStarIcon className="size-5 text-primary" />
         <span className="text-sm/4 font-bold opacity-60">{product.rating}</span>
       </div>
@@ -35,7 +32,6 @@ export const ProductCard = ({ product, action }: ProductCardProps) => {
           <span className="text-sm/4 opacity-60">{product.gram}&nbsp;г</span>
           <span className="text-base/5 font-extrabold">от&nbsp;{product.price}&nbsp;₽</span>
         </div>
-        {action}
       </div>
     </article>
   );
