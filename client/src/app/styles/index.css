@@ -22,9 +22,13 @@
 }
 
 @utility focus-ring {
-  @apply focus-visible:ring-2 focus-visible:ring-amber-700 focus-visible:ring-offset-2 focus-visible:outline-none;
+  @apply focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:outline-none;
 }
 
 @utility peer-focus-ring {
-  @apply peer-focus-visible:ring-2 peer-focus-visible:ring-amber-700 peer-focus-visible:ring-offset-2;
+  @apply peer-focus-visible:ring-2 peer-focus-visible:ring-amber-600 peer-focus-visible:ring-offset-2;
+}
+
+@utility peer-checked-orange {
+  @apply peer-checked:bg-orange-200 peer-checked:text-orange-600 peer-checked:opacity-100 peer-not-checked:hover:text-orange-500;
 }
