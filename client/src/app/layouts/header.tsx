@@ -1,16 +1,11 @@
-import { useMatch } from 'react-router';
-
 import { routes } from '@/shared/routes';
 import { Container } from '@/shared/ui/container';
 
-import { CartLink } from './cart-link';
 import { Logo } from './logo';
 
 export const Header = () => {
-  const isCartPage = useMatch(routes.cart);
-
   return (
-    <header className="border-b border-neutral-100 py-[clamp(12px,4vw,36px)]">
+    <header className="border-b border-stone-200 py-[clamp(12px,4vw,36px)]">
       <Container>
         <div className="flex items-center justify-between gap-x-4">
           <Logo
@@ -18,7 +13,6 @@ export const Header = () => {
             description="самый вкусный бургер во вселенной"
             to={routes.home}
           />
-          {!isCartPage && <CartLink />}
         </div>
       </Container>
     </header>

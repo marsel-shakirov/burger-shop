@@ -2,8 +2,7 @@ import type { ComponentPropsWithoutRef } from 'react';
 
 import { MAX_ITEM_QUANTITY, selectProductQuantity, useCartStore } from '@/entities/cart';
 import type { Product } from '@/entities/product';
-import { PlusIcon } from '@/shared/ui/icon';
-import { QuantityBadge } from '@/shared/ui/quantity-badge';
+import { QuantityControls } from '@/shared/ui/quantity-controls/quantity-controls';
 
 interface AddToCartButtonProps extends Omit<ComponentPropsWithoutRef<'button'>, 'children'> {
   product: Product;
@@ -12,6 +11,8 @@ interface AddToCartButtonProps extends Omit<ComponentPropsWithoutRef<'button'>, 
 export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
   const addItem = useCartStore((state) => state.addItem);
   const quantity = useCartStore(selectProductQuantity(product.id));
+  const decrementItem = useCartStore((state) => state.decrementItem);
+  const incrementItem = useCartStore((state) => state.incrementItem);
   const hasItems = quantity > 0;
   const isMaxQuantity = quantity >= MAX_ITEM_QUANTITY;
 
@@ -22,25 +23,30 @@ export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
     });
   };
 
+  if (hasItems) {
+    return (
+      <QuantityControls
+        className="justify-between rounded-md bg-orange-500/90 p-1 text-white"
+        quantity={quantity}
+        max={MAX_ITEM_QUANTITY}
+        onDecrease={() => decrementItem(product.id)}
+        onIncrease={() => incrementItem(product.id)}
+      />
+    );
+  }
+
   return (
-    <button
-      type="button"
-      disabled={isMaxQuantity}
-      data-product-id={product.id}
-      aria-label={`Добавить ${product.name} в корзину`}
-      onClick={handleAddItem}
-      className="inline-flex cursor-pointer items-center justify-center gap-x-1.5 bg-transparent font-bold text-orange-500 disabled:opacity-50"
-    >
-      <span className="relative size-8 rounded-full border-2 border-orange-500 p-1.5">
-        <PlusIcon className="h-auto w-full" />
-        {hasItems && (
-          <QuantityBadge
-            quantity={quantity}
-            className="absolute top-0 right-0 size-4 translate-x-1/3 -translate-y-1/4 bg-orange-500"
-          />
-        )}
-      </span>
-      <span className="sr-only min-[550px]:not-sr-only md:text-[0.75rem]">Добавить</span>
-    </button>
+    <>
+      <button
+        type="button"
+        disabled={isMaxQuantity}
+        data-product-id={product.id}
+        aria-label={`Добавить ${product.name} в корзину`}
+        onClick={handleAddItem}
+        className="inline-flex cursor-pointer items-center justify-center rounded-md bg-linear-to-tl from-orange-500 to-amber-500 p-2 font-bold text-white focus-ring disabled:opacity-50"
+      >
+        <span className="">Добавить</span>
+      </button>
+    </>
   );
 };

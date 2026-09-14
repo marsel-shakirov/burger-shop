@@ -18,7 +18,7 @@
   --color-primary: #ffab08;
   --color-accent: #f9f9f9;
 
-  --breakpoint-xs: 23rem;
+  --breakpoint-xs: 33rem;
 }
 
 @utility focus-ring {

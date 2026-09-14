@@ -10,9 +10,9 @@ export const QuantityBadge = ({ quantity, className = '', ...props }: QuantityBa
       {...props}
       role="status"
       aria-label={props['aria-label'] ?? `Количество: ${quantity}`}
-      className={`@container inline-grid aspect-square shrink-0 place-items-center rounded-full border border-white leading-none font-bold text-white tabular-nums ${className}`}
+      className={`@container grid aspect-square shrink-0 place-items-center rounded-full leading-none font-extrabold text-white tabular-nums ${className}`}
     >
-      <span className="text-[50cqi]">{quantity}</span>
+      <span className="text-[60cqi] leading-0">{quantity}</span>
     </span>
   );
 };

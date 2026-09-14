@@ -2,7 +2,7 @@ import { type CartEntry, MAX_ITEM_QUANTITY, useCartStore } from '@/entities/cart
 import type { Product } from '@/entities/product';
 import { RemoveItemIcon } from '@/shared/ui/icon';
 
-import { QuantityControls } from './quantity-controls';
+import { QuantityControls } from '../../../shared/ui/quantity-controls/quantity-controls';
 
 interface CartItemProps {
   product: Product;
