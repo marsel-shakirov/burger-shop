@@ -9,6 +9,7 @@ import { parseSorting } from '../model/parse-sorting';
 import { CategoryFilter } from './category-filter';
 import { CategoryFilterSkeleton } from './category-filter-skeleton';
 import { MenuTabs } from './menu-tabs';
+import { MenuTabsSkeleton } from './menu-tabs-skeleton';
 import { ProductGrid } from './product-grid';
 import { ProductGridSkeleton } from './product-grid-skeleton';
 import { ProductSortMenu } from './product-sort-menu';
@@ -87,7 +88,7 @@ export const Catalog = () => {
   return (
     <>
       {isMenusPending ? (
-        <div>Skeleton</div>
+        <MenuTabsSkeleton />
       ) : isMenusError ? null : (
         <MenuTabs menus={menus} selectedMenuSlug={menuSlug} onChange={handleSelectMenu} />
       )}
