@@ -20,7 +20,7 @@ export const BottomNav = () => {
       aria-label="Основная навигация"
       className="fixed inset-x-0 bottom-0 z-60 rounded-t-xl bg-white pt-1 pb-[env(safe-area-inset-bottom)] shadow-(--shadow-base)"
     >
-      <ul className="flex justify-around text-sm">
+      <ul role="list" className="flex justify-around text-sm">
         {navItems.map(({ to, label, Icon }) => (
           <li key={to} className="flex-1">
             <NavLink

@@ -13,10 +13,15 @@ export async function getProducts(req: Request, res: Response) {
     throw new BadRequest();
   }
 
-  const { category, sort, order } = result.data;
+  const { menu, category, sort, order } = result.data;
 
   const conditions: string[] = [];
   const values: unknown[] = [];
+
+  if (menu) {
+    values.push(menu);
+    conditions.push(`menus.slug = $${values.length}`);
+  }
 
   if (category) {
     values.push(category);
@@ -30,6 +35,7 @@ export async function getProducts(req: Request, res: Response) {
     `SELECT products.*
      FROM products
      JOIN categories ON products.category_id = categories.id
+     JOIN menus ON categories.menu_id = menus.id
      ${whereClause}
      ORDER BY products.${orderColumn} ${order}`,
     values,

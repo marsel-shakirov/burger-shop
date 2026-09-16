@@ -1,7 +1,7 @@
 import type { Product, ProductsQueryParams } from '../model/product.types';
 
 export const getProducts = async (
-  { sorting, category }: ProductsQueryParams,
+  { menu, sorting, category }: ProductsQueryParams,
   signal: AbortSignal,
 ): Promise<Product[]> => {
   const params = new URLSearchParams({ sort: sorting.sort, order: sorting.order });
@@ -9,6 +9,8 @@ export const getProducts = async (
   if (category) {
     params.set('category', category);
   }
+
+  params.set('menu', menu);
 
   const response = await fetch(`api/products?${params}`, { signal });
 

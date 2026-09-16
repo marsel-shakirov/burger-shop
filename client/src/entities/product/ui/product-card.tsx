@@ -9,6 +9,8 @@ export interface ProductCardProps {
   action: ReactNode;
 }
 
+const UNIT_LABEL = { g: 'г', ml: 'мл' } as const;
+
 export const ProductCard = ({ product, action }: ProductCardProps) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
@@ -23,6 +25,7 @@ export const ProductCard = ({ product, action }: ProductCardProps) => {
           onClick={() => setIsFavorite(!isFavorite)}
           type="button"
           className="cursor-pointer rounded-md focus-ring"
+          aria-label={isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'}
         >
           <HeartIcon
             className={`size-6 ${isFavorite ? 'text-red-600' : 'fill-white text-stone-500'}`}
@@ -49,7 +52,7 @@ export const ProductCard = ({ product, action }: ProductCardProps) => {
       <div className="mt-3 flex flex-col gap-y-1.5">
         <div className="flex flex-col">
           <span className="text-sm/4 font-bold text-stone-500 opacity-60">
-            {product.gram}&nbsp;г
+            {`${product.amount} ${UNIT_LABEL[product.unit]}`}
           </span>
           <span className="text-lg/5 font-extrabold">от&nbsp;{product.price}&nbsp;₽</span>
         </div>

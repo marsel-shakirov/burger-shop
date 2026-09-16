@@ -86,7 +86,7 @@ export const ProductSortMenu = ({ sorting, onChange: onSortChange }: ProductSort
       >
         <fieldset>
           <legend className="sr-only">Сортировка по</legend>
-          <ul onKeyDown={handleKeyDown} className="py-3.25 text-xs md:text-sm">
+          <ul role="list" onKeyDown={handleKeyDown} className="py-3.25 text-xs md:text-sm">
             {SORT_OPTIONS.map((option) => {
               const optionId = `${option.sort}-${option.order}`;
               const isSelected = sorting.sort === option.sort && sorting.order === option.order;

@@ -1,4 +1,4 @@
-import type { Category } from '../model/category.types';
+import type { Category } from '../model/menu.types';
 
 interface CategoryFilterProps {
   categories: Category[];
@@ -27,9 +27,7 @@ export const CategoryFilter = ({
                 value={name}
                 name="category"
               />
-              <span
-                className={`block cursor-pointer rounded-4xl peer-checked-orange bg-accent px-3 py-1.5 text-base font-bold peer-focus-ring transition-[background] duration-300 sm:px-4 sm:py-2 md:text-base`}
-              >
+              <span className="transition-color block cursor-pointer rounded-4xl peer-checked-orange bg-accent px-3 py-1.5 text-base font-bold text-stone-400 peer-focus-ring duration-300 sm:px-4 sm:py-2 md:text-base">
                 {name}
               </span>
             </label>
