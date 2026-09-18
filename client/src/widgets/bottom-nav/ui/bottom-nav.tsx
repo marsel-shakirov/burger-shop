@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router';
 
 import { selectTotalQuantity, useCartStore } from '@/entities/cart';
-import { routes } from '@/shared/routes';
+import { routes } from '@/shared/config';
 import { CartIcon, HeartIcon, HomeIcon, ProfileIcon } from '@/shared/ui/icon';
 import { QuantityBadge } from '@/shared/ui/quantity-badge';
 

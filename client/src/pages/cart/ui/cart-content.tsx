@@ -6,7 +6,7 @@ import {
   selectTotalQuantity,
   useCartStore,
 } from '@/entities/cart';
-import { routes } from '@/shared/routes';
+import { routes } from '@/shared/config';
 import { ArrowIcon, DeleteIcon } from '@/shared/ui/icon';
 
 import { CartList } from './cart-list';

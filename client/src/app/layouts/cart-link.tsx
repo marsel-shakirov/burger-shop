@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 
 import { CartSummary } from '@/entities/cart';
-import { routes } from '@/shared/routes';
+import { routes } from '@/shared/config';
 
 export const CartLink = () => {
   return (

@@ -4,7 +4,7 @@ import { Favorite } from '@/pages/favorite';
 import { HomePage } from '@/pages/home';
 import { NotFoundPage } from '@/pages/not-found';
 import { Profile } from '@/pages/profile';
-import { routes } from '@/shared/routes';
+import { routes } from '@/shared/config';
 
 import { AppLayout } from '../layouts/app-layout';
 

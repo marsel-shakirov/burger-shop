@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-import { routes } from '@/shared/routes';
+import { routes } from '@/shared/config';
 import { ArrowIcon, EmptyCartIcon } from '@/shared/ui/icon';
 
 export const EmptyCart = () => {

@@ -1,4 +1,4 @@
-import { routes } from '@/shared/routes';
+import { routes } from '@/shared/config';
 import { Container } from '@/shared/ui/container';
 
 import { Logo } from './logo';
