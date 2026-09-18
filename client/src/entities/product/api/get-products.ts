@@ -1,8 +1,10 @@
+import type { RequestOptions } from '@/shared/api';
+
 import type { Product, ProductsQueryParams } from '../model/product.types';
 
 export const getProducts = async (
   { menu, sorting, category }: ProductsQueryParams,
-  signal: AbortSignal,
+  { signal }: RequestOptions = {},
 ): Promise<Product[]> => {
   const params = new URLSearchParams({ sort: sorting.sort, order: sorting.order });
 
@@ -12,7 +14,7 @@ export const getProducts = async (
 
   params.set('menu', menu);
 
-  const response = await fetch(`api/products?${params}`, { signal });
+  const response = await fetch(`/api/products?${params}`, { signal });
 
   if (!response.ok) {
     throw new Error('Failed to load products');

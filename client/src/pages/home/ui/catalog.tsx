@@ -1,15 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 
+import {
+  type Category,
+  CategoryFilter,
+  CategoryFilterSkeleton,
+  menusQueryOptions,
+  MenuTabs,
+  MenuTabsSkeleton,
+} from '@/entities/menu';
 import { type ProductSorting, productsQueryOptions } from '@/entities/product';
 
-import { menusQueryOptions } from '../api/menus-query-options';
-import type { Category } from '../model/menu.types';
 import { parseSorting } from '../model/parse-sorting';
-import { CategoryFilter } from './category-filter';
-import { CategoryFilterSkeleton } from './category-filter-skeleton';
-import { MenuTabs } from './menu-tabs';
-import { MenuTabsSkeleton } from './menu-tabs-skeleton';
 import { ProductGrid } from './product-grid';
 import { ProductGridSkeleton } from './product-grid-skeleton';
 import { ProductSortMenu } from './product-sort-menu';

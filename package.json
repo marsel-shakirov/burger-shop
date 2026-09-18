@@ -11,8 +11,10 @@
     "dev:server": "npm run dev -w server",
     "dev:client": "npm run dev -w client",
     "lint": "npm run lint -ws",
-    "format": "prettier --write client server",
-    "format:check": "prettier --check client server"
+    "lint:fix": "npm run lint:fix -ws",
+    "format:fix": "prettier --write client server",
+    "format": "prettier --check client server",
+    "fix": "npm run lint:fix -ws && npm run format:fix"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

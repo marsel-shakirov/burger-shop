@@ -1,4 +1,4 @@
-import { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER, PRODUCT_UNIT } from './product.constants';
+import type { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER, PRODUCT_UNIT } from './product.constants';
 
 export type ProductSortBy = (typeof PRODUCT_SORT_BY)[number];
 export type ProductSortOrder = (typeof PRODUCT_SORT_ORDER)[number];
