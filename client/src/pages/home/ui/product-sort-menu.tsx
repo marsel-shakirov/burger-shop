@@ -36,7 +36,7 @@ interface ProductSortMenuProps {
   onChange: (sorting: ProductSorting) => void;
 }
 
-export const ProductSortMenu = ({ sorting, onChange: onSortChange }: ProductSortMenuProps) => {
+export const ProductSortMenu = ({ sorting, onChange }: ProductSortMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const popoverId = useId();
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -96,7 +96,7 @@ export const ProductSortMenu = ({ sorting, onChange: onSortChange }: ProductSort
                 <li key={optionId}>
                   <label>
                     <input
-                      onChange={() => onSortChange(option)}
+                      onChange={() => onChange(option)}
                       checked={isSelected}
                       onClick={handleOptionClick}
                       type="radio"

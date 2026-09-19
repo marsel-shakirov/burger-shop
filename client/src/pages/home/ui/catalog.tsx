@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router';
 
 import {
   type Category,
@@ -9,70 +8,24 @@ import {
   MenuTabs,
   MenuTabsSkeleton,
 } from '@/entities/menu';
-import { type ProductSorting, productsQueryOptions } from '@/entities/product';
+import { productsQueryOptions } from '@/entities/product';
 
-import { parseSorting } from '../model/parse-sorting';
+import { ALL_CATEGORY } from '../model/catalog.constants';
+import { useCatalogParams } from '../model/use-catalog-params';
 import { ProductGrid } from './product-grid';
 import { ProductGridSkeleton } from './product-grid-skeleton';
 import { ProductSortMenu } from './product-sort-menu';
 
-const ALL_CATEGORY: Category = {
-  id: 0,
-  slug: 'all',
-  name: 'Все',
-};
-const DEFAULT_MENU_SLUG = 'burgers';
-
 export const Catalog = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const menuSlug = searchParams.get('menu') ?? DEFAULT_MENU_SLUG;
-  const categorySlug = searchParams.get('category') ?? undefined;
-  const sorting = parseSorting(searchParams);
-
-  const handleSelectMenu = (nextMenuSlug: string) => {
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev);
-        next.set('menu', nextMenuSlug);
-        next.delete('category');
-        return next;
-      },
-      { replace: true },
-    );
-  };
-
-  const handleSelectedCategory = (categorySlug: string) => {
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev);
-        if (categorySlug === ALL_CATEGORY.slug) {
-          next.delete('category');
-        } else {
-          next.set('category', categorySlug);
-        }
-        return next;
-      },
-      { replace: true },
-    );
-  };
-
-  const handleSortChange = (nextSorting: ProductSorting) => {
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev);
-        next.set('sort', nextSorting.sort);
-        next.set('order', nextSorting.order);
-        return next;
-      },
-      { replace: true },
-    );
-  };
+  const { menuSlug, categorySlug, sorting, selectMenu, selectCategory, changeSorting } =
+    useCatalogParams();
 
   const {
     isError: isMenusError,
     isPending: isMenusPending,
     data: menus = [],
   } = useQuery(menusQueryOptions());
+
   const {
     isError: isProductsError,
     isPending: isProductsPending,
@@ -92,7 +45,7 @@ export const Catalog = () => {
       {isMenusPending ? (
         <MenuTabsSkeleton />
       ) : isMenusError ? null : (
-        <MenuTabs menus={menus} selectedMenuSlug={menuSlug} onChange={handleSelectMenu} />
+        <MenuTabs menus={menus} selectedMenuSlug={menuSlug} onChange={selectMenu} />
       )}
 
       <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-5 pt-4 sm:gap-y-6 sm:pt-5">
@@ -104,11 +57,11 @@ export const Catalog = () => {
           <CategoryFilter
             categories={categoryOptions}
             selectedCategorySlug={categorySlug ?? ALL_CATEGORY.slug}
-            onChange={handleSelectedCategory}
+            onChange={selectCategory}
           />
         )}
 
-        <ProductSortMenu sorting={sorting} onChange={handleSortChange} />
+        <ProductSortMenu sorting={sorting} onChange={changeSorting} />
       </div>
       {isProductsPending ? (
         <ProductGridSkeleton />
