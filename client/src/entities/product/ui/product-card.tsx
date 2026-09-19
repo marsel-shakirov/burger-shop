@@ -6,12 +6,13 @@ import { HeartIcon, RatingStarIcon } from '@/shared/ui/icon';
 import type { Product } from '../model/product.types';
 export interface ProductCardProps {
   product: Product;
+  priority: boolean;
   action: ReactNode;
 }
 
 const UNIT_LABEL = { g: 'г', ml: 'мл' } as const;
 
-export const ProductCard = ({ product, action }: ProductCardProps) => {
+export const ProductCard = ({ product, priority, action }: ProductCardProps) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
   return (
@@ -39,6 +40,8 @@ export const ProductCard = ({ product, action }: ProductCardProps) => {
           src={product.imageUrl}
           alt={product.name}
           className="h-auto w-full object-contain"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
         />
       </div>
 
