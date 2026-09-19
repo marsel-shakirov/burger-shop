@@ -15,14 +15,13 @@
 }
 
 @theme {
-  --color-primary: #ffab08;
-  --color-accent: #f9f9f9;
+  --breakpoint-xs: 30rem;
 
-  --breakpoint-xs: 33rem;
+  --spacing-bottom-nav: 4rem;
 }
 
 @utility focus-ring {
-  @apply focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:outline-none;
+  @apply focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 focus-visible:outline-none;
 }
 
 @utility peer-focus-ring {

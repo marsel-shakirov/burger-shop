@@ -19,7 +19,7 @@ export const ProductCard = ({ product, priority, action }: ProductCardProps) => 
     <article className="relative flex h-full flex-col rounded-xl bg-white p-2 shadow-(--shadow-base) transition-shadow duration-300 ease-out hover:shadow-xl md:p-4 lg:p-5">
       <div className="flex justify-between">
         <div className="flex items-center gap-x-1">
-          <RatingStarIcon className="size-3 text-primary" />
+          <RatingStarIcon className="size-3 text-yellow-400" />
           <span className="text-sm/2 font-bold opacity-60">{product.rating}</span>
         </div>
         <button

@@ -11,10 +11,7 @@ export const DevelopmentIcon = (props: SVGProps<SVGSVGElement>) => {
       {...props}
     >
       <path fill="#fff" d="M480 80v390c0 5.5-4.5 10-10 10H20c-5.5 0-10-4.5-10-10V80z" />
-      <path
-        fill="var(--color-primary)"
-        d="M480 20v60H10V20c0-5.5 4.5-10 10-10h450c5.5 0 10 4.5 10 10"
-      />
+      <path fill="orange" d="M480 20v60H10V20c0-5.5 4.5-10 10-10h450c5.5 0 10 4.5 10 10" />
       <path
         fill="#231f20"
         d="M470 0H20C8.972 0 0 8.972 0 20v450c0 11.028 8.972 20 20 20h450c11.028 0 20-8.972 20-20V20c0-11.028-8.972-20-20-20m0 20v50H20V20zM20 470V90h450v380z"

@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 
+import { CartPage } from '@/pages/cart';
 import { Favorite } from '@/pages/favorite';
 import { HomePage } from '@/pages/home';
 import { NotFoundPage } from '@/pages/not-found';
@@ -14,7 +15,7 @@ export const AppRouter = () => {
       <Routes>
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />
-          <Route path={routes.cart} element={<Favorite />} />
+          <Route path={routes.cart} element={<CartPage />} />
           <Route path={routes.favorites} element={<Favorite />} />
           <Route path={routes.profile} element={<Profile />} />
         </Route>

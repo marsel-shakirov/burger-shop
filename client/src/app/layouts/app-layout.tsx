@@ -5,7 +5,7 @@ import { Header } from '@/widgets/header';
 
 export const AppLayout = () => {
   return (
-    <div className="flex min-h-dvh flex-col bg-stone-100 pb-[calc(4rem+env(safe-area-inset-bottom))]">
+    <div className="flex min-h-dvh flex-col bg-stone-100 pb-[calc(var(--spacing-bottom-nav)+env(safe-area-inset-bottom))] xs:pb-0">
       <Header />
       <Outlet />
       <BottomNav />

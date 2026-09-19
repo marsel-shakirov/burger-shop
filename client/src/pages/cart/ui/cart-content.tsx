@@ -1,33 +1,38 @@
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
-import {
-  selectClearCart,
-  selectTotalPrice,
-  selectTotalQuantity,
-  useCartStore,
-} from '@/entities/cart';
-import { routes } from '@/shared/config';
-import { ArrowIcon, DeleteIcon } from '@/shared/ui/icon';
-
-import { CartList } from './cart-list';
+// import {
+//   selectClearCart,
+//   selectTotalPrice,
+//   selectTotalQuantity,
+//   useCartStore,
+// } from '@/entities/cart';
+// import { routes } from '@/shared/config';
+// import { ArrowIcon, DeleteIcon } from '@/shared/ui/icon';
+import { selectClearCart, useCartStore } from '@/entities/cart';
+import { DeleteIcon } from '@/shared/ui/icon';
+// import { CartList } from './cart-list';
 
 export const CartContent = () => {
-  const totalPrice = useCartStore(selectTotalPrice);
-  const totalQuantity = useCartStore(selectTotalQuantity);
+  // const totalPrice = useCartStore(selectTotalPrice);
+  // const totalQuantity = useCartStore(selectTotalQuantity);
   const clearCart = useCartStore(selectClearCart);
 
   return (
-    <section className="flex flex-1 flex-col gap-y-2 sm:px-[clamp(20px,9vw,60px)]">
-      <h1 className="pt-[clamp(12px,4vw,32px)] text-2xl font-bold sm:text-3xl">Товары в корзине</h1>
+    <section className="flex flex-1 flex-col gap-y-3">
+      <h1 className="pt-4 text-2xl font-bold sm:pt-7 sm:text-4xl">Товары в корзине</h1>
 
-      <button
-        onClick={clearCart}
-        className="flex cursor-pointer items-center justify-end-safe gap-x-1 px-5 pt-4 text-gray-400"
-        type="button"
-      >
-        <DeleteIcon className="size-5 md:size-6" />
-        <span className="text-sm md:text-lg">Очистить корзину</span>
-      </button>
+      <div>
+        <button
+          onClick={clearCart}
+          className="ml-auto flex cursor-pointer items-center justify-center gap-x-1 rounded-md text-gray-400 focus-ring opacity-80 hover:opacity-100"
+          type="button"
+        >
+          <DeleteIcon className="size-5 md:size-6" />
+          <span className="text-sm md:text-lg">Очистить корзину</span>
+        </button>
+      </div>
+
+      {/* 
 
       <CartList />
 
@@ -59,7 +64,7 @@ export const CartContent = () => {
             Оплатить сейчас
           </button>
         </div>
-      </footer>
+      </footer> */}
     </section>
   );
 };
