@@ -1,8 +1,7 @@
 import { Outlet } from 'react-router';
 
 import { BottomNav } from '@/widgets/bottom-nav';
-
-import { Header } from './header';
+import { Header } from '@/widgets/header';
 
 export const AppLayout = () => {
   return (

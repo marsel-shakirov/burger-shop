@@ -1,3 +1,3 @@
-import { UnderConstruction } from '@/shared/ui/under-construction/under-construction';
+import { UnderConstruction } from '@/shared/ui/under-construction';
 
 export const Favorite = () => <UnderConstruction />;

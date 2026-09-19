@@ -1,9 +1,7 @@
 import type { Request, Response } from 'express';
 
-import { pool } from '../../db.ts';
 import { BadRequest } from '../../errors/bad-request.error.ts';
-import { PRODUCT_SORT_COLUMNS } from './products.constants.ts';
-import { toProductResponse } from './products.mapper.ts';
+import { getProductsUseCase } from './get-products.use-case.ts';
 import { getProductsQuerySchema } from './products.schema.ts';
 
 export async function getProducts(req: Request, res: Response) {
@@ -13,33 +11,7 @@ export async function getProducts(req: Request, res: Response) {
     throw new BadRequest();
   }
 
-  const { menu, category, sort, order } = result.data;
+  const products = await getProductsUseCase(result.data);
 
-  const conditions: string[] = [];
-  const values: unknown[] = [];
-
-  if (menu) {
-    values.push(menu);
-    conditions.push(`menus.slug = $${values.length}`);
-  }
-
-  if (category) {
-    values.push(category);
-    conditions.push(`categories.slug = $${values.length}`);
-  }
-
-  const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
-  const orderColumn = PRODUCT_SORT_COLUMNS[sort];
-
-  const products = await pool.query(
-    `SELECT products.*
-     FROM products
-     JOIN categories ON products.category_id = categories.id
-     JOIN menus ON categories.menu_id = menus.id
-     ${whereClause}
-     ORDER BY products.${orderColumn} ${order}`,
-    values,
-  );
-
-  res.json(products.rows.map(toProductResponse));
+  res.json(products);
 }

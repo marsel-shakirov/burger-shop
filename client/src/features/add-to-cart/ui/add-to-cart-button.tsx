@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef } from 'react';
 
 import { MAX_ITEM_QUANTITY, selectProductQuantity, useCartStore } from '@/entities/cart';
 import type { Product } from '@/entities/product';
-import { QuantityControls } from '@/shared/ui/quantity-controls/quantity-controls';
+import { QuantityControls } from '@/shared/ui/quantity-controls';
 
 interface AddToCartButtonProps extends Omit<ComponentPropsWithoutRef<'button'>, 'children'> {
   product: Product;

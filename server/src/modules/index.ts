@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import menusRouter from './menu/menus.router.ts';
+import menusRouter from './menu/menus.routers.ts';
 import productsRouter from './products/products.routes.ts';
 
 const router = Router();
