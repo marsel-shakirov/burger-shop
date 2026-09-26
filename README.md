@@ -34,22 +34,25 @@ npm run dev:server          # только server
 npm run build -w client     # сборка client
 npm run build -w server     # сборка server
 npm run lint -w client      # проверка client
-npm run format              # форматирование проекта
-npm run format:check        # проверка форматирования
+npm run format              # проверка форматирования
+npm run format:fix          # форматирование проекта
 ```
 
 ## API
 
 ```text
-GET /api/categories
-GET /api/products?category=beef&sort=popularity&order=desc
+GET /api/menu
+GET /api/products?menu=burgers&category=beef&sort=popularity&order=desc
 ```
+
+- `/api/menu` — список меню с их категориями.
+- `/api/products` — все параметры необязательные: `menu` и `category` — slug, `sort` — `popularity | price | rating` (по умолчанию `rating`), `order` — `asc | desc` (по умолчанию `desc`).
 
 ## Структура
 
 ```text
 client/  React-приложение
-server/  Express API и статические изображения
+server/  Express API (PostgreSQL на Supabase, изображения — в Supabase Storage)
 ```
 
 Для деплоя на Vercel используются два проекта из одного репозитория: `client` и `server` задаются как отдельные Root Directory. Запросы `/api/*` с клиента перенаправляются на backend через `client/vercel.json`.

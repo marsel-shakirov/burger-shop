@@ -8,4 +8,4 @@ export {
 } from './model/cart.selectors';
 export { useCartStore } from './model/cart.store';
 export type { CartEntry } from './model/cart.types';
-export { CartSummary } from './ui/cart-summary';
+export { CartNavBadge } from './ui/cart-nav-badge';

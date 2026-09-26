@@ -8,11 +8,13 @@ export const getProducts = async (
 ): Promise<Product[]> => {
   const params = new URLSearchParams({ sort: sorting.sort, order: sorting.order });
 
+  if (menu) {
+    params.set('menu', menu);
+  }
+
   if (category) {
     params.set('category', category);
   }
-
-  params.set('menu', menu);
 
   const response = await fetch(`/api/products?${params}`, { signal });
 

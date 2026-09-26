@@ -1,5 +1,5 @@
 import { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER, type ProductSorting } from '@/entities/product';
-import { isOneOf } from '@/shared/lib/is-one-of';
+import { isOneOf } from '@/shared/lib';
 
 const DEFAULT_SORTING: ProductSorting = { sort: 'rating', order: 'desc' };
 

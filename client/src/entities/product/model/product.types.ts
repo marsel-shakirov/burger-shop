@@ -9,7 +9,7 @@ export interface ProductSorting {
 }
 
 export interface ProductsQueryParams {
-  menu: string;
+  menu?: string;
   sorting: ProductSorting;
   category?: string;
 }

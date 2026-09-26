@@ -23,7 +23,7 @@ export const MenuTabs = ({ menus, selectedMenuSlug, onChange }: MenuTabsProps) =
                 value={slug}
                 name="menu"
               />
-              <span className="block cursor-pointer border-b-2 border-transparent text-lg font-bold text-stone-400 peer-focus-ring transition-colors duration-300 peer-checked:border-orange-500 peer-checked:text-stone-900 peer-not-checked:hover:text-orange-500">
+              <span className="block cursor-pointer border-b-2 border-transparent text-lg font-bold text-stone-400 peer-focus-ring transition-colors duration-300 peer-checked:border-orange-600 peer-checked:text-stone-900 peer-not-checked:hover:text-orange-500">
                 {name}
               </span>
             </label>
