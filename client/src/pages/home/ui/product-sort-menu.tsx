@@ -73,7 +73,9 @@ export const ProductSortMenu = ({ sorting, onChange }: ProductSortMenuProps) => 
         className="flex cursor-pointer gap-x-2 rounded text-base font-bold focus-ring [anchor-name:--sort]"
       >
         Сортировка по:
-        <span className="border-b border-dashed text-orange-500">{SORT_LABELS[sorting.sort]}</span>
+        <span className="border-b border-dashed border-orange-600 text-orange-700">
+          {SORT_LABELS[sorting.sort]}
+        </span>
       </button>
 
       <div
@@ -104,7 +106,7 @@ export const ProductSortMenu = ({ sorting, onChange }: ProductSortMenuProps) => 
                       value={optionId}
                       className="peer sr-only"
                     />
-                    <span className="flex cursor-pointer items-center gap-x-1 peer-checked-orange px-4 py-2 text-base font-bold opacity-50 transition-[background] duration-300">
+                    <span className="flex cursor-pointer items-center gap-x-1 peer-checked-orange px-4 py-2 text-base font-bold text-stone-600 transition-[background] duration-300">
                       <Icon className="size-4" />
                       {SORT_LABELS[option.sort]}
                       <span className="sr-only">, {SORT_ORDER_LABELS[option.order]}</span>

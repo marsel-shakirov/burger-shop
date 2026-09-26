@@ -29,5 +29,5 @@
 }
 
 @utility peer-checked-orange {
-  @apply peer-checked:bg-orange-200 peer-checked:text-orange-600 peer-checked:opacity-100 peer-not-checked:hover:text-orange-500;
+  @apply peer-checked:bg-orange-200 peer-checked:text-stone-900 peer-not-checked:hover:text-stone-900;
 }

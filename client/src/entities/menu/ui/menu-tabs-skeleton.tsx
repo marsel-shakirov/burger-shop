@@ -4,9 +4,11 @@ const SKELETON_ITEMS_COUNT = 2;
 
 export const MenuTabsSkeleton = () => {
   return (
-    <div className="mt-4 flex gap-x-3" aria-busy="true" aria-label="Загрузка меню">
+    <div className="flex gap-x-5 pt-2.5 sm:pt-5" aria-busy="true" aria-label="Загрузка меню">
       {Array.from({ length: SKELETON_ITEMS_COUNT }, (_, index) => (
-        <Skeleton key={index} className="h-7 w-19 rounded-xl sm:h-8 sm:w-19" />
+        <div key={index} className="flex h-7.5 items-center">
+          <Skeleton className="h-5 w-18" />
+        </div>
       ))}
     </div>
   );
