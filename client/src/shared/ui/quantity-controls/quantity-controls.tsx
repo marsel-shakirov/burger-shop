@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ComponentPropsWithoutRef, Ref } from 'react';
 
 import { QtyMinusIcon, QtyPlusIcon } from '@/shared/ui/icon';
 
@@ -7,6 +7,7 @@ interface QuantityControlsProps extends ComponentPropsWithoutRef<'div'> {
   max: number;
   onDecrease: () => void;
   onIncrease: () => void;
+  increaseButtonRef?: Ref<HTMLButtonElement>;
 }
 
 export const QuantityControls = ({
@@ -15,6 +16,7 @@ export const QuantityControls = ({
   quantity,
   max,
   className,
+  increaseButtonRef,
 }: QuantityControlsProps) => {
   const isMaxQuantity = quantity >= max;
 
@@ -27,7 +29,7 @@ export const QuantityControls = ({
       <button
         type="button"
         onClick={onDecrease}
-        className="cursor-pointer rounded-md outline-0 focus-visible:text-amber-800 disabled:cursor-not-allowed disabled:opacity-40"
+        className="cursor-pointer rounded-md focus-ring disabled:cursor-not-allowed disabled:opacity-40"
         aria-label="Уменьшить количество"
       >
         <QtyMinusIcon className="size-7" />
@@ -38,10 +40,11 @@ export const QuantityControls = ({
       </output>
 
       <button
+        ref={increaseButtonRef}
         type="button"
         disabled={isMaxQuantity}
         onClick={onIncrease}
-        className="cursor-pointer rounded-md outline-0 focus-visible:text-amber-800 disabled:cursor-not-allowed disabled:opacity-40"
+        className="cursor-pointer rounded-md focus-ring disabled:cursor-not-allowed disabled:opacity-40"
         aria-label="Увеличить количество"
       >
         <QtyPlusIcon className="size-7" />
