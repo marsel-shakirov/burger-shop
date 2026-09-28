@@ -2,7 +2,7 @@ import { type ComponentPropsWithoutRef, useEffect, useRef } from 'react';
 
 import { MAX_ITEM_QUANTITY, selectProductQuantity, useCartStore } from '@/entities/cart';
 import type { Product } from '@/entities/product';
-import { QtyPlusIcon } from '@/shared/ui/icon';
+import { PlusIcon } from '@/shared/ui/icon';
 import { QuantityControls } from '@/shared/ui/quantity-controls';
 
 interface AddToCartButtonProps extends Omit<ComponentPropsWithoutRef<'button'>, 'children'> {
@@ -40,31 +40,45 @@ export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
     decrementItem(product.id);
   };
 
-  if (hasItems) {
-    return (
-      <QuantityControls
-        className="h-9 justify-between rounded-md bg-orange-500 p-1 text-stone-900"
-        quantity={quantity}
-        max={MAX_ITEM_QUANTITY}
-        onDecrease={handleDecrease}
-        onIncrease={() => incrementItem(product.id)}
-        increaseButtonRef={increaseButtonRef}
-      />
-    );
-  }
-
   return (
-    <button
-      ref={addButtonRef}
-      type="button"
-      disabled={isMaxQuantity}
-      data-product-id={product.id}
-      aria-label={`Добавить ${product.name} в корзину, ${product.price} ₽`}
-      onClick={handleAddItem}
-      className="flex h-9 cursor-pointer items-center justify-between rounded-md bg-orange-500 py-1 pr-1 pl-3 text-stone-900 focus-ring disabled:opacity-50"
+    <div
+      className={`relative h-9 rounded-md bg-stone-100 ring-1 ring-stone-200 transition-colors duration-150 ring-inset ${
+        hasItems ? '' : 'hover:bg-stone-200'
+      }`}
     >
-      <span className="text-lg/5 font-extrabold">{product.price}&nbsp;₽</span>
-      <QtyPlusIcon className="size-7" />
-    </button>
+      <span
+        aria-hidden="true"
+        className={`absolute bg-orange-500 transition-all duration-200 ease-out motion-reduce:transition-none ${
+          hasItems ? 'inset-y-0 right-0 w-full rounded-md' : 'inset-y-1 right-1 w-7 rounded-[5px]'
+        }`}
+      />
+
+      {hasItems ? (
+        <QuantityControls
+          variant="solid"
+          className="relative size-full justify-between p-1 text-stone-900"
+          quantity={quantity}
+          max={MAX_ITEM_QUANTITY}
+          onDecrease={handleDecrease}
+          onIncrease={() => incrementItem(product.id)}
+          increaseButtonRef={increaseButtonRef}
+        />
+      ) : (
+        <button
+          ref={addButtonRef}
+          type="button"
+          disabled={isMaxQuantity}
+          data-product-id={product.id}
+          aria-label={`Добавить ${product.name} в корзину, ${product.price} ₽`}
+          onClick={handleAddItem}
+          className="relative flex size-full cursor-pointer items-center justify-between rounded-md py-1 pr-1 pl-3 text-stone-900 focus-ring disabled:opacity-50"
+        >
+          <span className="text-lg/5 font-extrabold">{product.price}&nbsp;₽</span>
+          <span className="grid size-7 place-items-center">
+            <PlusIcon className="size-3" />
+          </span>
+        </button>
+      )}
+    </div>
   );
 };

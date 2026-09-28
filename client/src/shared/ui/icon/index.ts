@@ -10,6 +10,7 @@ export { EmptyCartIcon } from './icons/empty-cart-icon';
 export { FilterIcon } from './icons/filter-icon';
 export { HeartIcon } from './icons/heart-icon';
 export { MenuIcon } from './icons/menu-icon';
+export { MinusIcon } from './icons/minus-icon';
 export { NotFoundIcon } from './icons/not-found-icon';
 export { PlusIcon } from './icons/plus-icon';
 export { ProfileIcon } from './icons/profile-icon';

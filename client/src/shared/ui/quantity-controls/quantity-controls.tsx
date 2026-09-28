@@ -1,6 +1,8 @@
 import type { ComponentPropsWithoutRef, Ref } from 'react';
 
-import { QtyMinusIcon, QtyPlusIcon } from '@/shared/ui/icon';
+import { MinusIcon, PlusIcon, QtyMinusIcon, QtyPlusIcon } from '@/shared/ui/icon';
+
+type Variant = 'outline' | 'solid';
 
 interface QuantityControlsProps extends ComponentPropsWithoutRef<'div'> {
   quantity: number;
@@ -8,7 +10,13 @@ interface QuantityControlsProps extends ComponentPropsWithoutRef<'div'> {
   onDecrease: () => void;
   onIncrease: () => void;
   increaseButtonRef?: Ref<HTMLButtonElement>;
+  variant?: Variant;
 }
+
+const buttonStyles: Record<Variant, string> = {
+  outline: 'rounded-md',
+  solid: 'grid size-7 place-items-center rounded-[5px] bg-stone-900 text-orange-500',
+};
 
 export const QuantityControls = ({
   onDecrease,
@@ -17,8 +25,10 @@ export const QuantityControls = ({
   max,
   className,
   increaseButtonRef,
+  variant = 'outline',
 }: QuantityControlsProps) => {
   const isMaxQuantity = quantity >= max;
+  const buttonClassName = `cursor-pointer ${buttonStyles[variant]} focus-ring disabled:cursor-not-allowed disabled:opacity-40`;
 
   return (
     <div
@@ -29,13 +39,20 @@ export const QuantityControls = ({
       <button
         type="button"
         onClick={onDecrease}
-        className="cursor-pointer rounded-md focus-ring disabled:cursor-not-allowed disabled:opacity-40"
+        className={buttonClassName}
         aria-label="Уменьшить количество"
       >
-        <QtyMinusIcon className="size-7" />
+        {variant === 'solid' ? (
+          <MinusIcon className="size-3" />
+        ) : (
+          <QtyMinusIcon className="size-7" />
+        )}
       </button>
 
-      <output className="min-w-3 text-center text-lg font-extrabold" aria-label="Количество товара">
+      <output
+        className="min-w-3 text-center text-lg font-extrabold tabular-nums"
+        aria-label="Количество товара"
+      >
         {quantity}
       </output>
 
@@ -44,10 +61,10 @@ export const QuantityControls = ({
         type="button"
         disabled={isMaxQuantity}
         onClick={onIncrease}
-        className="cursor-pointer rounded-md focus-ring disabled:cursor-not-allowed disabled:opacity-40"
+        className={buttonClassName}
         aria-label="Увеличить количество"
       >
-        <QtyPlusIcon className="size-7" />
+        {variant === 'solid' ? <PlusIcon className="size-3" /> : <QtyPlusIcon className="size-7" />}
       </button>
     </div>
   );

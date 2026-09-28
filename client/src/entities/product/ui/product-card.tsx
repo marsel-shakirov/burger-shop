@@ -25,12 +25,16 @@ export const ProductCard = ({ product, priority, action }: ProductCardProps) => 
         <button
           onClick={() => setIsFavorite(!isFavorite)}
           type="button"
-          className="cursor-pointer rounded-md focus-ring"
+          className="group cursor-pointer rounded-md focus-ring"
           aria-label="В избранное"
           aria-pressed={isFavorite}
         >
           <HeartIcon
-            className={`size-6 ${isFavorite ? 'text-red-600' : 'fill-white text-stone-500'}`}
+            className={`size-6 transition-colors duration-150 ${
+              isFavorite
+                ? 'text-red-600 group-hover:text-red-700'
+                : 'fill-white text-stone-500 group-hover:fill-red-100 group-hover:text-red-600'
+            }`}
           />
         </button>
       </div>

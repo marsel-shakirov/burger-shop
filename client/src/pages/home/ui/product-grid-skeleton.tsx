@@ -12,11 +12,11 @@ export const ProductGridSkeleton = () => {
           <li key={index}>
             <article className="flex h-full flex-col rounded-xl bg-white p-2 shadow-(--shadow-base) md:p-4 lg:p-5">
               <div className="flex h-6 items-center justify-between">
-                <Skeleton className="h-3.5 w-9" />
+                <Skeleton className="h-4 w-9" />
                 <Skeleton className="size-6" />
               </div>
 
-              <Skeleton className="aspect-square w-full" />
+              <Skeleton className="mt-1 aspect-square w-full" />
 
               <div className="flex grow flex-col gap-y-1.5">
                 <div className="flex h-8.75 flex-col justify-around xs:h-5">
