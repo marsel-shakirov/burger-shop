@@ -12,9 +12,9 @@ import { productsQueryOptions } from '@/entities/product';
 
 import { ALL_CATEGORY } from '../model/catalog.constants';
 import { useCatalogParams } from '../model/use-catalog-params';
+import { CatalogHeader } from './catalog-header';
 import { ProductGrid } from './product-grid';
 import { ProductGridSkeleton } from './product-grid-skeleton';
-import { ProductSortMenu } from './product-sort-menu';
 
 export const Catalog = () => {
   const { menuSlug, categorySlug, sorting, selectMenu, selectCategory, changeSorting } =
@@ -29,8 +29,19 @@ export const Catalog = () => {
   const {
     isError: isProductsError,
     isPending: isProductsPending,
+    isPlaceholderData: isProductsPlaceholder,
     data: products,
-  } = useQuery(productsQueryOptions({ sorting, menu: menuSlug, category: categorySlug }));
+  } = useQuery({
+    ...productsQueryOptions({ sorting, menu: menuSlug, category: categorySlug }),
+    placeholderData: (previousData, previousQuery) => {
+      const previousParams = previousQuery?.queryKey[1];
+      if (typeof previousParams !== 'object') return undefined;
+
+      return previousParams.menu === menuSlug && previousParams.category === categorySlug
+        ? previousData
+        : undefined;
+    },
+  });
 
   const activeMenu = menus.find((menu) => menu.slug === menuSlug);
   const categories = activeMenu?.categories ?? [];
@@ -48,7 +59,7 @@ export const Catalog = () => {
         <MenuTabs menus={menus} selectedMenuSlug={menuSlug} onChange={selectMenu} />
       )}
 
-      <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-5 pt-4 sm:gap-y-6 sm:pt-5">
+      <div className="pt-4 sm:pt-5">
         {isMenusPending ? (
           <CategoryFilterSkeleton />
         ) : isMenusError ? (
@@ -60,15 +71,21 @@ export const Catalog = () => {
             onChange={selectCategory}
           />
         )}
-
-        <ProductSortMenu sorting={sorting} onChange={changeSorting} />
       </div>
       {isProductsPending ? (
         <ProductGridSkeleton />
       ) : isProductsError ? (
         <div>Failed to load products</div>
       ) : (
-        <ProductGrid title={productGridTitle} products={products} />
+        <section className="py-4 sm:py-7">
+          <CatalogHeader
+            title={productGridTitle}
+            sorting={sorting}
+            products={products}
+            onSortingChange={changeSorting}
+          />
+          <ProductGrid products={products} isUpdating={isProductsPlaceholder} />
+        </section>
       )}
     </>
   );

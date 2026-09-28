@@ -23,7 +23,7 @@ const styles: Record<
   },
   header: {
     nav: 'hidden xs:block',
-    list: 'flex gap-x-2 text-base lg:gap-x-3.5',
+    list: 'flex gap-x-3 text-base lg:gap-x-3.5',
     item: '',
     link: 'flex flex-col items-center gap-y-0.5 px-1 py-1 text-xs text-stone-600 md:text-base',
     label:

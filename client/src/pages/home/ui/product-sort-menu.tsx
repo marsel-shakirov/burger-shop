@@ -1,45 +1,47 @@
 import {
   type KeyboardEvent,
   type MouseEvent,
+  type ReactNode,
   type ToggleEvent,
   useId,
   useRef,
   useState,
 } from 'react';
 
-import type { ProductSortBy, ProductSorting, ProductSortOrder } from '@/entities/product';
-import { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER } from '@/entities/product';
-import { ArrowDownSort, ArrowTopSort } from '@/shared/ui/icon';
+import type { ProductSorting } from '@/entities/product';
+import { RatingStarIcon } from '@/shared/ui/icon';
 
-const SORT_LABELS: Record<ProductSortBy, string> = {
-  popularity: 'популярности',
-  price: 'цене',
-  rating: 'рейтингу',
+import type { SortHighlights } from '../model/get-sort-highlights';
+import { isSameSorting, SORT_OPTIONS, type SortOption } from '../model/sort-options';
+
+const renderHighlight = ({ sort, order }: SortOption, highlights: SortHighlights): ReactNode => {
+  if (sort === 'popularity') return <span className="truncate">{highlights.mostPopularName}</span>;
+  if (sort === 'rating') {
+    return (
+      <>
+        <RatingStarIcon className="size-3.5 text-yellow-400" />
+        {highlights.topRating}
+      </>
+    );
+  }
+  return order === 'asc' ? (
+    <>от&nbsp;{highlights.minPrice}&nbsp;₽</>
+  ) : (
+    <>до&nbsp;{highlights.maxPrice}&nbsp;₽</>
+  );
 };
-
-const SORT_ORDER_LABELS: Record<ProductSortOrder, string> = {
-  desc: 'по убыванию',
-  asc: 'по возрастанию',
-};
-
-const SORT_ICONS: Record<ProductSortOrder, typeof ArrowTopSort> = {
-  desc: ArrowTopSort,
-  asc: ArrowDownSort,
-};
-
-const SORT_OPTIONS: ProductSorting[] = PRODUCT_SORT_BY.flatMap((sort) =>
-  PRODUCT_SORT_ORDER.map((order) => ({ sort, order })),
-);
 
 interface ProductSortMenuProps {
   sorting: ProductSorting;
+  highlights?: SortHighlights;
   onChange: (sorting: ProductSorting) => void;
 }
 
-export const ProductSortMenu = ({ sorting, onChange }: ProductSortMenuProps) => {
+export const ProductSortMenu = ({ sorting, highlights, onChange }: ProductSortMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const popoverId = useId();
   const popoverRef = useRef<HTMLDivElement>(null);
+  const selectedLabel = SORT_OPTIONS.find((option) => isSameSorting(option, sorting))?.label ?? '';
 
   const handleTogglePopover = (event: ToggleEvent<HTMLDivElement>) => {
     setIsOpen(event.newState === 'open');
@@ -64,52 +66,52 @@ export const ProductSortMenu = ({ sorting, onChange }: ProductSortMenuProps) => 
   };
 
   return (
-    <div className="flex">
+    <>
       <button
         type="button"
         aria-expanded={isOpen}
         aria-controls={popoverId}
         popoverTarget={popoverId}
-        className="flex cursor-pointer gap-x-2 rounded text-base font-bold focus-ring [anchor-name:--sort]"
+        className="cursor-pointer rounded text-left text-orange-700 underline decoration-orange-600 decoration-dashed decoration-1 underline-offset-4 focus-ring"
       >
-        Сортировка по:
-        <span className="border-b border-dashed border-orange-600 text-orange-700">
-          {SORT_LABELS[sorting.sort]}
-        </span>
+        <span className="sr-only">Сортировка: </span>
+        {selectedLabel.toLowerCase()}
       </button>
 
+      {/* Якорь --sort — строка заголовка в Catalog: меню выравнивается по её левому краю */}
       <div
         ref={popoverRef}
         id={popoverId}
-        aria-haspopup="true"
         popover="auto"
         onToggle={handleTogglePopover}
-        className="inset-auto top-[anchor(bottom)] right-[anchor(right)] mt-2 rounded-xl shadow-(--shadow-base) [position-anchor:--sort]"
+        className="inset-auto top-[anchor(bottom)] left-[anchor(left)] mt-2 max-w-[anchor-size(width)] rounded-xl shadow-(--shadow-base) [position-anchor:--sort]"
       >
         <fieldset>
-          <legend className="sr-only">Сортировка по</legend>
-          <ul role="list" onKeyDown={handleKeyDown} className="py-3.25 text-xs md:text-sm">
+          <legend className="sr-only">Сортировка</legend>
+          <ul role="list" onKeyDown={handleKeyDown} className="py-3.25">
             {SORT_OPTIONS.map((option) => {
               const optionId = `${option.sort}-${option.order}`;
-              const isSelected = sorting.sort === option.sort && sorting.order === option.order;
-              const Icon = SORT_ICONS[option.order];
 
               return (
                 <li key={optionId}>
-                  <label>
+                  <label className="group">
                     <input
                       onChange={() => onChange(option)}
-                      checked={isSelected}
+                      checked={isSameSorting(option, sorting)}
                       onClick={handleOptionClick}
                       type="radio"
                       name="sort"
                       value={optionId}
                       className="peer sr-only"
                     />
-                    <span className="flex cursor-pointer items-center gap-x-1 peer-checked-orange px-4 py-2 text-base font-bold text-stone-600 transition-[background] duration-300">
-                      <Icon className="size-4" />
-                      {SORT_LABELS[option.sort]}
-                      <span className="sr-only">, {SORT_ORDER_LABELS[option.order]}</span>
+                    <span className="flex cursor-pointer items-baseline justify-between gap-x-4 peer-checked-orange px-4 py-2 text-base leading-tight font-bold text-stone-600 transition-colors duration-150">
+                      {option.label}
+                      {highlights && (
+                        <span className="flex max-w-32 shrink-0 items-baseline gap-x-1 text-sm font-semibold whitespace-nowrap text-stone-500 tabular-nums group-has-checked:text-stone-900 sm:max-w-none">
+                          <span className="sr-only">, </span>
+                          {renderHighlight(option, highlights)}
+                        </span>
+                      )}
                     </span>
                   </label>
                 </li>
@@ -118,6 +120,6 @@ export const ProductSortMenu = ({ sorting, onChange }: ProductSortMenuProps) => 
           </ul>
         </fieldset>
       </div>
-    </div>
+    </>
   );
 };

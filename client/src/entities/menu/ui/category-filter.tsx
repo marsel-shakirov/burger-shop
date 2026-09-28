@@ -15,7 +15,7 @@ export const CategoryFilter = ({
     <fieldset>
       <legend className="sr-only">Раздел категории</legend>
 
-      <ul role="list" className="flex flex-wrap items-center gap-x-2.5 gap-y-1 md:gap-x-3.5">
+      <ul role="list" className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 md:gap-x-3.5">
         {categories.map(({ id, name, slug }) => (
           <li key={id}>
             <label>
