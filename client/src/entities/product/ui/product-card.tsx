@@ -1,20 +1,18 @@
 import type { ReactNode } from 'react';
-import { useState } from 'react';
 
-import { HeartIcon, RatingStarIcon } from '@/shared/ui/icon';
+import { RatingStarIcon } from '@/shared/ui/icon';
 
 import type { Product } from '../model/product.types';
 export interface ProductCardProps {
   product: Product;
   priority: boolean;
+  favoriteAction: ReactNode;
   action: ReactNode;
 }
 
 const UNIT_LABEL = { g: 'г', ml: 'мл' } as const;
 
-export const ProductCard = ({ product, priority, action }: ProductCardProps) => {
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
-
+export const ProductCard = ({ product, priority, favoriteAction, action }: ProductCardProps) => {
   return (
     <article className="relative flex h-full flex-col rounded-xl bg-white p-2 shadow-(--shadow-base) md:p-4 lg:p-5">
       <div className="flex justify-between">
@@ -22,21 +20,7 @@ export const ProductCard = ({ product, priority, action }: ProductCardProps) => 
           <RatingStarIcon className="size-3 text-yellow-400" />
           <span className="text-sm font-bold opacity-60">{product.rating}</span>
         </div>
-        <button
-          onClick={() => setIsFavorite(!isFavorite)}
-          type="button"
-          className="group cursor-pointer rounded-md focus-ring"
-          aria-label="В избранное"
-          aria-pressed={isFavorite}
-        >
-          <HeartIcon
-            className={`size-6 transition-colors duration-150 ${
-              isFavorite
-                ? 'text-red-600 group-hover:text-red-700'
-                : 'fill-white text-stone-500 group-hover:fill-red-100 group-hover:text-red-600'
-            }`}
-          />
-        </button>
+        {favoriteAction}
       </div>
       <div className="mx-auto aspect-square w-full">
         <img

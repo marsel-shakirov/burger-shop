@@ -1,11 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { selectCartItems, useCartStore } from '@/entities/cart';
-import { productsQueryOptions, type ProductsQueryParams } from '@/entities/product';
+import { ALL_PRODUCTS_PARAMS, productsQueryOptions } from '@/entities/product';
 
 import { CartItem } from './cart-item';
-
-const CART_PRODUCTS_PARAMS: ProductsQueryParams = { sorting: { sort: 'popularity', order: 'asc' } };
 
 export const CartList = () => {
   const cartEntry = useCartStore(selectCartItems);
@@ -14,7 +12,7 @@ export const CartList = () => {
     isPending,
     isError,
     data: products,
-  } = useQuery(productsQueryOptions(CART_PRODUCTS_PARAMS));
+  } = useQuery(productsQueryOptions(ALL_PRODUCTS_PARAMS));
 
   if (isPending) {
     return <div>Loading products</div>;

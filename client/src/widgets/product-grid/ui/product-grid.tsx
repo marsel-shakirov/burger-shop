@@ -1,5 +1,6 @@
 import { type Product, ProductCard } from '@/entities/product';
 import { AddToCartButton } from '@/features/add-to-cart';
+import { ToggleFavoriteButton } from '@/features/toggle-favorite';
 
 interface ProductGridProps {
   products?: Product[];
@@ -17,6 +18,7 @@ export const ProductGrid = ({ products, isUpdating = false }: ProductGridProps) 
           <ProductCard
             product={product}
             priority={index < 5}
+            favoriteAction={<ToggleFavoriteButton product={product} />}
             action={<AddToCartButton product={product} />}
           />
         </li>

@@ -1,5 +1,9 @@
 export { productsQueryOptions } from './api/products-query-options';
-export { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER } from './model/product.constants';
+export {
+  ALL_PRODUCTS_PARAMS,
+  PRODUCT_SORT_BY,
+  PRODUCT_SORT_ORDER,
+} from './model/product.constants';
 export type {
   Product,
   ProductSortBy,

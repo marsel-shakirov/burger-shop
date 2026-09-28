@@ -9,12 +9,11 @@ import {
   MenuTabsSkeleton,
 } from '@/entities/menu';
 import { productsQueryOptions } from '@/entities/product';
+import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
 import { ALL_CATEGORY } from '../model/catalog.constants';
 import { useCatalogParams } from '../model/use-catalog-params';
 import { CatalogHeader } from './catalog-header';
-import { ProductGrid } from './product-grid';
-import { ProductGridSkeleton } from './product-grid-skeleton';
 
 export const Catalog = () => {
   const { menuSlug, categorySlug, sorting, selectMenu, selectCategory, changeSorting } =

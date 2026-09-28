@@ -1,15 +1,18 @@
 import { Link } from 'react-router';
 
 import { routes } from '@/shared/config';
+import { useLastSearch } from '@/shared/lib';
 import { ArrowIcon, EmptyCartIcon } from '@/shared/ui/icon';
 
 export const EmptyCart = () => {
+  const homeSearch = useLastSearch(routes.home);
+
   return (
     <section className="flex flex-1 flex-col items-center justify-center gap-y-14">
       <h1 className="text-2xl font-bold sm:text-3xl">Корзина пуста</h1>
       <EmptyCartIcon className="size-34 text-orange-400" />
       <Link
-        to={routes.home}
+        to={{ pathname: routes.home, search: homeSearch }}
         className="flex cursor-pointer items-center justify-center gap-x-2 rounded-4xl border border-gray-300 p-3 text-gray-300"
       >
         <ArrowIcon className="size-3" />
