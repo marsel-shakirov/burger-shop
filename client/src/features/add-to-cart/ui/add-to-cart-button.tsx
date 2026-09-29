@@ -73,7 +73,9 @@ export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
           onClick={handleAddItem}
           className="relative flex size-full cursor-pointer items-center justify-between rounded-md py-1 pr-1 pl-3 text-stone-900 focus-ring disabled:opacity-50"
         >
-          <span className="text-lg/5 font-extrabold">{product.price}&nbsp;₽</span>
+          <span className="font-display text-base font-extrabold tabular-nums">
+            {product.price}&nbsp;₽
+          </span>
           <span className="grid size-7 place-items-center">
             <PlusIcon className="size-3" />
           </span>

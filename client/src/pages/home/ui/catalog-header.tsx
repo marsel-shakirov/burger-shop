@@ -17,7 +17,7 @@ export const CatalogHeader = ({
   onSortingChange,
 }: CatalogHeaderProps) => {
   return (
-    <div className="text-base font-bold [anchor-name:--sort] sm:text-xl">
+    <div className="text-sm font-bold [anchor-name:--sort] sm:text-base lg:text-lg">
       <h2 className="inline">{title}</h2>,{' '}
       <ProductSortMenu
         sorting={sorting}

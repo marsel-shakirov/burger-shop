@@ -44,7 +44,9 @@ export const CartContent = () => {
           </div>
           <div>
             <span>Сумма заказа:</span>&nbsp;
-            <span className="font-bold text-orange-500">{totalPrice}&nbsp;₽</span>
+            <span className="font-display font-extrabold text-orange-500 tabular-nums">
+              {totalPrice}&nbsp;₽
+            </span>
           </div>
         </div>
 

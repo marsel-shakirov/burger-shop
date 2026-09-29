@@ -44,7 +44,10 @@ export const CartItem = ({ product, entry }: CartItemProps) => {
             />
           </div>
 
-          <data className="min-w-15 text-center font-bold md:text-lg" value={price}>
+          <data
+            className="min-w-15 text-center font-display font-extrabold tabular-nums md:text-lg"
+            value={price}
+          >
             {price}&nbsp;₽
           </data>
 

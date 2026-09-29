@@ -5,9 +5,9 @@ const SKELETON_ITEMS_COUNT = 8;
 export const ProductGridSkeleton = () => {
   return (
     <section className="py-4 sm:py-7" aria-busy="true" aria-label="Загрузка товаров">
-      <Skeleton className="h-6 w-64 max-w-full sm:h-7" />
+      <Skeleton className="h-5 w-64 max-w-full sm:h-7" />
 
-      <ul className="grid grid-cols-2 gap-2.5 pt-3 xs:grid-cols-3 md:pt-5 lg:grid-cols-4">
+      <ul className="grid grid-cols-2 gap-2.5 pt-4 xs:grid-cols-3 md:pt-5 lg:grid-cols-4">
         {Array.from({ length: SKELETON_ITEMS_COUNT }, (_, index) => (
           <li key={index}>
             <article className="flex h-full flex-col rounded-xl bg-white p-2 shadow-(--shadow-base) md:p-4 lg:p-5">

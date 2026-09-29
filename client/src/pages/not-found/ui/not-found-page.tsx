@@ -10,9 +10,9 @@ export const NotFoundPage = () => {
     <main className="flex h-screen">
       <PageMeta title="Страница не найдена" noindex />
       <Container className="flex flex-1">
-        <div className="flex flex-col items-center justify-center gap-y-3 px-28 text-center">
+        <div className="flex flex-col items-center justify-center gap-y-3 px-4 text-center sm:px-28">
           <NotFoundIcon className="h-48 w-48" />
-          <h1 className="text-5xl font-extrabold">Ошибка 404</h1>
+          <h1 className="text-3xl font-extrabold sm:text-5xl">Ошибка 404</h1>
           <p className="text-lg">
             Кажется что-то пошло не так! Страница, которую вы запрашиваете, не существует. Возможно
             она устарела, была удалена, или был введен неверный адрес в адресной строке.

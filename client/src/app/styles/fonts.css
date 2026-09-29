@@ -1,22 +1,14 @@
 @font-face {
-  font-family: 'Proxima Nova';
-  src: url('./fonts/ProximaNova-Regular.woff2') format('woff2');
-  font-weight: 400;
+  font-family: 'Golos Text';
+  src: url('/fonts/GolosText.woff2') format('woff2');
+  font-weight: 400 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Proxima Nova';
-  src: url('./fonts/ProximaNova-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Proxima Nova';
-  src: url('./fonts/ProximaNova-Extrabold.woff2') format('woff2');
+  font-family: 'Unbounded';
+  src: url('/fonts/Unbounded-ExtraBold.woff2') format('woff2');
   font-weight: 800;
   font-style: normal;
   font-display: swap;

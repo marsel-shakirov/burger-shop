@@ -44,7 +44,7 @@ export const ProductCard = ({ product, priority, favoriteAction, action }: Produ
       </div>
 
       <div className="mt-2 flex flex-col gap-y-1.5">
-        <span className="text-sm/4 font-bold text-stone-600">
+        <span className="text-xs font-bold text-stone-600">
           {`${product.amount} ${UNIT_LABEL[product.unit]}`}
         </span>
         {action}
