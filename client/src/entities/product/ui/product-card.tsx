@@ -24,8 +24,8 @@ export const ProductCard = ({ product, priority, favoriteAction, action }: Produ
       </div>
       <div className="mx-auto aspect-square w-full">
         <img
-          width={124}
-          height={124}
+          width={194}
+          height={194}
           src={product.imageUrl}
           alt=""
           className="h-auto w-full object-contain"

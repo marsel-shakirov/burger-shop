@@ -3,10 +3,12 @@ import { Link } from 'react-router';
 import { routes } from '@/shared/config';
 import { Container } from '@/shared/ui/container';
 import { NotFoundIcon } from '@/shared/ui/icon';
+import { PageMeta } from '@/shared/ui/page-meta';
 
 export const NotFoundPage = () => {
   return (
     <main className="flex h-screen">
+      <PageMeta title="Страница не найдена" noindex />
       <Container className="flex flex-1">
         <div className="flex flex-col items-center justify-center gap-y-3 px-28 text-center">
           <NotFoundIcon className="h-48 w-48" />
