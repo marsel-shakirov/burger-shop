@@ -1,72 +1,54 @@
-// import { Link } from 'react-router';
-
-// import {
-//   selectClearCart,
-//   selectTotalPrice,
-//   selectTotalQuantity,
-//   useCartStore,
-// } from '@/entities/cart';
-// import { routes } from '@/shared/config';
-// import { ArrowIcon, DeleteIcon } from '@/shared/ui/icon';
-import { selectClearCart, useCartStore } from '@/entities/cart';
+import {
+  selectClearCart,
+  selectTotalPrice,
+  selectTotalQuantity,
+  useCartStore,
+} from '@/entities/cart';
+import { formatItemsCount } from '@/shared/lib';
 import { DeleteIcon } from '@/shared/ui/icon';
-// import { CartList } from './cart-list';
+
+import { useCartLines } from '../model/use-cart-lines';
+import { CartHeader } from './cart-header';
+import { CartList } from './cart-list';
+import { CartSkeleton } from './cart-skeleton';
+import { CartSummary } from './cart-summary';
 
 export const CartContent = () => {
-  // const totalPrice = useCartStore(selectTotalPrice);
-  // const totalQuantity = useCartStore(selectTotalQuantity);
+  const totalQuantity = useCartStore(selectTotalQuantity);
+  const totalPrice = useCartStore(selectTotalPrice);
   const clearCart = useCartStore(selectClearCart);
+  const { isPending, isError, lines } = useCartLines();
 
   return (
-    <section className="flex flex-1 flex-col gap-y-3">
-      <h1 className="pt-4 text-2xl font-bold sm:pt-7 sm:text-4xl">Товары в корзине</h1>
-
-      <div>
-        <button
-          onClick={clearCart}
-          className="ml-auto flex cursor-pointer items-center justify-center gap-x-1 rounded-md text-gray-400 focus-ring opacity-80 hover:opacity-100"
-          type="button"
-        >
-          <DeleteIcon className="size-5 md:size-6" />
-          <span className="text-sm md:text-lg">Очистить корзину</span>
-        </button>
-      </div>
-
-      {/* 
-
-      <CartList />
-
-      <footer className="flex flex-col gap-y-5 px-3 pb-11">
-        <div className="flex flex-col items-end-safe justify-between gap-y-1 text-lg">
-          <div>
-            <span>Всего бургеров:</span>&nbsp;
-            <span className="font-bold">{totalQuantity}&nbsp;шт</span>
-          </div>
-          <div>
-            <span>Сумма заказа:</span>&nbsp;
-            <span className="font-display font-extrabold text-orange-500 tabular-nums">
-              {totalPrice}&nbsp;₽
-            </span>
-          </div>
-        </div>
-
-        <div className="inline-flex items-center justify-between gap-x-3.5">
-          <Link
-            to={routes.home}
-            className="flex cursor-pointer items-center justify-center gap-x-2 rounded-4xl border border-gray-300 p-3 text-gray-300"
-          >
-            <ArrowIcon className="size-3" />
-            <span className="sr-only text-sm min-[425px]:not-sr-only">Вернуться за покупками</span>
-          </Link>
+    <section className="flex flex-1 flex-col gap-y-5 pb-8 sm:gap-y-8 sm:pb-12">
+      <CartHeader
+        subtitle={formatItemsCount(totalQuantity)}
+        action={
           <button
             type="button"
-            disabled={true}
-            className="cursor-pointer rounded-4xl bg-orange-500 p-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
+            onClick={clearCart}
+            className="flex shrink-0 cursor-pointer items-center gap-x-1 rounded-md text-xs font-bold text-stone-500 focus-ring transition-colors duration-150 hover:text-red-600 sm:text-base"
           >
-            Оплатить сейчас
+            <DeleteIcon className="size-5" />
+            Очистить корзину
           </button>
-        </div>
-      </footer> */}
+        }
+      />
+
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-8">
+        {isPending ? (
+          <CartSkeleton />
+        ) : isError ? (
+          <p role="alert" className="rounded-xl bg-white p-6 text-stone-600 lg:col-span-2">
+            Не удалось загрузить товары. Обновите страницу, чтобы попробовать ещё раз.
+          </p>
+        ) : (
+          <>
+            <CartList lines={lines} />
+            <CartSummary lines={lines} totalPrice={totalPrice} />
+          </>
+        )}
+      </div>
     </section>
   );
 };

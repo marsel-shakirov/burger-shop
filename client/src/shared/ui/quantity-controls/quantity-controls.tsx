@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef, Ref } from 'react';
 
 import { MinusIcon, PlusIcon, QtyMinusIcon, QtyPlusIcon } from '@/shared/ui/icon';
 
-type Variant = 'outline' | 'solid';
+type Variant = 'outline' | 'solid' | 'soft';
 
 interface QuantityControlsProps extends ComponentPropsWithoutRef<'div'> {
   quantity: number;
@@ -15,7 +15,9 @@ interface QuantityControlsProps extends ComponentPropsWithoutRef<'div'> {
 
 const buttonStyles: Record<Variant, string> = {
   outline: 'rounded-md',
-  solid: 'grid size-7 place-items-center rounded-[5px] bg-stone-900 text-orange-500',
+  solid:
+    'grid size-7 place-items-center rounded-[5px] bg-stone-900 text-orange-500 transition-colors duration-150 enabled:hover:bg-stone-700',
+  soft: 'grid size-7 place-items-center rounded-full text-stone-900 transition-colors duration-150 enabled:hover:bg-white',
 };
 
 export const QuantityControls = ({
@@ -42,10 +44,10 @@ export const QuantityControls = ({
         className={buttonClassName}
         aria-label="Уменьшить количество"
       >
-        {variant === 'solid' ? (
-          <MinusIcon className="size-3" />
-        ) : (
+        {variant === 'outline' ? (
           <QtyMinusIcon className="size-7" />
+        ) : (
+          <MinusIcon className="size-3" />
         )}
       </button>
 
@@ -64,7 +66,11 @@ export const QuantityControls = ({
         className={buttonClassName}
         aria-label="Увеличить количество"
       >
-        {variant === 'solid' ? <PlusIcon className="size-3" /> : <QtyPlusIcon className="size-7" />}
+        {variant === 'outline' ? (
+          <QtyPlusIcon className="size-7" />
+        ) : (
+          <PlusIcon className="size-3" />
+        )}
       </button>
     </div>
   );

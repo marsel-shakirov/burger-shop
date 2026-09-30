@@ -2,6 +2,7 @@ import { type ComponentPropsWithoutRef, useEffect, useRef } from 'react';
 
 import { MAX_ITEM_QUANTITY, selectProductQuantity, useCartStore } from '@/entities/cart';
 import type { Product } from '@/entities/product';
+import { formatPrice } from '@/shared/lib';
 import { PlusIcon } from '@/shared/ui/icon';
 import { QuantityControls } from '@/shared/ui/quantity-controls';
 
@@ -42,14 +43,16 @@ export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
 
   return (
     <div
-      className={`relative h-9 rounded-md bg-stone-100 ring-1 ring-stone-200 transition-colors duration-150 ring-inset ${
+      className={`group/add relative h-9 rounded-md bg-stone-100 ring-1 ring-stone-200 transition-colors duration-150 ring-inset ${
         hasItems ? '' : 'hover:bg-stone-200'
       }`}
     >
       <span
         aria-hidden="true"
         className={`absolute bg-orange-500 transition-all duration-200 ease-out motion-reduce:transition-none ${
-          hasItems ? 'inset-y-0 right-0 w-full rounded-md' : 'inset-y-1 right-1 w-7 rounded-[5px]'
+          hasItems
+            ? 'inset-y-0 right-0 w-full rounded-md'
+            : 'inset-y-1 right-1 w-7 rounded-[5px] group-hover/add:w-9 group-hover/add:bg-orange-600'
         }`}
       />
 
@@ -69,14 +72,14 @@ export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
           type="button"
           disabled={isMaxQuantity}
           data-product-id={product.id}
-          aria-label={`Добавить ${product.name} в корзину, ${product.price} ₽`}
+          aria-label={`Добавить ${product.name} в корзину, ${formatPrice(product.price)}`}
           onClick={handleAddItem}
           className="relative flex size-full cursor-pointer items-center justify-between rounded-md py-1 pr-1 pl-3 text-stone-900 focus-ring disabled:opacity-50"
         >
           <span className="font-display text-base font-extrabold tabular-nums">
-            {product.price}&nbsp;₽
+            {formatPrice(product.price)}
           </span>
-          <span className="grid size-7 place-items-center">
+          <span className="grid size-7 place-items-center transition-transform duration-200 ease-out group-hover/add:-translate-x-1 motion-reduce:transition-none">
             <PlusIcon className="size-3" />
           </span>
         </button>

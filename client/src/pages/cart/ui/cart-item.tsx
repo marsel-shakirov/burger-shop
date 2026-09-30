@@ -1,6 +1,8 @@
 import { type CartEntry, MAX_ITEM_QUANTITY, useCartStore } from '@/entities/cart';
-import type { Product } from '@/entities/product';
-import { RemoveItemIcon } from '@/shared/ui/icon';
+import { type Product, PRODUCT_UNIT_LABEL } from '@/entities/product';
+import { ToggleFavoriteButton } from '@/features/toggle-favorite';
+import { formatPrice } from '@/shared/lib';
+import { DeleteIcon } from '@/shared/ui/icon';
 import { QuantityControls } from '@/shared/ui/quantity-controls';
 
 interface CartItemProps {
@@ -9,58 +11,67 @@ interface CartItemProps {
 }
 
 export const CartItem = ({ product, entry }: CartItemProps) => {
-  const price = entry.unitPrice * entry.quantity;
+  const linePrice = entry.unitPrice * entry.quantity;
 
   const decrementItem = useCartStore((state) => state.decrementItem);
   const incrementItem = useCartStore((state) => state.incrementItem);
   const removeItem = useCartStore((state) => state.removeItem);
 
   return (
-    <li className="border-neutral-100 not-first:border-t">
-      <article className="flex flex-col items-center justify-center gap-x-3 p-1.5 min-[500px]:justify-between sm:flex-row">
-        <div className="flex items-center gap-x-2">
-          <img
-            width={90}
-            height={90}
-            src={product.imageUrl}
-            alt={product.name}
-            className="aspect-square w-[clamp(90px,12vw,140px)] object-contain"
-          />
+    <li className="grid grid-cols-[auto_minmax(0,1fr)_auto] gap-3 border-stone-100 p-3 not-first:border-t sm:grid-cols-[auto_minmax(0,1fr)_auto_minmax(7rem,auto)_auto] sm:items-center sm:gap-x-5 sm:p-4">
+      <div className="relative flex w-18 items-end justify-center self-start pt-1 sm:row-start-1 sm:w-24 sm:pt-0">
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-[26%] rounded-[50%] bg-stone-200/80 shadow-[inset_0_-2px_0_rgb(0_0_0/0.05)]"
+        />
+        <img
+          width={96}
+          height={96}
+          src={product.imageUrl}
+          alt=""
+          className="relative size-16 object-contain drop-shadow-[0_4px_3px_rgb(0_0_0/0.18)] sm:size-22"
+        />
+      </div>
 
-          <div className="flex flex-col justify-between">
-            <h3 className="line-clamp-2 leading-5 font-bold">{product.name}</h3>
-            <p className="line-clamp-1 text-gray-400">{product.description}</p>
-            <span className="font-bold text-gray-400">{product.price}&nbsp;₽ за шт.</span>
-          </div>
-        </div>
+      <div className="flex flex-col gap-y-0.5 leading-tight sm:row-start-1">
+        <h3 className="line-clamp-2 font-bold">{product.name}</h3>
 
-        <div className="flex items-center gap-x-4 sm:gap-1">
-          <div className="inline-flex items-center justify-between gap-x-3">
-            <QuantityControls
-              onDecrease={() => decrementItem(entry.productId)}
-              onIncrease={() => incrementItem(entry.productId)}
-              quantity={entry.quantity}
-              max={MAX_ITEM_QUANTITY}
-            />
-          </div>
+        <p className="text-xs leading-tight text-stone-500">
+          {`${product.amount} ${PRODUCT_UNIT_LABEL[product.unit]}`}
+        </p>
+        <p className="text-sm leading-tight font-bold text-stone-600 tabular-nums">
+          {`по ${formatPrice(entry.unitPrice)}`}
+        </p>
+      </div>
 
-          <data
-            className="min-w-15 text-center font-display font-extrabold tabular-nums md:text-lg"
-            value={price}
-          >
-            {price}&nbsp;₽
+      <div className="inline-flex gap-x-2.5 sm:col-start-5 sm:row-start-1 sm:mt-0">
+        <ToggleFavoriteButton variant="cart" product={product} />
+        <button
+          type="button"
+          onClick={() => removeItem(entry.productId)}
+          className="grid size-7 cursor-pointer place-items-center rounded-md bg-stone-100 text-stone-400 focus-ring transition-colors duration-150 hover:bg-stone-200 hover:text-red-600"
+          aria-label={`Удалить ${product.name} из корзины`}
+        >
+          <DeleteIcon className="size-5" />
+        </button>
+      </div>
+
+      <div className="col-span-3 flex items-center justify-between gap-x-3 sm:contents">
+        <QuantityControls
+          variant="soft"
+          className="h-9 w-28 shrink-0 justify-between rounded-full bg-stone-100 px-1 sm:col-start-3 sm:row-start-1"
+          quantity={entry.quantity}
+          max={MAX_ITEM_QUANTITY}
+          onDecrease={() => decrementItem(entry.productId)}
+          onIncrease={() => incrementItem(entry.productId)}
+        />
+
+        <div className="text-right sm:col-start-4 sm:row-start-1">
+          <data value={linePrice} className="font-display text-lg font-bold tabular-nums">
+            {formatPrice(linePrice)}
           </data>
-
-          <button
-            onClick={() => removeItem(entry.productId)}
-            className="cursor-pointer"
-            type="button"
-            aria-label={`Удалить ${product.name} из корзины`}
-          >
-            <RemoveItemIcon className="size-6 text-gray-400 md:size-8" />
-          </button>
         </div>
-      </article>
+      </div>
     </li>
   );
 };

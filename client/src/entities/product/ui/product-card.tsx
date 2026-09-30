@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import { RatingStarIcon } from '@/shared/ui/icon';
 
+import { PRODUCT_UNIT_LABEL } from '../model/product.constants';
 import type { Product } from '../model/product.types';
 export interface ProductCardProps {
   product: Product;
@@ -9,8 +10,6 @@ export interface ProductCardProps {
   favoriteAction: ReactNode;
   action: ReactNode;
 }
-
-const UNIT_LABEL = { g: 'г', ml: 'мл' } as const;
 
 export const ProductCard = ({ product, priority, favoriteAction, action }: ProductCardProps) => {
   return (
@@ -45,7 +44,7 @@ export const ProductCard = ({ product, priority, favoriteAction, action }: Produ
 
       <div className="mt-2 flex flex-col gap-y-1.5">
         <span className="text-xs font-bold text-stone-600">
-          {`${product.amount} ${UNIT_LABEL[product.unit]}`}
+          {`${product.amount} ${PRODUCT_UNIT_LABEL[product.unit]}`}
         </span>
         {action}
       </div>

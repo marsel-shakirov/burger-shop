@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import type { ProductSorting } from '@/entities/product';
+import { formatPrice } from '@/shared/lib';
 import { RatingStarIcon } from '@/shared/ui/icon';
 
 import type { SortHighlights } from '../model/get-sort-highlights';
@@ -25,9 +26,9 @@ const renderHighlight = ({ sort, order }: SortOption, highlights: SortHighlights
     );
   }
   return order === 'asc' ? (
-    <>от&nbsp;{highlights.minPrice}&nbsp;₽</>
+    <>от&nbsp;{formatPrice(highlights.minPrice)}</>
   ) : (
-    <>до&nbsp;{highlights.maxPrice}&nbsp;₽</>
+    <>до&nbsp;{formatPrice(highlights.maxPrice)}</>
   );
 };
 

@@ -1,13 +1,10 @@
-export { ArrowDownSort } from './icons/arrow-down-sort';
 export { ArrowIcon } from './icons/arrow-icon';
-export { ArrowTopSort } from './icons/arrow-top-sort';
 export { BurgerIcon } from './icons/burger-icon';
 export { CartIcon } from './icons/cart-icon';
 export { CodeIcon } from './icons/code-icon';
 export { DeleteIcon } from './icons/delete-icon';
 export { DevelopmentIcon } from './icons/development-icon';
-export { EmptyCartIcon } from './icons/empty-cart-icon';
-export { FilterIcon } from './icons/filter-icon';
+export { EmptyPlate } from './icons/empty-plate-icon';
 export { HeartIcon } from './icons/heart-icon';
 export { MenuIcon } from './icons/menu-icon';
 export { MinusIcon } from './icons/minus-icon';

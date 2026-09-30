@@ -39,3 +39,10 @@
 @utility peer-checked-orange {
   @apply peer-checked:bg-orange-200 peer-checked:text-stone-900 peer-not-checked:hover:text-stone-900;
 }
+
+@utility receipt-edge {
+  --receipt-tooth: 14px;
+  padding-bottom: calc(var(--receipt-tooth) / 2);
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% /
+    var(--receipt-tooth) 100%;
+}

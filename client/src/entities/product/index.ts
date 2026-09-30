@@ -3,6 +3,7 @@ export {
   ALL_PRODUCTS_PARAMS,
   PRODUCT_SORT_BY,
   PRODUCT_SORT_ORDER,
+  PRODUCT_UNIT_LABEL,
 } from './model/product.constants';
 export type {
   Product,

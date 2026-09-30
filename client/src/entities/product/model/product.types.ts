@@ -24,6 +24,7 @@ export interface Product {
   amount: number;
   rating: number;
   popularity: number;
+  category_id: number;
   imageUrl: string;
   unit: ProductUnit;
 }

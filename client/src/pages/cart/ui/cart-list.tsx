@@ -1,36 +1,17 @@
-import { useQuery } from '@tanstack/react-query';
-
-import { selectCartItems, useCartStore } from '@/entities/cart';
-import { ALL_PRODUCTS_PARAMS, productsQueryOptions } from '@/entities/product';
-
+import type { CartLine } from '../model/use-cart-lines';
 import { CartItem } from './cart-item';
 
-export const CartList = () => {
-  const cartEntry = useCartStore(selectCartItems);
+interface CartListProps {
+  lines: CartLine[];
+}
 
-  const {
-    isPending,
-    isError,
-    data: products,
-  } = useQuery(productsQueryOptions(ALL_PRODUCTS_PARAMS));
-
-  if (isPending) {
-    return <div>Loading products</div>;
-  }
-
-  if (isError) {
-    return <div>Failed to load products</div>;
-  }
-
+export const CartList = ({ lines }: CartListProps) => {
+  console.log(lines);
   return (
-    <ul className="flex flex-1 flex-col gap-y-5">
-      {cartEntry.map((entry) => {
-        const product = products.find((product) => product.id === entry.productId);
-
-        if (!product) return null;
-
-        return <CartItem key={entry.productId} product={product} entry={entry} />;
-      })}
+    <ul role="list" className="rounded-xl bg-white shadow-(--shadow-base)">
+      {lines.map(({ product, entry }) => (
+        <CartItem key={entry.productId} product={product} entry={entry} />
+      ))}
     </ul>
   );
 };
