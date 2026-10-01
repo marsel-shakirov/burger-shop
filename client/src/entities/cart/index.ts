@@ -3,7 +3,6 @@ export {
   selectCartItems,
   selectClearCart,
   selectProductQuantity,
-  selectTotalPrice,
   selectTotalQuantity,
 } from './model/cart.selectors';
 export { useCartStore } from './model/cart.store';

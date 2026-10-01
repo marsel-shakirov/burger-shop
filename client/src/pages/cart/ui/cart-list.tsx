@@ -6,7 +6,6 @@ interface CartListProps {
 }
 
 export const CartList = ({ lines }: CartListProps) => {
-  console.log(lines);
   return (
     <ul role="list" className="rounded-xl bg-white shadow-(--shadow-base)">
       {lines.map(({ product, entry }) => (

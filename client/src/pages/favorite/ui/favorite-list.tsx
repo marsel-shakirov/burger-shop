@@ -1,21 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { selectFavoriteIds, useFavoriteStore } from '@/entities/favorite';
-import { ALL_PRODUCTS_PARAMS, productsQueryOptions } from '@/entities/product';
+import { useProductsById } from '@/entities/product';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
 export const FavoriteList = () => {
   const favoriteIds = useFavoriteStore(selectFavoriteIds);
 
-  const {
-    isPending,
-    isError,
-    data: products,
-  } = useQuery(productsQueryOptions(ALL_PRODUCTS_PARAMS));
+  const { isPending, isError, data: productsById } = useProductsById();
 
-  const productsById = new Map(products?.map((product) => [product.id, product]));
   const favoriteProducts = favoriteIds
-    .map((id) => productsById.get(id))
+    .map((id) => productsById?.get(id))
     .filter((product) => product !== undefined);
 
   return (

@@ -1,7 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { type CartEntry, selectCartItems, useCartStore } from '@/entities/cart';
-import { ALL_PRODUCTS_PARAMS, type Product, productsQueryOptions } from '@/entities/product';
+import { type Product, useProductsById } from '@/entities/product';
 
 export interface CartLine {
   product: Product;
@@ -11,18 +9,18 @@ export interface CartLine {
 export const useCartLines = () => {
   const entries = useCartStore(selectCartItems);
 
-  const {
-    isPending,
-    isError,
-    data: products,
-  } = useQuery(productsQueryOptions(ALL_PRODUCTS_PARAMS));
+  const { isPending, isError, data: productsById } = useProductsById();
 
-  const productsById = new Map(products?.map((product) => [product.id, product]));
   const lines = entries.flatMap((entry): CartLine[] => {
-    const product = productsById.get(entry.productId);
+    const product = productsById?.get(entry.productId);
 
     return product ? [{ product, entry }] : [];
   });
 
-  return { isPending, isError, lines };
+  const totalPrice = lines.reduce(
+    (total, { product, entry }) => total + product.price * entry.quantity,
+    0,
+  );
+
+  return { isPending, isError, lines, totalPrice };
 };

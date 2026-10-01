@@ -36,7 +36,7 @@ export const CartSummary = ({ lines, totalPrice }: CartSummaryProps) => {
                     className="min-w-4 flex-1 border-b border-dotted border-stone-300"
                   />
                   <span className="shrink-0 font-bold tabular-nums">
-                    {formatPrice(entry.unitPrice * entry.quantity)}
+                    {formatPrice(product.price * entry.quantity)}
                   </span>
                 </li>
               ))}

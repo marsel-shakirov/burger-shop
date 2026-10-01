@@ -1,9 +1,4 @@
-import {
-  selectClearCart,
-  selectTotalPrice,
-  selectTotalQuantity,
-  useCartStore,
-} from '@/entities/cart';
+import { selectClearCart, selectTotalQuantity, useCartStore } from '@/entities/cart';
 import { formatItemsCount } from '@/shared/lib';
 import { DeleteIcon } from '@/shared/ui/icon';
 
@@ -15,9 +10,8 @@ import { CartSummary } from './cart-summary';
 
 export const CartContent = () => {
   const totalQuantity = useCartStore(selectTotalQuantity);
-  const totalPrice = useCartStore(selectTotalPrice);
   const clearCart = useCartStore(selectClearCart);
-  const { isPending, isError, lines } = useCartLines();
+  const { isPending, isError, lines, totalPrice } = useCartLines();
 
   return (
     <section className="flex flex-1 flex-col gap-y-5 pb-8 sm:gap-y-8 sm:pb-12">

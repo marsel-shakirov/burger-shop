@@ -11,7 +11,7 @@ interface CartItemProps {
 }
 
 export const CartItem = ({ product, entry }: CartItemProps) => {
-  const linePrice = entry.unitPrice * entry.quantity;
+  const linePrice = product.price * entry.quantity;
 
   const decrementItem = useCartStore((state) => state.decrementItem);
   const incrementItem = useCartStore((state) => state.incrementItem);
@@ -34,13 +34,13 @@ export const CartItem = ({ product, entry }: CartItemProps) => {
       </div>
 
       <div className="flex flex-col gap-y-0.5 leading-tight sm:row-start-1">
-        <h3 className="line-clamp-2 font-bold">{product.name}</h3>
+        <h2 className="line-clamp-2 font-bold">{product.name}</h2>
 
         <p className="text-xs leading-tight text-stone-500">
           {`${product.amount} ${PRODUCT_UNIT_LABEL[product.unit]}`}
         </p>
         <p className="text-sm leading-tight font-bold text-stone-600 tabular-nums">
-          {`по ${formatPrice(entry.unitPrice)}`}
+          {`${formatPrice(product.price)} за шт`}
         </p>
       </div>
 

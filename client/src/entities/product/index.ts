@@ -1,4 +1,5 @@
 export { productsQueryOptions } from './api/products-query-options';
+export { useProductsById } from './api/use-products-by-id';
 export {
   ALL_PRODUCTS_PARAMS,
   PRODUCT_SORT_BY,

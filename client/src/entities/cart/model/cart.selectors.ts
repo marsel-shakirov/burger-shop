@@ -8,8 +8,5 @@ export const selectClearCart = (state: CartState) => state.clearCart;
 export const selectProductQuantity = (productId: CartEntry['productId']) => (state: CartState) =>
   findCartEntryByProductId(state.items, productId)?.quantity ?? 0;
 
-export const selectTotalPrice = (state: CartState) =>
-  state.items.reduce((total, item) => total + item.unitPrice * item.quantity, 0);
-
 export const selectTotalQuantity = (state: CartState) =>
   state.items.reduce((total, item) => total + item.quantity, 0);

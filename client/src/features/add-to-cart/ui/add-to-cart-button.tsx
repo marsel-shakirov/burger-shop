@@ -30,10 +30,7 @@ export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
 
   const handleAddItem = () => {
     shouldMoveFocusRef.current = true;
-    addItem({
-      productId: product.id,
-      unitPrice: product.price,
-    });
+    addItem(product.id);
   };
 
   const handleDecrease = () => {
