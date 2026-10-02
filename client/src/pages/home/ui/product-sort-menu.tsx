@@ -62,8 +62,9 @@ export const ProductSortMenu = ({ sorting, highlights, onChange }: ProductSortMe
     }
   };
 
-  const handleOptionClick = (event: MouseEvent<HTMLInputElement>) => {
-    if (event.detail > 0) closeMenu();
+  const handleOptionClick = (event: MouseEvent<HTMLLabelElement>) => {
+    if (event.target instanceof HTMLInputElement) return;
+    closeMenu();
   };
 
   return (
@@ -79,7 +80,6 @@ export const ProductSortMenu = ({ sorting, highlights, onChange }: ProductSortMe
         {selectedLabel.toLowerCase()}
       </button>
 
-      {/* Якорь --sort — строка заголовка в Catalog: меню выравнивается по её левому краю */}
       <div
         ref={popoverRef}
         id={popoverId}
@@ -95,11 +95,10 @@ export const ProductSortMenu = ({ sorting, highlights, onChange }: ProductSortMe
 
               return (
                 <li key={optionId}>
-                  <label className="group">
+                  <label className="group" onClick={handleOptionClick}>
                     <input
                       onChange={() => onChange(option)}
                       checked={isSameSorting(option, sorting)}
-                      onClick={handleOptionClick}
                       type="radio"
                       name="sort"
                       value={optionId}

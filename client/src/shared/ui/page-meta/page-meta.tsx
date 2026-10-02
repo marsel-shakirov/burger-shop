@@ -3,7 +3,6 @@ export interface PageMetaProps {
   noindex?: boolean;
 }
 
-// React 19 поднимает <title> и <meta> в <head>
 export const PageMeta = ({ title, noindex = false }: PageMetaProps) => {
   return (
     <>
