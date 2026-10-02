@@ -52,7 +52,7 @@ export const ProductDetails = ({
         {product.description}
       </p>
 
-      <div className="mt-6 flex gap-x-2.5 sm:mt-7">
+      <div className="mt-6 flex flex-wrap gap-x-2.5 gap-y-1.5 sm:mt-7">
         {favoriteAction}
         <div className="grow">{cartAction}</div>
       </div>
