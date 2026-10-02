@@ -1,6 +1,13 @@
-import { type ComponentPropsWithoutRef, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { MAX_ITEM_QUANTITY, selectProductQuantity, useCartStore } from '@/entities/cart';
+import {
+  MAX_ITEM_QUANTITY,
+  selectAddItem,
+  selectDecrementItem,
+  selectIncrementItem,
+  selectProductQuantity,
+  useCartStore,
+} from '@/entities/cart';
 import type { Product } from '@/entities/product';
 import { formatPrice } from '@/shared/lib';
 import { PlusIcon } from '@/shared/ui/icon';
@@ -8,14 +15,23 @@ import { QuantityControls } from '@/shared/ui/quantity-controls';
 
 type Variant = 'card' | 'details';
 
-interface AddToCartButtonProps extends Omit<ComponentPropsWithoutRef<'button'>, 'children'> {
+interface AddToCartButtonProps {
   product: Product;
   variant?: Variant;
 }
 
 const styles: Record<
   Variant,
-  { root: string; slider: string; sliderIdle: string; button: string; price: string; mark: string }
+  {
+    root: string;
+    slider: string;
+    sliderIdle: string;
+    button: string;
+    price: string;
+    mark: string;
+    controls: string;
+    controlsVariant: 'solid' | 'solid-large';
+  }
 > = {
   card: {
     root: 'h-9 rounded-md',
@@ -24,6 +40,8 @@ const styles: Record<
     button: 'rounded-md py-1 pr-1 pl-3',
     price: 'text-base',
     mark: 'grid size-7 place-items-center transition-transform duration-200 ease-out group-hover/add:-translate-x-1 motion-reduce:transition-none',
+    controls: 'p-1',
+    controlsVariant: 'solid',
   },
   details: {
     root: 'h-14 rounded-[14px]',
@@ -32,16 +50,20 @@ const styles: Record<
     button: 'rounded-[14px] py-1.5 pr-1.5 pl-5',
     price: 'text-xl',
     mark: 'flex h-full w-36 items-center justify-center gap-x-2.5 font-bold',
+    controls: 'p-1.5',
+    controlsVariant: 'solid-large',
   },
 };
 
 export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonProps) => {
-  const addItem = useCartStore((state) => state.addItem);
   const quantity = useCartStore(selectProductQuantity(product.id));
-  const decrementItem = useCartStore((state) => state.decrementItem);
-  const incrementItem = useCartStore((state) => state.incrementItem);
+  const addItem = useCartStore(selectAddItem);
+  const incrementItem = useCartStore(selectIncrementItem);
+  const decrementItem = useCartStore(selectDecrementItem);
+
   const hasItems = quantity > 0;
-  const isMaxQuantity = quantity >= MAX_ITEM_QUANTITY;
+  const isDetails = variant === 'details';
+  const price = formatPrice(product.price);
   const s = styles[variant];
 
   const addButtonRef = useRef<HTMLButtonElement>(null);
@@ -54,23 +76,17 @@ export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonPr
     (hasItems ? increaseButtonRef : addButtonRef).current?.focus();
   }, [hasItems]);
 
-  const handleAddItem = () => {
+  const handleAdd = () => {
     shouldMoveFocusRef.current = true;
     addItem(product.id);
   };
+
+  const handleIncrease = () => incrementItem(product.id);
 
   const handleDecrease = () => {
     if (quantity === 1) shouldMoveFocusRef.current = true;
     decrementItem(product.id);
   };
-
-  const quantityWithTotal =
-    variant === 'details' ? (
-      <span className="flex flex-col items-center gap-y-px">
-        <span className="font-display">{formatPrice(product.price * quantity)}</span>
-        <span className="text-[0.8125rem] font-medium">{`${quantity} шт в корзине`}</span>
-      </span>
-    ) : undefined;
 
   return (
     <div
@@ -89,31 +105,32 @@ export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonPr
 
       {hasItems ? (
         <QuantityControls
-          variant={variant === 'details' ? 'solid-large' : 'solid'}
-          className={`relative size-full justify-between text-stone-900 ${variant === 'details' ? 'p-1.5' : 'p-1'}`}
+          variant={s.controlsVariant}
+          className={`relative size-full justify-between text-stone-900 ${s.controls}`}
           quantity={quantity}
           max={MAX_ITEM_QUANTITY}
           onDecrease={handleDecrease}
-          onIncrease={() => incrementItem(product.id)}
+          onIncrease={handleIncrease}
           increaseButtonRef={increaseButtonRef}
         >
-          {quantityWithTotal}
+          {isDetails ? (
+            <span className="flex flex-col items-center gap-y-px">
+              <span className="font-display">{formatPrice(product.price * quantity)}</span>
+              <span className="text-[0.8125rem] font-medium">{`${quantity} шт в корзине`}</span>
+            </span>
+          ) : undefined}
         </QuantityControls>
       ) : (
         <button
           ref={addButtonRef}
           type="button"
-          disabled={isMaxQuantity}
-          data-product-id={product.id}
-          aria-label={`Добавить ${product.name} в корзину, ${formatPrice(product.price)}`}
-          onClick={handleAddItem}
-          className={`relative flex size-full cursor-pointer items-center justify-between text-stone-900 focus-ring disabled:opacity-50 ${s.button}`}
+          aria-label={`Добавить ${product.name} в корзину, ${price}`}
+          onClick={handleAdd}
+          className={`relative flex size-full cursor-pointer items-center justify-between text-stone-900 focus-ring ${s.button}`}
         >
-          <span className={`font-display font-extrabold tabular-nums ${s.price}`}>
-            {formatPrice(product.price)}
-          </span>
+          <span className={`font-display font-extrabold tabular-nums ${s.price}`}>{price}</span>
           <span className={s.mark}>
-            {variant === 'details' && 'Добавить'}
+            {isDetails && 'Добавить'}
             <PlusIcon className="size-3" />
           </span>
         </button>
