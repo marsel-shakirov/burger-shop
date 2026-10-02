@@ -47,7 +47,7 @@ export const EmptyCart = () => {
                   product={product}
                   priority={false}
                   favoriteAction={<ToggleFavoriteButton variant="product" product={product} />}
-                  action={<AddToCartButton product={product} />}
+                  cartAction={<AddToCartButton product={product} />}
                 />
               </li>
             ))}

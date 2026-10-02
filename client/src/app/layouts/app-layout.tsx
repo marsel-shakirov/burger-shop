@@ -3,6 +3,7 @@ import { Outlet } from 'react-router';
 import { useRememberSearch } from '@/shared/lib';
 import { Header } from '@/widgets/header';
 import { MainNav } from '@/widgets/main-nav';
+import { ProductModal } from '@/widgets/product-modal';
 
 export const AppLayout = () => {
   useRememberSearch();
@@ -12,6 +13,7 @@ export const AppLayout = () => {
       <Header navigation={<MainNav variant="header" />} />
       <Outlet />
       <MainNav variant="bottom" />
+      <ProductModal />
     </div>
   );
 };

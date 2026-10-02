@@ -1,6 +1,7 @@
 export { ArrowIcon } from './icons/arrow-icon';
 export { BurgerIcon } from './icons/burger-icon';
 export { CartIcon } from './icons/cart-icon';
+export { CloseIcon } from './icons/close-icon';
 export { CodeIcon } from './icons/code-icon';
 export { DeleteIcon } from './icons/delete-icon';
 export { DevelopmentIcon } from './icons/development-icon';

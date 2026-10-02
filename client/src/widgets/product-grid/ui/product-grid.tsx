@@ -19,7 +19,7 @@ export const ProductGrid = ({ products, isUpdating = false }: ProductGridProps) 
             product={product}
             priority={index < 4}
             favoriteAction={<ToggleFavoriteButton variant="product" product={product} />}
-            action={<AddToCartButton product={product} />}
+            cartAction={<AddToCartButton product={product} />}
           />
         </li>
       ))}
