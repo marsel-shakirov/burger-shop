@@ -1,7 +1,7 @@
 import type { Ref } from 'react';
 
 import type { Product } from '@/entities/product';
-import { formatPrice } from '@/shared/lib';
+import { cn, formatPrice } from '@/shared/lib';
 import { PlusIcon } from '@/shared/ui/icon';
 
 import type { AddToCartVariant } from '../model/add-to-cart.types';
@@ -36,9 +36,12 @@ export const AddButton = ({ ref, product, variant, onClick }: AddButtonProps) =>
       type="button"
       aria-label={`Добавить ${product.name} в корзину, ${price}`}
       onClick={onClick}
-      className={`relative flex size-full cursor-pointer items-center justify-between text-stone-900 focus-ring ${s.button}`}
+      className={cn(
+        'relative flex size-full cursor-pointer items-center justify-between text-stone-900 focus-ring',
+        s.button,
+      )}
     >
-      <span className={`font-display font-extrabold tabular-nums ${s.price}`}>{price}</span>
+      <span className={cn('font-display font-extrabold tabular-nums', s.price)}>{price}</span>
       <span className={s.mark}>
         {variant === 'details' && 'Добавить'}
         <PlusIcon className="size-3" />

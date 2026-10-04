@@ -2,7 +2,7 @@ import { NavLink } from 'react-router';
 
 import { CartNavBadge } from '@/entities/cart';
 import { navItems, routes } from '@/shared/config';
-import { selectSearchByPath, useLastSearchStore } from '@/shared/lib';
+import { cn, selectSearchByPath, useLastSearchStore } from '@/shared/lib';
 
 type Variant = 'bottom' | 'header';
 
@@ -32,19 +32,22 @@ const styles: Record<
   },
 };
 
-export const MainNav = ({ variant, className = '' }: MainNavProps) => {
+export const MainNav = ({ variant, className }: MainNavProps) => {
   const s = styles[variant];
   const searchByPath = useLastSearchStore(selectSearchByPath);
 
   return (
-    <nav aria-label="Основная навигация" className={`${s.nav} ${className}`}>
+    <nav aria-label="Основная навигация" className={cn(s.nav, className)}>
       <ul role="list" className={s.list}>
         {navItems.map(({ to, label, Icon }) => (
           <li key={to} className={s.item}>
             <NavLink
               to={{ pathname: to, search: searchByPath[to] }}
               end={to === routes.home}
-              className={`${s.link} group rounded-md font-bold focus-ring transition-colors duration-150 ease-out hover:text-stone-900 aria-[current=page]:text-stone-900`}
+              className={cn(
+                'group rounded-md font-bold focus-ring transition-colors duration-150 ease-out hover:text-stone-900 aria-[current=page]:text-stone-900',
+                s.link,
+              )}
             >
               <span className={s.label}>{label}</span>
               <span className="relative order-first">

@@ -1,5 +1,6 @@
 import { selectIsFavorite, selectToggleFavorite, useFavoriteStore } from '@/entities/favorite';
 import type { Product } from '@/entities/product';
+import { cn } from '@/shared/lib';
 import { HeartIcon } from '@/shared/ui/icon';
 
 type Variant = 'product' | 'cart' | 'details';
@@ -30,7 +31,7 @@ const styles: Record<Variant, { button: string; icon: string }> = {
 export const ToggleFavoriteButton = ({
   variant,
   product,
-  className = '',
+  className,
 }: ToggleFavoriteButtonProps) => {
   const isFavorite = useFavoriteStore(selectIsFavorite(product.id));
   const toggleFavorite = useFavoriteStore(selectToggleFavorite);
@@ -41,11 +42,15 @@ export const ToggleFavoriteButton = ({
     <button
       onClick={() => toggleFavorite(product.id)}
       type="button"
-      className={`group cursor-pointer rounded-md focus-ring transition-colors duration-150 ${s.button} ${className}`}
+      className={cn(
+        'group cursor-pointer rounded-md focus-ring transition-colors duration-150',
+        s.button,
+        className,
+      )}
       aria-label={`В избранное: ${product.name}`}
       aria-pressed={isFavorite}
     >
-      <HeartIcon className={`transition-colors duration-150 ${s.icon}`} />
+      <HeartIcon className={cn('transition-colors duration-150', s.icon)} />
     </button>
   );
 };

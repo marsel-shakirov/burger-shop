@@ -1,5 +1,6 @@
 import type { ComponentPropsWithoutRef, ReactNode, Ref } from 'react';
 
+import { cn } from '@/shared/lib';
 import { MinusIcon, PlusIcon, QtyMinusIcon, QtyPlusIcon } from '@/shared/ui/icon';
 
 type Variant = 'outline' | 'solid' | 'solid-large' | 'soft';
@@ -38,7 +39,7 @@ export const QuantityControls = ({
 
   return (
     <div
-      className={`inline-flex items-center ${className}`}
+      className={cn('inline-flex items-center', className)}
       role="group"
       aria-label="Изменение количества товара"
     >

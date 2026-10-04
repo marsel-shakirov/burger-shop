@@ -10,7 +10,7 @@ export const CategoryFilterSkeleton = () => {
       aria-label="Загрузка категорий"
     >
       {SKELETON_ITEM_WIDTHS.map((width, index) => (
-        <Skeleton key={index} className={`h-9 rounded-4xl! sm:h-10 ${width}`} />
+        <Skeleton key={index} className={`h-9 rounded-4xl sm:h-10 ${width}`} />
       ))}
     </div>
   );

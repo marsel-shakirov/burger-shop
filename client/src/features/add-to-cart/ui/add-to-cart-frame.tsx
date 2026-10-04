@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import { cn } from '@/shared/lib';
+
 import type { AddToCartVariant } from '../model/add-to-cart.types';
 
 interface AddToCartFrameProps {
@@ -26,17 +28,20 @@ export const AddToCartFrame = ({ variant, isActive, children }: AddToCartFramePr
 
   return (
     <div
-      className={`group/add relative bg-stone-100 ring-1 ring-stone-200 transition-colors duration-150 ring-inset ${s.root} ${
-        isActive ? '' : 'hover:bg-stone-200'
-      }`}
+      className={cn(
+        'group/add relative bg-stone-100 ring-1 ring-stone-200 transition-colors duration-150 ring-inset',
+        s.root,
+        !isActive && 'hover:bg-stone-200',
+      )}
     >
       <span
         aria-hidden="true"
-        className={`absolute bg-orange-500 transition-all duration-200 ease-out motion-reduce:transition-none ${
+        className={cn(
+          'absolute bg-orange-500 transition-all duration-200 ease-out motion-reduce:transition-none',
           isActive
-            ? `inset-y-0 right-0 w-full ${s.slider}`
-            : `${s.sliderIdle} group-hover/add:bg-orange-600`
-        }`}
+            ? ['inset-y-0 right-0 w-full', s.slider]
+            : [s.sliderIdle, 'group-hover/add:bg-orange-600'],
+        )}
       />
       {children}
     </div>
