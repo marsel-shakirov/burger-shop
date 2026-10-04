@@ -18,10 +18,10 @@ interface QuantityControlsProps extends Omit<ComponentPropsWithoutRef<'div'>, 'c
 const buttonStyles: Record<Variant, string> = {
   outline: 'rounded-md',
   solid:
-    'grid size-7 place-items-center rounded-[5px] bg-stone-900 text-orange-500 transition-colors duration-150 enabled:hover:bg-stone-700',
+    'grid size-7 place-items-center rounded-[5px] bg-stone-900 text-orange-500 transition-colors duration-150 not-aria-disabled:hover:bg-stone-700',
   'solid-large':
-    'grid size-11 place-items-center rounded-[10px] bg-stone-900 text-orange-500 transition-colors duration-150 enabled:hover:bg-stone-700',
-  soft: 'grid size-7 place-items-center rounded-full text-stone-900 transition-colors duration-150 enabled:hover:bg-white',
+    'grid size-11 place-items-center rounded-[10px] bg-stone-900 text-orange-500 transition-colors duration-150 not-aria-disabled:hover:bg-stone-700',
+  soft: 'grid size-7 place-items-center rounded-full text-stone-900 transition-colors duration-150 not-aria-disabled:hover:bg-white',
 };
 
 export const QuantityControls = ({
@@ -35,7 +35,7 @@ export const QuantityControls = ({
   label,
 }: QuantityControlsProps) => {
   const isMaxQuantity = quantity >= max;
-  const buttonClassName = `cursor-pointer ${buttonStyles[variant]} focus-ring disabled:cursor-not-allowed disabled:opacity-40`;
+  const buttonClassName = `cursor-pointer ${buttonStyles[variant]} focus-ring aria-disabled:cursor-not-allowed aria-disabled:opacity-40`;
 
   return (
     <div
@@ -66,10 +66,12 @@ export const QuantityControls = ({
       <button
         ref={increaseButtonRef}
         type="button"
-        disabled={isMaxQuantity}
-        onClick={onIncrease}
+        aria-disabled={isMaxQuantity}
+        onClick={isMaxQuantity ? undefined : onIncrease}
         className={buttonClassName}
-        aria-label="Увеличить количество"
+        aria-label={
+          isMaxQuantity ? `Увеличить количество, максимум ${max} шт` : 'Увеличить количество'
+        }
       >
         {variant === 'outline' ? (
           <QtyPlusIcon className="size-7" />
