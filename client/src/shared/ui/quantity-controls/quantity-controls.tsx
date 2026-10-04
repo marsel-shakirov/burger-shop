@@ -1,18 +1,18 @@
-import type { ComponentPropsWithoutRef, ReactNode, Ref } from 'react';
+import type { ComponentPropsWithoutRef, ReactElement, Ref } from 'react';
 
 import { cn } from '@/shared/lib';
 import { MinusIcon, PlusIcon, QtyMinusIcon, QtyPlusIcon } from '@/shared/ui/icon';
 
 type Variant = 'outline' | 'solid' | 'solid-large' | 'soft';
 
-interface QuantityControlsProps extends ComponentPropsWithoutRef<'div'> {
+interface QuantityControlsProps extends Omit<ComponentPropsWithoutRef<'div'>, 'children'> {
   quantity: number;
   max: number;
   onDecrease: () => void;
   onIncrease: () => void;
   increaseButtonRef?: Ref<HTMLButtonElement>;
   variant?: Variant;
-  children?: ReactNode;
+  label?: ReactElement | string;
 }
 
 const buttonStyles: Record<Variant, string> = {
@@ -32,7 +32,7 @@ export const QuantityControls = ({
   className,
   increaseButtonRef,
   variant = 'outline',
-  children,
+  label,
 }: QuantityControlsProps) => {
   const isMaxQuantity = quantity >= max;
   const buttonClassName = `cursor-pointer ${buttonStyles[variant]} focus-ring disabled:cursor-not-allowed disabled:opacity-40`;
@@ -58,9 +58,9 @@ export const QuantityControls = ({
 
       <output
         className="min-w-3 text-center text-lg font-extrabold tabular-nums"
-        aria-label={children ? undefined : 'Количество товара'}
+        aria-label={label === undefined ? 'Количество товара' : undefined}
       >
-        {children ?? quantity}
+        {label ?? quantity}
       </output>
 
       <button

@@ -61,11 +61,12 @@ export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonPr
           onDecrease={handleDecrease}
           onIncrease={handleIncrease}
           increaseButtonRef={secondaryRef}
-        >
-          {variant === 'details' ? (
-            <CartLineTotal price={product.price} quantity={quantity} />
-          ) : undefined}
-        </QuantityControls>
+          label={
+            variant === 'details' ? (
+              <CartLineTotal price={product.price} quantity={quantity} />
+            ) : undefined
+          }
+        ></QuantityControls>
       ) : (
         <AddButton ref={primaryRef} product={product} variant={variant} onClick={handleAdd} />
       )}
