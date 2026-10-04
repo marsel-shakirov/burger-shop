@@ -1,0 +1,43 @@
+# git-cliff config: https://git-cliff.org/docs/configuration
+
+[changelog]
+header = """
+# Changelog\n
+"""
+body = """
+{% if version %}\
+## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+## [Unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group | striptags | trim }}
+{% for commit in commits %}
+- {% if commit.scope %}**{{ commit.scope }}:** {% endif %}\
+{% if commit.breaking %}[**breaking**] {% endif %}\
+{{ commit.message }} \
+([{{ commit.id | truncate(length=7, end="") }}](https://github.com/marsel-shakirov/burger-shop/commit/{{ commit.id }}))\
+{% endfor %}
+{% endfor %}\n
+"""
+trim = true
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+protect_breaking_commits = true
+filter_commits = false
+tag_pattern = "v[0-9].*"
+sort_commits = "oldest"
+commit_preprocessors = [
+  # Старые коммиты без двоеточия: "fix(popup) the popup…" → "fix(popup): the popup…"
+  { pattern = '^(feat|fix|perf|refactor|build|chore|ci|docs|style|test)(\([^)]*\)) ', replace = '${1}${2}: ' },
+]
+# <!-- N --> задаёт порядок разделов и вырезается фильтром striptags
+commit_parsers = [
+  { message = "^feat", group = "<!-- 0 -->Features" },
+  { message = "^fix", group = "<!-- 1 -->Bug Fixes" },
+  { message = "^perf", group = "<!-- 2 -->Performance" },
+  { message = "^revert", group = "<!-- 3 -->Reverts" },
+  { message = "^(refactor|build|chore|ci|docs|style|test)", skip = true },
+]
