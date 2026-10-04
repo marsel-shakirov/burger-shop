@@ -1,5 +1,5 @@
-export { formatItemsCount } from './format-items-count.ts';
-export { formatPrice } from './format-price.ts';
-export { isOneOf } from './is-one-of.ts';
+export { formatItemsCount } from './format-items-count';
+export { formatPrice } from './format-price';
+export { isOneOf } from './is-one-of';
 export { selectSearchByPath, useLastSearch, useLastSearchStore, useRememberSearch } from './router';
-export { useLastDefined } from './use-last-defined.ts';
+export { useLastDefined } from './use-last-defined';

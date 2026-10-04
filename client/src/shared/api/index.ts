@@ -1,1 +1,1 @@
-export type { RequestOptions } from './types.ts';
+export type { RequestOptions } from './types';
