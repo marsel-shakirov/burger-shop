@@ -6,6 +6,8 @@ import { MinusIcon, PlusIcon, QtyMinusIcon, QtyPlusIcon } from '@/shared/ui/icon
 type Variant = 'outline' | 'solid' | 'solid-large' | 'soft';
 
 interface QuantityControlsProps extends Omit<ComponentPropsWithoutRef<'div'>, 'children'> {
+  /** Название позиции для подписей скринридера: «Увеличить количество: Чизбургер». */
+  itemName: string;
   quantity: number;
   max: number;
   onDecrease: () => void;
@@ -27,6 +29,7 @@ const buttonStyles: Record<Variant, string> = {
 export const QuantityControls = ({
   onDecrease,
   onIncrease,
+  itemName,
   quantity,
   max,
   className,
@@ -41,13 +44,13 @@ export const QuantityControls = ({
     <div
       className={cn('inline-flex items-center', className)}
       role="group"
-      aria-label="Изменение количества товара"
+      aria-label={`Изменение количества: ${itemName}`}
     >
       <button
         type="button"
         onClick={onDecrease}
         className={buttonClassName}
-        aria-label="Уменьшить количество"
+        aria-label={`Уменьшить количество: ${itemName}`}
       >
         {variant === 'outline' ? (
           <QtyMinusIcon className="size-7" />
@@ -70,7 +73,9 @@ export const QuantityControls = ({
         onClick={isMaxQuantity ? undefined : onIncrease}
         className={buttonClassName}
         aria-label={
-          isMaxQuantity ? `Увеличить количество, максимум ${max} шт` : 'Увеличить количество'
+          isMaxQuantity
+            ? `Увеличить количество: ${itemName}, максимум ${max} шт`
+            : `Увеличить количество: ${itemName}`
         }
       >
         {variant === 'outline' ? (

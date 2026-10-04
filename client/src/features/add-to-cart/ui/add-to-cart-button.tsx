@@ -55,6 +55,7 @@ export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonPr
       {hasItems ? (
         <QuantityControls
           variant={controls.variant}
+          itemName={product.name}
           className={`relative size-full justify-between text-stone-900 ${controls.className}`}
           quantity={quantity}
           max={MAX_ITEM_QUANTITY}

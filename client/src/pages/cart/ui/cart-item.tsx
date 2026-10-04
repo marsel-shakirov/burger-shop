@@ -66,6 +66,7 @@ export const CartItem = ({ product, entry }: CartItemProps) => {
       <div className="col-span-3 flex items-center justify-between gap-x-3 sm:contents">
         <QuantityControls
           variant="soft"
+          itemName={product.name}
           className="h-9 w-28 shrink-0 justify-between rounded-full bg-stone-100 px-1 sm:col-start-3 sm:row-start-1"
           quantity={entry.quantity}
           max={MAX_ITEM_QUANTITY}
