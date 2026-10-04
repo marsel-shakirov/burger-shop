@@ -1,4 +1,4 @@
-export { MAX_ITEM_QUANTITY } from './model/cart.constants';
+export { MAX_ITEM_QUANTITY, MIN_ITEM_QUANTITY } from './model/cart.constants';
 export {
   selectAddItem,
   selectCartItems,

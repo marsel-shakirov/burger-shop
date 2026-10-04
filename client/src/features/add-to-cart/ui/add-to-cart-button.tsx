@@ -1,5 +1,6 @@
 import {
   MAX_ITEM_QUANTITY,
+  MIN_ITEM_QUANTITY,
   selectAddItem,
   selectDecrementItem,
   selectIncrementItem,
@@ -46,7 +47,7 @@ export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonPr
   const handleIncrease = () => incrementItem(product.id);
 
   const handleDecrease = () => {
-    if (quantity === 1) requestFocusSwap();
+    requestFocusSwap();
     decrementItem(product.id);
   };
 
@@ -58,6 +59,7 @@ export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonPr
           itemName={product.name}
           className={`relative size-full justify-between text-stone-900 ${controls.className}`}
           quantity={quantity}
+          min={MIN_ITEM_QUANTITY}
           max={MAX_ITEM_QUANTITY}
           onDecrease={handleDecrease}
           onIncrease={handleIncrease}

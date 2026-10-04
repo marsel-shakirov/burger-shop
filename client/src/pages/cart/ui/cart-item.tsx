@@ -1,6 +1,7 @@
 import {
   type CartEntry,
   MAX_ITEM_QUANTITY,
+  MIN_ITEM_QUANTITY,
   selectDecrementItem,
   selectIncrementItem,
   selectRemoveItem,
@@ -69,6 +70,7 @@ export const CartItem = ({ product, entry }: CartItemProps) => {
           itemName={product.name}
           className="h-9 w-28 shrink-0 justify-between rounded-full bg-stone-100 px-1 sm:col-start-3 sm:row-start-1"
           quantity={entry.quantity}
+          min={MIN_ITEM_QUANTITY}
           max={MAX_ITEM_QUANTITY}
           onDecrease={() => decrementItem(entry.productId)}
           onIncrease={() => incrementItem(entry.productId)}

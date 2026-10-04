@@ -11,6 +11,10 @@ export const useSwapFocus = (isSwapped: boolean) => {
     (isSwapped ? secondaryRef : primaryRef).current?.focus();
   }, [isSwapped]);
 
+  useEffect(() => {
+    pendingRef.current = false;
+  });
+
   const requestFocusSwap = () => {
     pendingRef.current = true;
   };

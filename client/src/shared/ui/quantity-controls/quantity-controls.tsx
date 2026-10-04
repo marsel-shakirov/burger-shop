@@ -6,9 +6,9 @@ import { MinusIcon, PlusIcon, QtyMinusIcon, QtyPlusIcon } from '@/shared/ui/icon
 type Variant = 'outline' | 'solid' | 'solid-large' | 'soft';
 
 interface QuantityControlsProps extends Omit<ComponentPropsWithoutRef<'div'>, 'children'> {
-  /** Название позиции для подписей скринридера: «Увеличить количество: Чизбургер». */
   itemName: string;
   quantity: number;
+  min: number;
   max: number;
   onDecrease: () => void;
   onIncrease: () => void;
@@ -31,6 +31,7 @@ export const QuantityControls = ({
   onIncrease,
   itemName,
   quantity,
+  min,
   max,
   className,
   increaseButtonRef,
@@ -50,7 +51,7 @@ export const QuantityControls = ({
         type="button"
         onClick={onDecrease}
         className={buttonClassName}
-        aria-label={quantity <= 1 ? `Удалить: ${itemName}` : `Уменьшить количество: ${itemName}`}
+        aria-label={quantity <= min ? `Удалить: ${itemName}` : `Уменьшить количество: ${itemName}`}
       >
         {variant === 'outline' ? (
           <QtyMinusIcon className="size-7" />
