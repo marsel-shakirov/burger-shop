@@ -20,11 +20,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ env.TAG }}
           fetch-depth: 0
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
       - name: Generate release notes
-        run: npx --yes git-cliff@2.14.2 --current --strip header -o RELEASE_NOTES.md
+        run: |
+          PREV=$(git describe --tags --abbrev=0 "$TAG^" 2>/dev/null || true)
+          npx git-cliff "${PREV:+$PREV..}$TAG" --strip header -o RELEASE_NOTES.md
 
       - name: Create GitHub Release
         env:

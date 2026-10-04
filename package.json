@@ -14,13 +14,16 @@
     "lint:fix": "npm run lint:fix -ws",
     "format:fix": "prettier --write client server",
     "format": "prettier --check client server",
-    "fix": "npm run lint:fix -ws && npm run format:fix"
+    "fix": "npm run lint:fix -ws && npm run format:fix",
+    "cliff:log": "git-cliff --unreleased",
+    "cliff:next": "git-cliff --bumped-version"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "concurrently": "^10.0.5",
     "eslint": "^10.6.0",
     "eslint-plugin-simple-import-sort": "^14.0.0",
+    "git-cliff": "^2.14.2",
     "globals": "^17.7.0",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
