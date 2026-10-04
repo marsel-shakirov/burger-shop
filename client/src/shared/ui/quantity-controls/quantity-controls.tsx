@@ -50,7 +50,7 @@ export const QuantityControls = ({
         type="button"
         onClick={onDecrease}
         className={buttonClassName}
-        aria-label={`Уменьшить количество: ${itemName}`}
+        aria-label={quantity <= 1 ? `Удалить: ${itemName}` : `Уменьшить количество: ${itemName}`}
       >
         {variant === 'outline' ? (
           <QtyMinusIcon className="size-7" />
