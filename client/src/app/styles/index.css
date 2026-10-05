@@ -83,6 +83,13 @@
     var(--receipt-tooth) 100%;
 }
 
+@utility receipt-edge-top {
+  --receipt-tooth: 14px;
+  padding-top: calc(var(--receipt-tooth) / 2);
+  mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg)
+    calc(50% + var(--receipt-tooth) / 2) / var(--receipt-tooth) 100%;
+}
+
 @utility modal-fade {
   --modal-fade-duration: 200ms;
   opacity: 0;

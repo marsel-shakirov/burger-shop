@@ -4,4 +4,5 @@ export const routes = {
   favorites: '/favorites',
   profile: '/profile',
   login: '/login',
+  register: '/register',
 } as const;
