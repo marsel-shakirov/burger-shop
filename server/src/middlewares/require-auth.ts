@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import { createRemoteJWKSet, errors, jwtVerify } from 'jose';
 
 import { Unauthorized } from '../errors/unauthorized.error.ts';
+import type {} from '../types/express.d.ts';
 
 const issuer = `${process.env.SUPABASE_URL}/auth/v1`;
 const jwks = createRemoteJWKSet(new URL(`${issuer}/.well-known/jwks.json`));
