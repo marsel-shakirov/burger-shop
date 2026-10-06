@@ -6,7 +6,9 @@ import { Unauthorized } from '../errors/unauthorized.error.ts';
 const issuer = `${process.env.SUPABASE_URL}/auth/v1`;
 const jwks = createRemoteJWKSet(new URL(`${issuer}/.well-known/jwks.json`));
 
-export async function requireAuth(req: Request, _res: Response, next: NextFunction) {
+export async function requireAuth(req: Request, res: Response, next: NextFunction) {
+  res.set('Cache-Control', 'no-store');
+
   const header = req.headers.authorization;
 
   if (!header?.startsWith('Bearer ')) {
