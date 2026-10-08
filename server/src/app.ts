@@ -4,13 +4,14 @@ import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 
 import { CustomError } from './errors/custom.error.ts';
+import { verifyOrigin } from './middlewares/verify-origin.ts';
 import router from './modules/index.ts';
 
 const app = express();
 
 app.use(express.json());
 
-app.use('/api', router);
+app.use('/api', verifyOrigin, router);
 
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof CustomError) {
