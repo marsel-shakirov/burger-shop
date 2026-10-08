@@ -1,12 +1,15 @@
 import { Router } from 'express';
 
 import { requireAuth } from '../middlewares/require-auth.ts';
+import authRouter from './auth/auth.routes.ts';
 import meRouter from './me/me.routes.ts';
 import menusRouter from './menu/menus.routers.ts';
 import productsRouter from './products/products.routes.ts';
 import profileRouter from './profile/profile.routes.ts';
 
 const router = Router();
+
+router.use('/auth', authRouter);
 
 router.use('/products', productsRouter);
 
