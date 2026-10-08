@@ -1,14 +1,17 @@
 import { createServerClient, parseCookieHeader, serializeCookieHeader } from '@supabase/ssr';
 import type { Request, Response } from 'express';
 
-const { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } = process.env;
+const { SUPABASE_URL, SUPABASE_SECRET_KEY } = process.env;
 
-if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  throw new Error('SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY must be set');
+if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) {
+  throw new Error('SUPABASE_URL and SUPABASE_SECRET_KEY must be set');
 }
 
 export const createSupabase = (req: Request, res: Response) =>
-  createServerClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  createServerClient(SUPABASE_URL, SUPABASE_SECRET_KEY, {
+    global: {
+      headers: req.ip ? { 'sb-forwarded-for': req.ip } : {},
+    },
     cookieOptions: {
       httpOnly: true,
       secure: true,
