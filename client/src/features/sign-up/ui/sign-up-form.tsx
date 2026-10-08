@@ -7,7 +7,6 @@ import { TextInput } from '@/shared/ui/text-input';
 
 import { signUp } from '../api/sign-up';
 import { getSignUpErrorMessage } from '../lib/get-sign-up-error-message';
-import { PASSWORD_MIN_LENGTH } from '../model/sign-up.constants';
 import { PasswordLengthHint } from './password-length-hint';
 
 interface SignUpFormProps {
@@ -75,7 +74,6 @@ export const SignUpForm = ({ defaultEmail, onEmailSent }: SignUpFormProps) => {
           name="password"
           autoComplete="new-password"
           placeholder="придумайте пароль"
-          minLength={PASSWORD_MIN_LENGTH}
           required
           aria-describedby={passwordHintId}
           aria-invalid={error ? true : undefined}
