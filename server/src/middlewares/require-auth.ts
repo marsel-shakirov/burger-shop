@@ -1,40 +1,24 @@
+import { isAuthRetryableFetchError } from '@supabase/supabase-js';
 import type { NextFunction, Request, Response } from 'express';
-import { createRemoteJWKSet, errors, jwtVerify } from 'jose';
 
 import { Unauthorized } from '../errors/unauthorized.error.ts';
+import { createSupabase } from '../supabase.ts';
 import type {} from '../types/express.d.ts';
-
-const issuer = `${process.env.SUPABASE_URL}/auth/v1`;
-const jwks = createRemoteJWKSet(new URL(`${issuer}/.well-known/jwks.json`));
 
 export async function requireAuth(req: Request, res: Response, next: NextFunction) {
   res.set('Cache-Control', 'no-store');
 
-  const header = req.headers.authorization;
+  const { data, error } = await createSupabase(req, res).auth.getClaims();
 
-  if (!header?.startsWith('Bearer ')) {
+  if (isAuthRetryableFetchError(error)) {
+    throw error;
+  }
+
+  if (!data) {
     throw new Unauthorized();
   }
 
-  try {
-    const { payload } = await jwtVerify(header.slice('Bearer '.length), jwks, {
-      issuer,
-      audience: 'authenticated',
-      algorithms: ['ES256'],
-    });
-
-    if (!payload.sub) {
-      throw new Unauthorized();
-    }
-
-    req.userId = payload.sub;
-  } catch (error) {
-    if (error instanceof errors.JWKSTimeout) {
-      throw error;
-    }
-
-    throw new Unauthorized();
-  }
+  req.userId = data.claims.sub;
 
   next();
 }
