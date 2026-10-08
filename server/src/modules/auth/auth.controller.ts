@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 
 import { BadRequest } from '../../errors/bad-request.error.ts';
 import { createSupabase } from '../../supabase.ts';
-import { authCallbackQuerySchema, credentialsBodySchema } from './auth.schema.ts';
+import { authCallbackQuerySchema, signInBodySchema, signUpBodySchema } from './auth.schema.ts';
 import { exchangeCodeUseCase } from './exchange-code.use-case.ts';
 import { getSessionUseCase } from './get-session.use-case.ts';
 import { signInUseCase } from './sign-in.use-case.ts';
@@ -10,10 +10,11 @@ import { signOutUseCase } from './sign-out.use-case.ts';
 import { signUpUseCase } from './sign-up.use-case.ts';
 
 export async function signUp(req: Request, res: Response) {
-  const result = credentialsBodySchema.safeParse(req.body);
+  const result = signUpBodySchema.safeParse(req.body);
 
   if (!result.success) {
-    throw new BadRequest();
+    const isPasswordIssue = result.error.issues.some((issue) => issue.path[0] === 'password');
+    throw isPasswordIssue ? new BadRequest('Weak password', 'weak_password') : new BadRequest();
   }
 
   const user = await signUpUseCase(createSupabase(req, res), result.data);
@@ -22,7 +23,7 @@ export async function signUp(req: Request, res: Response) {
 }
 
 export async function signIn(req: Request, res: Response) {
-  const result = credentialsBodySchema.safeParse(req.body);
+  const result = signInBodySchema.safeParse(req.body);
 
   if (!result.success) {
     throw new BadRequest();
