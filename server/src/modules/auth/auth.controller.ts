@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 
 import { BadRequest } from '../../errors/bad-request.error.ts';
+import { WeakPassword } from '../../errors/weak-password.error.ts';
 import { createSupabase } from '../../supabase.ts';
 import { authCallbackQuerySchema, signInBodySchema, signUpBodySchema } from './auth.schema.ts';
 import { exchangeCodeUseCase } from './exchange-code.use-case.ts';
@@ -14,7 +15,7 @@ export async function signUp(req: Request, res: Response) {
 
   if (!result.success) {
     const isPasswordIssue = result.error.issues.some((issue) => issue.path[0] === 'password');
-    throw isPasswordIssue ? new BadRequest('Weak password', 'weak_password') : new BadRequest();
+    throw isPasswordIssue ? new WeakPassword(['length']) : new BadRequest();
   }
 
   const user = await signUpUseCase(createSupabase(req, res), result.data);
