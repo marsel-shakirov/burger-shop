@@ -9,6 +9,12 @@ import router from './modules/index.ts';
 
 const app = express();
 
+const { TRUST_PROXY } = process.env;
+
+if (TRUST_PROXY) {
+  app.set('trust proxy', /^\d+$/.test(TRUST_PROXY) ? Number(TRUST_PROXY) : TRUST_PROXY);
+}
+
 app.use(express.json());
 
 app.use('/api', verifyOrigin, router);
