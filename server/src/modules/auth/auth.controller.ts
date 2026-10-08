@@ -24,13 +24,6 @@ export async function signUp(req: Request, res: Response) {
 }
 
 export async function signIn(req: Request, res: Response) {
-  console.log('ip-check', {
-    ip: req.ip,
-    xff: req.headers['x-forwarded-for'],
-    realIp: req.headers['x-real-ip'],
-    vercelXff: req.headers['x-vercel-forwarded-for'],
-  });
-
   const result = signInBodySchema.safeParse(req.body);
 
   if (!result.success) {
