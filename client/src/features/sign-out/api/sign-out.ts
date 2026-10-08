@@ -1,9 +1,9 @@
-import { supabase } from '@/shared/api';
+import { createApiError } from '@/shared/api';
 
 export const signOut = async (): Promise<void> => {
-  const { error } = await supabase.auth.signOut();
+  const response = await fetch('/api/auth/sign-out', { method: 'POST' });
 
-  if (error) {
-    throw error;
+  if (!response.ok) {
+    throw await createApiError(response);
   }
 };

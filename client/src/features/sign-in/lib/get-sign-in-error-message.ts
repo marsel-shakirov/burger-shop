@@ -1,11 +1,11 @@
-import { isAuthError, isAuthRetryableFetchError } from '@supabase/supabase-js';
+import { isApiError, isNetworkError } from '@/shared/api';
 
 export const getSignInErrorMessage = (error: unknown): string => {
-  if (isAuthRetryableFetchError(error)) {
+  if (isNetworkError(error)) {
     return 'Нет связи с сервером. Проверьте интернет и попробуйте ещё раз';
   }
 
-  if (isAuthError(error)) {
+  if (isApiError(error)) {
     switch (error.code) {
       case 'invalid_credentials':
         return 'Неверный email или пароль';

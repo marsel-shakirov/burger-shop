@@ -1,3 +1,4 @@
+export { ApiError, createApiError, isApiError, isNetworkError } from './api-error';
 export { authFetch } from './auth-fetch';
-export { supabase } from './supabase';
 export type { RequestOptions } from './types';
+export { onUnauthorized } from './unauthorized';

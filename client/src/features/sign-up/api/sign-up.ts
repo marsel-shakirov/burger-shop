@@ -1,21 +1,20 @@
-import { supabase } from '@/shared/api';
-import { routes } from '@/shared/config';
+import type { SessionUser } from '@/entities/session';
+import { createApiError } from '@/shared/api';
 
-import { EmailTakenError } from '../model/email-taken-error';
 import type { SignUpCredentials } from '../model/sign-up.types';
 
-export const signUp = async ({ email, password }: SignUpCredentials): Promise<void> => {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { emailRedirectTo: new URL(routes.profile, window.location.origin).href },
+export const signUp = async (credentials: SignUpCredentials): Promise<SessionUser | null> => {
+  const response = await fetch('/api/auth/sign-up', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentials),
   });
 
-  if (error) {
-    throw error;
+  if (!response.ok) {
+    throw await createApiError(response);
   }
 
-  if (data.user?.identities?.length === 0) {
-    throw new EmailTakenError();
-  }
+  const { user } = await response.json();
+
+  return user;
 };

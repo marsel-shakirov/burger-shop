@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { type SubmitEvent, useId } from 'react';
 
+import { useSessionStore } from '@/entities/session';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { TextInput } from '@/shared/ui/text-input';
 
@@ -10,7 +11,10 @@ import { getSignInErrorMessage } from '../lib/get-sign-in-error-message';
 export const SignInForm = () => {
   const emailId = useId();
   const passwordId = useId();
-  const { mutate, isPending, error, reset } = useMutation({ mutationFn: signIn });
+  const { mutate, isPending, error, reset } = useMutation({
+    mutationFn: signIn,
+    onSuccess: (user) => useSessionStore.getState().setUser(user),
+  });
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();

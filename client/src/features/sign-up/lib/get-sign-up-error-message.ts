@@ -1,23 +1,17 @@
-import { isAuthError, isAuthRetryableFetchError } from '@supabase/supabase-js';
-
-import { EmailTakenError } from '../model/email-taken-error';
+import { isApiError, isNetworkError } from '@/shared/api';
 
 export const getSignUpErrorMessage = (error: unknown): string => {
-  if (error instanceof EmailTakenError) {
-    return 'Профиль с этим email уже есть. Войдите в него';
-  }
-
-  if (isAuthRetryableFetchError(error)) {
+  if (isNetworkError(error)) {
     return 'Нет связи с сервером. Проверьте интернет и попробуйте ещё раз';
   }
 
-  if (isAuthError(error)) {
+  if (isApiError(error)) {
     switch (error.code) {
       case 'user_already_exists':
       case 'email_exists':
         return 'Профиль с этим email уже есть. Войдите в него';
       case 'weak_password':
-        return 'Пароль слишком простой. Сделайте его длиннее или добавьте цифры';
+        return 'Пароль должен содержать заглавную букву, цифру и спецсимвол';
       case 'email_address_invalid':
         return 'Этот email не подходит. Укажите другой адрес';
       case 'over_email_send_rate_limit':

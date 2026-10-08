@@ -6,9 +6,9 @@ import type { SessionState } from './session.types';
 export const useSessionStore = create<SessionState>()(
   devtools(
     (set) => ({
-      session: null,
+      user: null,
       status: 'loading',
-      setSession: (session) => set({ session, status: session ? 'authenticated' : 'guest' }),
+      setUser: (user) => set({ user, status: user ? 'authenticated' : 'guest' }),
     }),
     { name: 'session-store' },
   ),

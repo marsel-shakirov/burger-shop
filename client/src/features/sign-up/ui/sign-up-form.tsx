@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { type SubmitEvent, useId, useState } from 'react';
 
+import { useSessionStore } from '@/entities/session';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { TextInput } from '@/shared/ui/text-input';
 
@@ -28,7 +29,15 @@ export const SignUpForm = ({ defaultEmail, onEmailSent }: SignUpFormProps) => {
 
     mutate(
       { email, password: String(formData.get('password')) },
-      { onSuccess: () => onEmailSent(email) },
+      {
+        onSuccess: (user) => {
+          if (user) {
+            useSessionStore.getState().setUser(user);
+          } else {
+            onEmailSent(email);
+          }
+        },
+      },
     );
   };
 

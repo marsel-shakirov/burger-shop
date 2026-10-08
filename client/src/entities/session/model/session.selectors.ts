@@ -1,8 +1,6 @@
 import type { SessionState } from './session.types';
 
-export const selectSession = (state: SessionState) => state.session;
-
-export const selectUser = (state: SessionState) => state.session?.user ?? null;
+export const selectUser = (state: SessionState) => state.user;
 
 export const selectSessionStatus = (state: SessionState) => state.status;
 
