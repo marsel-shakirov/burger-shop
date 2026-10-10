@@ -7,6 +7,7 @@ import { TextInput } from '@/shared/ui/text-input';
 
 import { signIn } from '../api/sign-in';
 import { getSignInErrorMessage } from '../lib/get-sign-in-error-message';
+import { TestUserButtons } from './test-user-button';
 
 export const SignInForm = () => {
   const emailId = useId();
@@ -69,6 +70,11 @@ export const SignInForm = () => {
           {getSignInErrorMessage(error)}
         </p>
       )}
+
+      <div className="flex items-center gap-x-2">
+        <p className="font-bold">Тест users: </p>
+        <TestUserButtons />
+      </div>
 
       <div className="border-t border-dashed border-stone-300 pt-5">
         <button
