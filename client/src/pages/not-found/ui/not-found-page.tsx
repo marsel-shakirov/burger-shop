@@ -2,7 +2,6 @@ import { Link } from 'react-router';
 
 import { routes } from '@/shared/config';
 import { Container } from '@/shared/ui/container';
-import { NotFoundIcon } from '@/shared/ui/icon';
 import { PageMeta } from '@/shared/ui/page-meta';
 
 export const NotFoundPage = () => {
@@ -11,7 +10,6 @@ export const NotFoundPage = () => {
       <PageMeta title="Страница не найдена" noindex />
       <Container className="flex flex-1">
         <div className="flex flex-col items-center justify-center gap-y-3 px-4 text-center sm:px-28">
-          <NotFoundIcon className="h-48 w-48" />
           <h1 className="text-3xl font-extrabold sm:text-5xl">Ошибка 404</h1>
           <p className="text-lg">
             Кажется что-то пошло не так! Страница, которую вы запрашиваете, не существует. Возможно
