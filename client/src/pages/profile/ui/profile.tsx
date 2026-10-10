@@ -1,52 +1,42 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Navigate } from 'react-router';
 
-import { profileQueryOptions } from '@/entities/profile';
 import { selectIsGuest, selectUser, useSessionStore } from '@/entities/session';
-import { EditProfile } from '@/features/edit-profile/ui/edit-profile';
 import { SignOutButton } from '@/features/sign-out';
 import { routes } from '@/shared/config';
 import { Container } from '@/shared/ui/container';
 import { PageMeta } from '@/shared/ui/page-meta';
+import { ReceiptCard } from '@/shared/ui/receipt-card';
+
+import { ProfileContent } from './profile-content';
+import { ProfileError } from './profile-error';
 
 export const Profile = () => {
   const isGuest = useSessionStore(selectIsGuest);
   const user = useSessionStore(selectUser);
-  const {
-    data: profile,
-    isPending,
-    isError,
-    refetch,
-  } = useQuery({
-    ...profileQueryOptions(user?.id ?? ''),
-    enabled: Boolean(user),
-  });
+  const { reset } = useQueryErrorResetBoundary();
 
   if (isGuest) {
     return <Navigate to={routes.login} replace />;
   }
 
-  if (!user || isPending) {
-    return <div>Loading</div>;
-  }
-
-  if (isError) {
-    return (
-      <div role="alert">
-        Не удалось загрузить профиль
-        <button type="button" onClick={() => refetch()}>
-          Повторить
-        </button>
-      </div>
-    );
+  if (!user) {
+    return null;
   }
 
   return (
     <main className="flex flex-1">
       <PageMeta title="Профиль" noindex />
-      <Container className="flex flex-1 flex-col items-center gap-y-8 py-8 sm:py-12">
-        <EditProfile userId={user.id} profile={profile} />
-        <SignOutButton className="w-full max-w-xs" />
+      <Container className="flex flex-1 flex-col items-center pt-14 pb-8 sm:pt-20 sm:pb-12">
+        <ReceiptCard className="w-full max-w-sm" footer={<SignOutButton />}>
+          <ErrorBoundary onReset={reset} resetKeys={[user.id]} FallbackComponent={ProfileError}>
+            <Suspense fallback={<div>Loading</div>}>
+              <ProfileContent userId={user.id} />
+            </Suspense>
+          </ErrorBoundary>
+        </ReceiptCard>
       </Container>
     </main>
   );
