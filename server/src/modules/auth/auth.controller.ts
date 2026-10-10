@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import { BadRequest } from '../../errors/bad-request.error.ts';
 import { WeakPassword } from '../../errors/weak-password.error.ts';
 import { createSupabase } from '../../supabase.ts';
+import { LOGIN_PATH } from './auth.constants.ts';
 import { authCallbackQuerySchema, signInBodySchema, signUpBodySchema } from './auth.schema.ts';
 import { exchangeCodeUseCase } from './exchange-code.use-case.ts';
 import { getSessionUseCase } from './get-session.use-case.ts';
@@ -53,10 +54,10 @@ export async function authCallback(req: Request, res: Response) {
   const result = authCallbackQuerySchema.safeParse(req.query);
 
   if (!result.success) {
-    return res.redirect('/login?error=confirm_failed');
+    return res.redirect(`${LOGIN_PATH}?error=confirm_failed`);
   }
 
   const isSignedIn = await exchangeCodeUseCase(createSupabase(req, res), result.data.code);
 
-  res.redirect(isSignedIn ? '/profile' : '/login?email_confirmed=1');
+  res.redirect(isSignedIn ? '/profile' : `${LOGIN_PATH}?email_confirmed=1`);
 }

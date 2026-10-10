@@ -3,7 +3,7 @@ export const routes = {
   cart: '/cart',
   favorites: '/favorites',
   profile: '/profile',
-  login: '/login',
-  register: '/register',
+  login: '/profile/login',
+  register: '/profile/register',
   edit: '/profile/edit',
 } as const;
