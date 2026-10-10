@@ -12,6 +12,7 @@ import { ReceiptCard } from '@/shared/ui/receipt-card';
 
 import { ProfileContent } from './profile-content';
 import { ProfileError } from './profile-error';
+import { ProfileSkeleton } from './profile-skeleton';
 
 export const Profile = () => {
   const isGuest = useSessionStore(selectIsGuest);
@@ -32,7 +33,7 @@ export const Profile = () => {
       <Container className="flex flex-1 flex-col items-center pt-14 pb-8 sm:pt-20 sm:pb-12">
         <ReceiptCard className="w-full max-w-sm" footer={<SignOutButton />}>
           <ErrorBoundary onReset={reset} resetKeys={[user.id]} FallbackComponent={ProfileError}>
-            <Suspense fallback={<div>Loading</div>}>
+            <Suspense fallback={<ProfileSkeleton />}>
               <ProfileContent userId={user.id} />
             </Suspense>
           </ErrorBoundary>
