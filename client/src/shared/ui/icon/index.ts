@@ -1,4 +1,5 @@
 export { ArrowIcon } from './icons/arrow-icon';
+export { BagIcon } from './icons/bag-icon';
 export { BurgerIcon } from './icons/burger-icon';
 export { CartIcon } from './icons/cart-icon';
 export { CloseIcon } from './icons/close-icon';
