@@ -8,7 +8,7 @@
 - Server: Node.js, Express, TypeScript, Zod validation, PostgreSQL
 - Auth: Supabase Auth через сервер — сессия в httpOnly cookie, подтверждение email (PKCE), проверка пароля по Pwned Passwords, rate limit
 - Архитектура клиента: Feature-Sliced Design
-- Архитектура сервера: REST api, BF
+- Архитектура сервера: REST api, BFF
 
 ## Переменные окружения
 
