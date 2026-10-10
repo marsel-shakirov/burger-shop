@@ -5,7 +5,7 @@ import { FavoritePage } from '@/pages/favorite';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import { NotFoundPage } from '@/pages/not-found';
-import { Profile } from '@/pages/profile';
+import { Profile, ProfileEdit } from '@/pages/profile';
 import { RegisterPage } from '@/pages/register';
 import { routes } from '@/shared/config';
 
@@ -20,6 +20,7 @@ export const AppRouter = () => {
           <Route path={routes.cart} element={<CartPage />} />
           <Route path={routes.favorites} element={<FavoritePage />} />
           <Route path={routes.profile} element={<Profile />} />
+          <Route path={routes.edit} element={<ProfileEdit />} />
           <Route path={routes.login} element={<LoginPage />} />
           <Route path={routes.register} element={<RegisterPage />} />
         </Route>

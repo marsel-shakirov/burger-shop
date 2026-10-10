@@ -5,4 +5,5 @@ export const routes = {
   profile: '/profile',
   login: '/login',
   register: '/register',
+  edit: '/profile/edit',
 } as const;
