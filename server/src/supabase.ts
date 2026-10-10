@@ -14,7 +14,7 @@ export const createSupabase = (req: Request, res: Response) =>
     },
     cookieOptions: {
       httpOnly: true,
-      secure: true,
+      secure: process.env.COOKIE_SECURE !== 'false',
       sameSite: 'lax',
       path: '/api',
     },

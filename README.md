@@ -19,6 +19,8 @@ DATABASE_URL=          # PostgreSQL (Supabase)
 SUPABASE_URL=          # https://<project>.supabase.co
 SUPABASE_SECRET_KEY=   # секретный ключ Supabase, только на сервере
 CLIENT_ORIGIN=         # http://localhost:5173 — проверка Origin и адрес callback из письма
+ALLOWED_ORIGINS=       # необязательно: дополнительные Origin через запятую, например http://192.168.31.43:5173
+COOKIE_SECURE=         # необязательно: false — cookie сессии без флага Secure (для входа по http с IP в локальной сети)
 TRUST_PROXY=           # необязательно: настройка trust proxy для IP клиента за прокси
 ```
 
@@ -73,7 +75,7 @@ GET  /api/profile          требует сессию
 PUT  /api/profile          требует сессию
 ```
 
-POST-запросы принимаются только с `Origin`, равным `CLIENT_ORIGIN`.
+POST-запросы принимаются только с `Origin` из `CLIENT_ORIGIN` или `ALLOWED_ORIGINS`.
 
 ## Структура
 
