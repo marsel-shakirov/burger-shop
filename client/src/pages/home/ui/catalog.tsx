@@ -76,7 +76,7 @@ export const Catalog = () => {
       ) : isProductsError ? (
         <div>Failed to load products</div>
       ) : (
-        <section className="py-4 sm:py-7">
+        <section className="py-5 sm:py-8">
           <CatalogHeader
             title={productGridTitle}
             sorting={sorting}

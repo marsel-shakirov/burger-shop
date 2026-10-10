@@ -11,7 +11,7 @@ export const ProductGrid = ({ products, isUpdating = false }: ProductGridProps) 
   return (
     <ul
       aria-busy={isUpdating}
-      className="grid grid-cols-2 gap-2.5 pt-4 transition-opacity aria-busy:opacity-50 aria-busy:delay-150 xs:grid-cols-3 md:pt-5 lg:grid-cols-4"
+      className="grid grid-cols-2 gap-2.5 pt-6 transition-opacity aria-busy:opacity-50 aria-busy:delay-150 xs:grid-cols-3 md:pt-8 lg:grid-cols-4"
     >
       {products?.map((product, index) => (
         <li key={product.id}>
