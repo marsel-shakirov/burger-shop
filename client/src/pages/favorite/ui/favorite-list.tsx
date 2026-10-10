@@ -1,14 +1,16 @@
-import { selectFavoriteIds, useFavoriteStore } from '@/entities/favorite';
+import { useFavoriteIds } from '@/entities/favorite';
 import { useProductsById } from '@/entities/product';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
 export const FavoriteList = () => {
-  const favoriteIds = useFavoriteStore(selectFavoriteIds);
+  const favorites = useFavoriteIds();
+  const products = useProductsById();
 
-  const { isPending, isError, data: productsById } = useProductsById();
+  const isPending = favorites.isPending || products.isPending;
+  const isError = favorites.isError || products.isError;
 
-  const favoriteProducts = favoriteIds
-    .map((id) => productsById?.get(id))
+  const favoriteProducts = favorites.productIds
+    .map((id) => products.data?.get(id))
     .filter((product) => product !== undefined);
 
   return (

@@ -6,5 +6,5 @@ export const favoritesQueryOptions = (userId: string) =>
   queryOptions({
     queryKey: ['favorites', userId],
     queryFn: ({ signal }) => getFavorites({ signal }),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 30,
   });

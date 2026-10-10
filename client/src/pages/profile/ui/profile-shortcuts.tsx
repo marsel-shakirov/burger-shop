@@ -1,14 +1,21 @@
 import { Link } from 'react-router';
 
-import { selectFavoritesCount, useFavoriteStore } from '@/entities/favorite';
+import { useFavoritesCount } from '@/entities/favorite';
 import { routes } from '@/shared/config';
 import { cn, formatItemsCount } from '@/shared/lib';
 import { BagIcon, HeartIcon } from '@/shared/ui/icon';
 
 const tileClassName = 'flex h-full flex-col gap-y-3 rounded-2xl bg-stone-100 p-3 sm:p-4';
 
+const getFavoritesLabel = ({ count, isPending, isError }: ReturnType<typeof useFavoritesCount>) => {
+  if (isPending) return 'Загружаем…';
+  if (isError) return 'Не удалось загрузить';
+
+  return count > 0 ? formatItemsCount(count) : 'Пока пусто';
+};
+
 export const ProfileShortcuts = () => {
-  const favoritesCount = useFavoriteStore(selectFavoritesCount);
+  const favoritesCount = useFavoritesCount();
 
   return (
     <ul role="list" className="grid grid-cols-2 gap-2">
@@ -24,7 +31,7 @@ export const ProfileShortcuts = () => {
           <span className="flex min-w-0 flex-col gap-y-0.5">
             <span className="truncate font-bold">Избранное</span>
             <span className="truncate text-sm text-stone-500">
-              {favoritesCount > 0 ? formatItemsCount(favoritesCount) : 'Пока пусто'}
+              {getFavoritesLabel(favoritesCount)}
             </span>
           </span>
         </Link>

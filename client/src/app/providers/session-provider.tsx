@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { type PropsWithChildren, useEffect } from 'react';
 
+import { favoritesQueryOptions, mergeGuestFavorites } from '@/entities/favorite';
 import { getSession, type SessionUser, useSessionStore } from '@/entities/session';
 import { onUnauthorized } from '@/shared/api';
 
@@ -60,6 +61,12 @@ export function SessionProvider({ children }: PropsWithChildren) {
     const unsubscribeStore = useSessionStore.subscribe((state, prevState) => {
       if (prevState.user && state.user?.id !== prevState.user.id) {
         queryClient.removeQueries({ queryKey: ['profile'] });
+        queryClient.removeQueries({ queryKey: ['favorites'] });
+      }
+
+      if (state.user && state.user.id !== prevState.user?.id) {
+        queryClient.query(favoritesQueryOptions(state.user.id)).catch(() => {});
+        mergeGuestFavorites(queryClient, state.user.id).catch(() => {});
       }
 
       if (!isRemoteUpdate && !isSameUser(state.user, prevState.user)) {
