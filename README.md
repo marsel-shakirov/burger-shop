@@ -75,7 +75,16 @@ GET  /api/profile          требует сессию
 PUT  /api/profile          требует сессию
 ```
 
-POST-запросы принимаются только с `Origin` из `CLIENT_ORIGIN` или `ALLOWED_ORIGINS`.
+```text
+GET    /api/favorites              { productIds }, новые первыми
+PUT    /api/favorites/:productId   добавить в избранное, 204
+DELETE /api/favorites/:productId   убрать из избранного, 204
+POST   /api/favorites/merge        { productIds } — добавить список гостя, вернуть итоговый
+```
+
+- `/api/favorites` — все запросы требуют сессию. `PUT` и `DELETE` можно повторять: повторное добавление или удаление ничего не меняет. Несуществующий товар в `PUT` — `400` с `code: "product_not_found"`. В `merge` до 100 id, несуществующие товары пропускаются.
+
+POST-, PUT- и DELETE-запросы принимаются только с `Origin` из `CLIENT_ORIGIN` или `ALLOWED_ORIGINS`.
 
 ## Структура
 
