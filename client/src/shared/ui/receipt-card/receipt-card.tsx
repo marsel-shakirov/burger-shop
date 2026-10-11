@@ -14,7 +14,7 @@ export const ReceiptCard = ({ children, footer, className }: ReceiptCardProps) =
     <div className={cn('relative', className)}>
       <div className="flex flex-col gap-y-2 drop-shadow-[0_5px_20px_rgb(0_0_0/0.07)]">
         <div className="rounded-t-xl bg-white receipt-edge">
-          <div className="flex flex-col gap-y-6 px-5 pt-14 pb-8 sm:px-7">{children}</div>
+          <div className="flex flex-col gap-y-5 px-5 pt-14 pb-8 sm:px-7">{children}</div>
         </div>
 
         {footer && (
