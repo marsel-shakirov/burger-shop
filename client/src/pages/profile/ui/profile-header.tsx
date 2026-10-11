@@ -3,28 +3,18 @@ import { Link } from 'react-router';
 import type { Profile } from '@/entities/profile';
 import { routes } from '@/shared/config';
 import { cn } from '@/shared/lib';
-import { ArrowIcon, ProfileIcon } from '@/shared/ui/icon';
+import { ArrowIcon } from '@/shared/ui/icon';
+
+import { ProfileAvatar } from './profile-avatar';
 
 interface ProfileHeaderProps {
   name: Profile['name'];
 }
 
 export const ProfileHeader = ({ name }: ProfileHeaderProps) => {
-  const initial = name?.trim().charAt(0).toUpperCase();
-
   return (
     <div className="group relative flex max-w-full items-center gap-x-3 self-start">
-      <span
-        aria-hidden="true"
-        className={cn(
-          'grid size-14 shrink-0 place-items-center rounded-2xl',
-          initial
-            ? 'bg-orange-200 font-display text-2xl font-extrabold text-stone-900'
-            : 'bg-stone-100 text-stone-400',
-        )}
-      >
-        {initial || <ProfileIcon className="size-7" />}
-      </span>
+      <ProfileAvatar name={name} />
 
       <h1 className="min-w-0 truncate text-xl">
         <Link
