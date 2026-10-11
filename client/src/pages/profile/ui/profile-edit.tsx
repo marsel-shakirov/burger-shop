@@ -11,6 +11,7 @@ import { PageMeta } from '@/shared/ui/page-meta';
 import { ReceiptCard } from '@/shared/ui/receipt-card';
 
 import { ProfileEditContent } from './profile-edit-content';
+import { ProfileEditSkeleton } from './profile-edit-skeleton';
 import { ProfileError } from './profile-error';
 
 export const ProfileEdit = () => {
@@ -28,24 +29,22 @@ export const ProfileEdit = () => {
 
   return (
     <main className="flex flex-1">
-      <PageMeta title="Имя и телефон" noindex />
+      <PageMeta title="Личные данные" noindex />
       <Container className="flex flex-1 flex-col items-center gap-y-5 pt-14 pb-8 sm:pt-20 sm:pb-12">
         <ReceiptCard className="w-full max-w-sm">
-          <h1 className="text-2xl sm:text-3xl">Имя и телефон</h1>
           <ErrorBoundary onReset={reset} resetKeys={[user.id]} FallbackComponent={ProfileError}>
-            <Suspense fallback={<div>Loading</div>}>
-              <ProfileEditContent userId={user.id} />
+            <Suspense fallback={<ProfileEditSkeleton />}>
+              <Link
+                to={routes.profile}
+                className="flex items-center gap-x-2 rounded-md px-2 py-1 text-sm font-bold text-stone-500 focus-ring transition-colors duration-150 hover:text-stone-900"
+              >
+                <ArrowIcon className="size-3" />
+                Вернуться
+              </Link>
+              <ProfileEditContent userId={user.id} email={user.email} />
             </Suspense>
           </ErrorBoundary>
         </ReceiptCard>
-
-        <Link
-          to={routes.profile}
-          className="flex items-center gap-x-2 rounded-md px-2 py-1 text-sm font-bold text-stone-500 focus-ring transition-colors duration-150 hover:text-stone-900"
-        >
-          <ArrowIcon className="size-3" />
-          Вернуться в профиль
-        </Link>
       </Container>
     </main>
   );
