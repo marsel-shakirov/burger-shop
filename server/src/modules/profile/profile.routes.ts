@@ -5,6 +5,6 @@ import { getProfile, updateProfile } from './profile.controller.ts';
 const router = Router();
 
 router.get('/', getProfile);
-router.put('/', updateProfile);
+router.patch('/', updateProfile);
 
 export default router;

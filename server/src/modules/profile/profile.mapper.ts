@@ -1,7 +1,17 @@
-import type { ProfileRow } from './profile.types.ts';
+import type { Gender, ProfileRow } from './profile.types.ts';
 
-export type ProfileResponse = Omit<ProfileRow, 'id'>;
+export interface ProfileResponse {
+  name: string | null;
+  phone: string | null;
+  birthDate: string | null;
+  gender: Gender | null;
+}
 
-export function toProfileResponse({ name, phone }: ProfileRow): ProfileResponse {
-  return { name, phone };
+export function toProfileResponse({
+  name,
+  phone,
+  birth_date,
+  gender,
+}: ProfileRow): ProfileResponse {
+  return { name, phone, birthDate: birth_date, gender };
 }
