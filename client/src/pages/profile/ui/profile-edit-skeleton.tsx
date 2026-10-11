@@ -12,7 +12,7 @@ export const ProfileEditSkeleton = () => {
           <div className="mt-1 flex h-5 items-center">
             <Skeleton className="h-3.5 w-44" />
           </div>
-          <div className="flex h-5 items-center">
+          <div className="mt-1 flex h-5 items-center">
             <Skeleton className="h-3.5 w-28" />
           </div>
           <div className="mt-2 flex h-5 items-center">

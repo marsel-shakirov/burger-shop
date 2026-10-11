@@ -1,42 +1,25 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { type ComponentPropsWithoutRef, type SubmitEvent, useId } from 'react';
+import { type SubmitEvent, useId, useState } from 'react';
 
 import { type Profile, profileQueryOptions } from '@/entities/profile';
 import { Modal } from '@/shared/ui/modal';
-import { TextInput } from '@/shared/ui/text-input';
 
 import { updateProfile } from '../api/update-profile';
-import { getEditProfileErrorMessage } from '../lib/get-edit-profile-error-message';
-import type { ProfileField } from '../model/edit-profile.types';
+import { getEditProfileError } from '../lib/get-edit-profile-error';
+import { getChangedFields, readProfileForm } from '../lib/read-profile-form';
+import type { ProfileFormError, ProfileSection } from '../model/edit-profile.types';
+import { PersonalFields } from './personal-fields';
+import { PhoneField } from './phone-field';
 
-interface FieldConfig {
-  title: string;
-  label: string;
-  inputProps: ComponentPropsWithoutRef<'input'>;
-}
-
-const fieldConfigs: Record<ProfileField, FieldConfig> = {
-  name: {
-    title: 'Имя',
-    label: 'Как к вам обращаться',
-    inputProps: { autoComplete: 'given-name', maxLength: 50, placeholder: 'введите имя' },
-  },
-  phone: {
-    title: 'Телефон',
-    label: 'Номер для связи по заказам',
-    inputProps: {
-      type: 'tel',
-      inputMode: 'tel',
-      autoComplete: 'tel',
-      placeholder: '+7 999 123-45-67',
-    },
-  },
+const titles: Record<ProfileSection, string> = {
+  personal: 'Личные данные',
+  phone: 'Телефон',
 };
 
 interface EditProfileModalProps {
   userId: string;
   profile: Profile;
-  field: ProfileField;
+  section: ProfileSection;
   open: boolean;
   onClose: () => void;
 }
@@ -44,14 +27,13 @@ interface EditProfileModalProps {
 export const EditProfileModal = ({
   userId,
   profile,
-  field,
+  section,
   open,
   onClose,
 }: EditProfileModalProps) => {
   const titleId = useId();
-  const inputId = useId();
   const queryClient = useQueryClient();
-  const { title, label, inputProps } = fieldConfigs[field];
+  const [validationError, setValidationError] = useState<ProfileFormError | null>(null);
 
   const { mutate, isPending, error, reset } = useMutation({
     mutationFn: updateProfile,
@@ -61,18 +43,30 @@ export const EditProfileModal = ({
     },
   });
 
+  const formError = validationError ?? (error ? getEditProfileError(error) : null);
+
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const value = String(new FormData(event.currentTarget).get(field) ?? '');
+    const result = readProfileForm(section, new FormData(event.currentTarget));
 
-    mutate({
-      name: profile.name ?? '',
-      phone: profile.phone ?? '',
-      [field]: value,
-    });
+    if (!result.ok) {
+      setValidationError(result.error);
+      return;
+    }
+
+    const changes = getChangedFields(profile, result.update);
+
+    if (Object.keys(changes).length === 0) {
+      onClose();
+      return;
+    }
+
+    mutate(changes);
   };
 
   const handleInput = () => {
+    setValidationError(null);
+
     if (error) {
       reset();
     }
@@ -86,25 +80,18 @@ export const EditProfileModal = ({
         className="flex flex-col gap-y-5 pt-8 sm:pt-10"
       >
         <h2 id={titleId} className="pr-12 font-display text-2xl font-extrabold">
-          {title}
+          {titles[section]}
         </h2>
 
-        <div className="flex flex-col gap-y-2">
-          <label htmlFor={inputId} className="font-bold">
-            {label}
-          </label>
-          <TextInput
-            {...inputProps}
-            id={inputId}
-            name={field}
-            defaultValue={profile[field] ?? ''}
-            aria-invalid={error ? true : undefined}
-          />
-        </div>
+        {section === 'personal' ? (
+          <PersonalFields profile={profile} invalidField={formError?.field} />
+        ) : (
+          <PhoneField phone={profile.phone} invalid={formError?.field === 'phone'} />
+        )}
 
-        {error && (
+        {formError && (
           <p role="alert" className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
-            {getEditProfileErrorMessage(error, field)}
+            {formError.message}
           </p>
         )}
 

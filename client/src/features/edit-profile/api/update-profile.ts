@@ -1,14 +1,11 @@
 import type { Profile } from '@/entities/profile';
 import { authFetch, createApiError } from '@/shared/api';
 
-interface UpdateProfileData {
-  name: string;
-  phone: string;
-}
+import type { ProfileUpdate } from '../model/edit-profile.types';
 
-export const updateProfile = async (data: UpdateProfileData): Promise<Profile> => {
+export const updateProfile = async (data: ProfileUpdate): Promise<Profile> => {
   const response = await authFetch('/api/profile', {
-    method: 'PUT',
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
