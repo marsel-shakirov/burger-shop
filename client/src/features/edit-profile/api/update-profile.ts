@@ -1,5 +1,5 @@
 import type { Profile } from '@/entities/profile';
-import { authFetch } from '@/shared/api';
+import { authFetch, createApiError } from '@/shared/api';
 
 interface UpdateProfileData {
   name: string;
@@ -14,7 +14,7 @@ export const updateProfile = async (data: UpdateProfileData): Promise<Profile> =
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update profile');
+    throw await createApiError(response);
   }
 
   return response.json();
