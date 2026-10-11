@@ -71,9 +71,14 @@ POST /api/auth/sign-in     { email, password }
 POST /api/auth/sign-out
 GET  /api/auth/session     текущий пользователь или null
 GET  /api/auth/callback    переход по ссылке из письма
-GET  /api/profile          требует сессию
-PUT  /api/profile          требует сессию
 ```
+
+```text
+GET   /api/profile   { name, phone, birthDate, gender }
+PATCH /api/profile   { name?, phone?, birthDate?, gender? } — вернуть обновлённый профиль
+```
+
+- `/api/profile` — оба запроса требуют сессию. В `PATCH` передаются только меняемые поля, хотя бы одно. `null` очищает поле. `birthDate` — `YYYY-MM-DD`, от `1900-01-01` до сегодня. `gender` — `female | male`. Неверное поле — `400` с `code`: `invalid_name`, `invalid_phone`, `invalid_birth_date` или `invalid_gender`.
 
 ```text
 GET    /api/favorites              { productIds }, новые первыми
@@ -84,7 +89,7 @@ POST   /api/favorites/merge        { productIds } — добавить спис�
 
 - `/api/favorites` — все запросы требуют сессию. `PUT` и `DELETE` можно повторять: повторное добавление или удаление ничего не меняет. Несуществующий товар в `PUT` — `400` с `code: "product_not_found"`. В `merge` до 100 id, несуществующие товары пропускаются.
 
-POST-, PUT- и DELETE-запросы принимаются только с `Origin` из `CLIENT_ORIGIN` или `ALLOWED_ORIGINS`.
+POST-, PUT-, PATCH- и DELETE-запросы принимаются только с `Origin` из `CLIENT_ORIGIN` или `ALLOWED_ORIGINS`.
 
 ## Структура
 
