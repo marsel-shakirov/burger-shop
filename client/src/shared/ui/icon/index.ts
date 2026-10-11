@@ -2,6 +2,7 @@ export { ArrowIcon } from './icons/arrow-icon';
 export { BagIcon } from './icons/bag-icon';
 export { BurgerIcon } from './icons/burger-icon';
 export { CartIcon } from './icons/cart-icon';
+export { CheckCircleIcon } from './icons/check-circle-icon';
 export { CloseIcon } from './icons/close-icon';
 export { DeleteIcon } from './icons/delete-icon';
 export { EmptyPlate } from './icons/empty-plate-icon';
