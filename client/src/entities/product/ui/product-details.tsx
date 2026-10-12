@@ -25,6 +25,8 @@ export const ProductDetails = ({
           width={272}
           height={272}
           src={product.imageUrl}
+          srcSet={product.imageSrcSet}
+          sizes="(min-width: 40rem) 272px, 232px"
           alt=""
           className="absolute bottom-1 left-1/2 size-58 -translate-x-1/2 animate-dish-drop object-contain drop-shadow-[0_10px_8px_rgb(0_0_0/0.22)] motion-reduce:animate-none sm:bottom-2 sm:size-68"
         />

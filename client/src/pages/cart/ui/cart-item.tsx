@@ -36,6 +36,8 @@ export const CartItem = ({ product, entry }: CartItemProps) => {
           width={96}
           height={96}
           src={product.imageUrl}
+          srcSet={product.imageSrcSet}
+          sizes="(min-width: 40rem) 88px, 64px"
           alt=""
           className="relative size-16 object-contain drop-shadow-[0_4px_3px_rgb(0_0_0/0.18)] sm:size-22"
         />
