@@ -89,6 +89,16 @@ POST   /api/favorites/merge        { productIds } — добавить спис�
 
 - `/api/favorites` — все запросы требуют сессию. `PUT` и `DELETE` можно повторять: повторное добавление или удаление ничего не меняет. Несуществующий товар в `PUT` — `400` с `code: "product_not_found"`. В `merge` до 100 id, несуществующие товары пропускаются.
 
+```text
+GET    /api/cart              { items: [{ productId, quantity }] }, в порядке добавления
+PUT    /api/cart/:productId   { quantity } — задать количество товара, 204
+DELETE /api/cart/:productId   убрать товар из корзины, 204
+DELETE /api/cart              очистить корзину, 204
+POST   /api/cart/merge        { items: [{ productId, quantity }] } — добавить корзину гостя, вернуть итоговую
+```
+
+- `/api/cart` — все запросы требуют сессию. `quantity` — целое число от 1 до 50. `PUT` задаёт количество, а не прибавляет его, поэтому повтор запроса ничего не меняет. Несуществующий товар в `PUT` — `400` с `code: "product_not_found"`. В `merge` до 100 позиций: количество складывается с тем, что уже лежит в корзине, но не больше 50, несуществующие товары пропускаются.
+
 POST-, PUT-, PATCH- и DELETE-запросы принимаются только с `Origin` из `CLIENT_ORIGIN` или `ALLOWED_ORIGINS`.
 
 ## Структура
