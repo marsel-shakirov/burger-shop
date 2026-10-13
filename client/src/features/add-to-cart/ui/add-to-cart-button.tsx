@@ -5,6 +5,7 @@ import {
   useProductQuantity,
 } from '@/entities/cart';
 import type { Product } from '@/entities/product';
+import { cn } from '@/shared/lib';
 import { QuantityControls } from '@/shared/ui/quantity-controls';
 
 import type { AddToCartVariant } from '../model/add-to-cart.types';
@@ -17,6 +18,10 @@ interface AddToCartButtonProps {
   product: Product;
   variant?: AddToCartVariant;
 }
+
+const base = {
+  controls: 'relative size-full justify-between text-stone-900',
+};
 
 const controlsStyles: Record<
   AddToCartVariant,
@@ -52,7 +57,7 @@ export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonPr
         <QuantityControls
           variant={controls.variant}
           itemName={product.name}
-          className={`relative size-full justify-between text-stone-900 ${controls.className}`}
+          className={cn(base.controls, controls.className)}
           quantity={quantity}
           min={MIN_ITEM_QUANTITY}
           max={MAX_ITEM_QUANTITY}

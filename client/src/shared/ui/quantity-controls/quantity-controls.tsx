@@ -17,12 +17,25 @@ interface QuantityControlsProps extends Omit<ComponentPropsWithoutRef<'div'>, 'c
   label?: ReactElement | string;
 }
 
-const buttonStyles: Record<Variant, string> = {
-  solid:
-    'grid size-7 place-items-center rounded-[5px] bg-stone-900 text-orange-500 transition-colors duration-150 not-aria-disabled:hover:bg-stone-700',
-  'solid-large':
-    'grid size-11 place-items-center rounded-[10px] bg-stone-900 text-orange-500 transition-colors duration-150 not-aria-disabled:hover:bg-stone-700',
-  soft: 'grid size-7 place-items-center rounded-full text-stone-900 transition-colors duration-150 not-aria-disabled:hover:bg-white',
+const base = {
+  root: 'inline-flex items-center',
+  button:
+    'grid cursor-pointer place-items-center focus-ring transition-colors duration-150 aria-disabled:cursor-not-allowed aria-disabled:opacity-40',
+  value: 'min-w-3 text-center text-lg font-extrabold tabular-nums',
+};
+
+const styles: Record<Variant, { button: string }> = {
+  solid: {
+    button:
+      'size-7 rounded-[5px] bg-stone-900 text-orange-500 not-aria-disabled:hover:bg-stone-700',
+  },
+  'solid-large': {
+    button:
+      'size-11 rounded-[10px] bg-stone-900 text-orange-500 not-aria-disabled:hover:bg-stone-700',
+  },
+  soft: {
+    button: 'size-7 rounded-full text-stone-900 not-aria-disabled:hover:bg-white',
+  },
 };
 
 export const QuantityControls = ({
@@ -36,13 +49,15 @@ export const QuantityControls = ({
   increaseButtonRef,
   variant,
   label,
+  ...props
 }: QuantityControlsProps) => {
   const isMaxQuantity = quantity >= max;
-  const buttonClassName = `cursor-pointer ${buttonStyles[variant]} focus-ring aria-disabled:cursor-not-allowed aria-disabled:opacity-40`;
+  const buttonClassName = cn(base.button, styles[variant].button);
 
   return (
     <div
-      className={cn('inline-flex items-center', className)}
+      {...props}
+      className={cn(base.root, className)}
       role="group"
       aria-label={`Изменение количества: ${itemName}`}
     >
@@ -56,7 +71,7 @@ export const QuantityControls = ({
       </button>
 
       <output
-        className="min-w-3 text-center text-lg font-extrabold tabular-nums"
+        className={base.value}
         aria-label={label === undefined ? 'Количество товара' : undefined}
       >
         {label ?? quantity}

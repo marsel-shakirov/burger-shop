@@ -13,6 +13,12 @@ interface AddButtonProps {
   onClick: () => void;
 }
 
+const base = {
+  button:
+    'relative flex size-full cursor-pointer items-center justify-between text-stone-900 focus-ring',
+  price: 'font-display font-extrabold tabular-nums',
+};
+
 const styles: Record<AddToCartVariant, { button: string; price: string; mark: string }> = {
   card: {
     button: 'rounded-md py-1 pr-1 pl-3',
@@ -36,12 +42,9 @@ export const AddButton = ({ ref, product, variant, onClick }: AddButtonProps) =>
       type="button"
       aria-label={`Добавить ${product.name} в корзину, ${price}`}
       onClick={onClick}
-      className={cn(
-        'relative flex size-full cursor-pointer items-center justify-between text-stone-900 focus-ring',
-        s.button,
-      )}
+      className={cn(base.button, s.button)}
     >
-      <span className={cn('font-display font-extrabold tabular-nums', s.price)}>{price}</span>
+      <span className={cn(base.price, s.price)}>{price}</span>
       <span className={s.mark}>
         {variant === 'details' && 'Добавить'}
         <PlusIcon className="size-3" />
