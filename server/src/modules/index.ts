@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { requireAuth } from '../middlewares/require-auth.ts';
 import authRouter from './auth/auth.routes.ts';
+import cartRouter from './cart/cart.routes.ts';
 import favoritesRouter from './favorites/favorites.routes.ts';
 import menusRouter from './menu/menus.routers.ts';
 import productsRouter from './products/products.routes.ts';
@@ -18,5 +19,7 @@ router.use('/menu', menusRouter);
 router.use('/profile', requireAuth, profileRouter);
 
 router.use('/favorites', requireAuth, favoritesRouter);
+
+router.use('/cart', requireAuth, cartRouter);
 
 export default router;
