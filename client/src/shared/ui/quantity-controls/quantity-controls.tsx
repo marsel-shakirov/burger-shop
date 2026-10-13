@@ -24,17 +24,21 @@ const base = {
   value: 'min-w-3 text-center text-lg font-extrabold tabular-nums',
 };
 
+const tapArea = 'relative pointer-coarse:after:absolute pointer-coarse:after:-inset-2.5';
+
 const styles: Record<Variant, { button: string }> = {
   solid: {
-    button:
+    button: cn(
+      tapArea,
       'size-7 rounded-[5px] bg-stone-900 text-orange-500 not-aria-disabled:hover:bg-stone-700',
+    ),
   },
   'solid-large': {
     button:
       'size-11 rounded-[10px] bg-stone-900 text-orange-500 not-aria-disabled:hover:bg-stone-700',
   },
   soft: {
-    button: 'size-7 rounded-full text-stone-900 not-aria-disabled:hover:bg-white',
+    button: cn(tapArea, 'size-7 rounded-full text-stone-900 not-aria-disabled:hover:bg-white'),
   },
 };
 

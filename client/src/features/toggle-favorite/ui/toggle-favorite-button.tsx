@@ -20,7 +20,7 @@ const base = {
 
 const styles: Record<Variant, { button: string; icon: string }> = {
   product: {
-    button: 'p-1.5 -m-1.5 -r-1.5 xs:p-0 xs:-m-0 xs:-r-0',
+    button: 'relative pointer-coarse:after:absolute pointer-coarse:after:-inset-2',
     icon: 'size-6 fill-white text-stone-500 group-hover:fill-red-100 group-hover:text-red-600 group-aria-pressed:group-hover:fill-current group-aria-pressed:group-hover:text-red-700',
   },
   cart: {

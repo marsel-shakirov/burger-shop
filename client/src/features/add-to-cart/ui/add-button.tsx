@@ -21,7 +21,7 @@ const base = {
 
 const styles: Record<AddToCartVariant, { button: string; price: string; mark: string }> = {
   card: {
-    button: 'rounded-md py-1 pr-1 pl-3',
+    button: 'rounded-md py-1 pr-1 pl-3 pointer-coarse:after:absolute pointer-coarse:after:-inset-2',
     price: 'text-base',
     mark: 'grid size-7 place-items-center transition-transform duration-200 ease-out group-hover/add:-translate-x-1 motion-reduce:transition-none',
   },
