@@ -1,4 +1,4 @@
-import { selectClearCart, selectTotalQuantity, useCartStore } from '@/entities/cart';
+import { useCartActions, useCartTotalQuantity } from '@/entities/cart';
 import { formatItemsCount } from '@/shared/lib';
 import { DeleteIcon } from '@/shared/ui/icon';
 
@@ -9,14 +9,14 @@ import { CartSkeleton } from './cart-skeleton';
 import { CartSummary } from './cart-summary';
 
 export const CartContent = () => {
-  const totalQuantity = useCartStore(selectTotalQuantity);
-  const clearCart = useCartStore(selectClearCart);
+  const { totalQuantity, isPending: isCartPending } = useCartTotalQuantity();
+  const { clearCart } = useCartActions();
   const { isPending, isError, lines, totalPrice } = useCartLines();
 
   return (
     <section className="flex flex-1 flex-col gap-y-5 pb-8 sm:gap-y-8 sm:pb-12">
       <CartHeader
-        subtitle={formatItemsCount(totalQuantity)}
+        subtitle={isCartPending ? 'Загружаем…' : formatItemsCount(totalQuantity)}
         action={
           <button
             type="button"

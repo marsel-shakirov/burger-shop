@@ -3,13 +3,12 @@ import type { ComponentPropsWithoutRef } from 'react';
 import { cn, formatItemsCount } from '@/shared/lib';
 import { QuantityBadge } from '@/shared/ui/quantity-badge';
 
-import { selectTotalQuantity } from '../model/cart.selectors';
-import { useCartStore } from '../model/cart.store';
+import { useCartTotalQuantity } from '../model/use-cart';
 
 type CartNavBadgeProps = Pick<ComponentPropsWithoutRef<'span'>, 'className'>;
 
 export const CartNavBadge = ({ className }: CartNavBadgeProps) => {
-  const totalQuantity = useCartStore(selectTotalQuantity);
+  const { totalQuantity } = useCartTotalQuantity();
 
   if (totalQuantity === 0) return null;
 

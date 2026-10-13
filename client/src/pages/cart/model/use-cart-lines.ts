@@ -1,4 +1,4 @@
-import { type CartEntry, selectCartItems, useCartStore } from '@/entities/cart';
+import { type CartEntry, useCartItems } from '@/entities/cart';
 import { type Product, useProductsById } from '@/entities/product';
 
 export interface CartLine {
@@ -7,12 +7,14 @@ export interface CartLine {
 }
 
 export const useCartLines = () => {
-  const entries = useCartStore(selectCartItems);
+  const cart = useCartItems();
+  const products = useProductsById();
 
-  const { isPending, isError, data: productsById } = useProductsById();
+  const isPending = cart.isPending || products.isPending;
+  const isError = cart.isError || products.isError;
 
-  const lines = entries.flatMap((entry): CartLine[] => {
-    const product = productsById?.get(entry.productId);
+  const lines = cart.items.flatMap((entry): CartLine[] => {
+    const product = products.data?.get(entry.productId);
 
     return product ? [{ product, entry }] : [];
   });

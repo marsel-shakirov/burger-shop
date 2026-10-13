@@ -25,7 +25,7 @@ export const useCartStore = create<CartState>()(
                 ),
               };
             } else {
-              return { items: [...state.items, { productId, quantity: 1 }] };
+              return { items: [{ productId, quantity: 1 }, ...state.items] };
             }
           }),
         incrementItem: (productId) =>
@@ -71,13 +71,8 @@ export const useCartStore = create<CartState>()(
       }),
       {
         name: CART_STORAGE_KEY,
-        version: 2,
+        version: 1,
         partialize: (state) => ({ items: state.items }),
-        migrate: (persistedState) => {
-          const { items } = persistedState as Pick<CartState, 'items'>;
-
-          return { items: items.map(({ productId, quantity }) => ({ productId, quantity })) };
-        },
       },
     ),
   ),

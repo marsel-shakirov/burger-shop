@@ -1,11 +1,8 @@
 import {
   MAX_ITEM_QUANTITY,
   MIN_ITEM_QUANTITY,
-  selectAddItem,
-  selectDecrementItem,
-  selectIncrementItem,
-  selectProductQuantity,
-  useCartStore,
+  useCartActions,
+  useProductQuantity,
 } from '@/entities/cart';
 import type { Product } from '@/entities/product';
 import { QuantityControls } from '@/shared/ui/quantity-controls';
@@ -30,10 +27,8 @@ const controlsStyles: Record<
 };
 
 export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonProps) => {
-  const quantity = useCartStore(selectProductQuantity(product.id));
-  const addItem = useCartStore(selectAddItem);
-  const incrementItem = useCartStore(selectIncrementItem);
-  const decrementItem = useCartStore(selectDecrementItem);
+  const { quantity } = useProductQuantity(product.id);
+  const { addItem, incrementItem, decrementItem } = useCartActions();
   const hasItems = quantity > 0;
   const { primaryRef, secondaryRef, requestFocusSwap } = useSwapFocus(hasItems);
 

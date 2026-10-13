@@ -2,10 +2,7 @@ import {
   type CartEntry,
   MAX_ITEM_QUANTITY,
   MIN_ITEM_QUANTITY,
-  selectDecrementItem,
-  selectIncrementItem,
-  selectRemoveItem,
-  useCartStore,
+  useCartActions,
 } from '@/entities/cart';
 import { type Product, PRODUCT_UNIT_LABEL } from '@/entities/product';
 import { ToggleFavoriteButton } from '@/features/toggle-favorite';
@@ -21,9 +18,7 @@ interface CartItemProps {
 export const CartItem = ({ product, entry }: CartItemProps) => {
   const linePrice = product.price * entry.quantity;
 
-  const decrementItem = useCartStore(selectDecrementItem);
-  const incrementItem = useCartStore(selectIncrementItem);
-  const removeItem = useCartStore(selectRemoveItem);
+  const { decrementItem, incrementItem, removeItem } = useCartActions();
 
   return (
     <li className="grid grid-cols-[auto_minmax(0,1fr)_auto] gap-3 border-stone-100 p-3 not-first:border-t sm:grid-cols-[auto_minmax(0,1fr)_auto_minmax(7rem,auto)_auto] sm:items-center sm:gap-x-5 sm:p-4">
