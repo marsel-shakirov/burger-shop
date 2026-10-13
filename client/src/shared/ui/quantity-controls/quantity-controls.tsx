@@ -1,9 +1,9 @@
 import type { ComponentPropsWithoutRef, ReactElement, Ref } from 'react';
 
 import { cn } from '@/shared/lib';
-import { MinusIcon, PlusIcon, QtyMinusIcon, QtyPlusIcon } from '@/shared/ui/icon';
+import { MinusIcon, PlusIcon } from '@/shared/ui/icon';
 
-type Variant = 'outline' | 'solid' | 'solid-large' | 'soft';
+type Variant = 'solid' | 'solid-large' | 'soft';
 
 interface QuantityControlsProps extends Omit<ComponentPropsWithoutRef<'div'>, 'children'> {
   itemName: string;
@@ -13,12 +13,11 @@ interface QuantityControlsProps extends Omit<ComponentPropsWithoutRef<'div'>, 'c
   onDecrease: () => void;
   onIncrease: () => void;
   increaseButtonRef?: Ref<HTMLButtonElement>;
-  variant?: Variant;
+  variant: Variant;
   label?: ReactElement | string;
 }
 
 const buttonStyles: Record<Variant, string> = {
-  outline: 'rounded-md',
   solid:
     'grid size-7 place-items-center rounded-[5px] bg-stone-900 text-orange-500 transition-colors duration-150 not-aria-disabled:hover:bg-stone-700',
   'solid-large':
@@ -35,7 +34,7 @@ export const QuantityControls = ({
   max,
   className,
   increaseButtonRef,
-  variant = 'outline',
+  variant,
   label,
 }: QuantityControlsProps) => {
   const isMaxQuantity = quantity >= max;
@@ -53,11 +52,7 @@ export const QuantityControls = ({
         className={buttonClassName}
         aria-label={quantity <= min ? `Удалить: ${itemName}` : `Уменьшить количество: ${itemName}`}
       >
-        {variant === 'outline' ? (
-          <QtyMinusIcon className="size-7" />
-        ) : (
-          <MinusIcon className="size-3" />
-        )}
+        <MinusIcon className="size-3" />
       </button>
 
       <output
@@ -79,11 +74,7 @@ export const QuantityControls = ({
             : `Увеличить количество: ${itemName}`
         }
       >
-        {variant === 'outline' ? (
-          <QtyPlusIcon className="size-7" />
-        ) : (
-          <PlusIcon className="size-3" />
-        )}
+        <PlusIcon className="size-3" />
       </button>
     </div>
   );
