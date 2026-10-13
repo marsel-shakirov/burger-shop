@@ -14,4 +14,3 @@ export { ProfileIcon } from './icons/profile-icon';
 export { QtyMinusIcon } from './icons/qty-minus-icon';
 export { QtyPlusIcon } from './icons/qty-plus-icon';
 export { RatingStarIcon } from './icons/rating-star-icon';
-export { RemoveItemIcon } from './icons/remove-item-icon';
