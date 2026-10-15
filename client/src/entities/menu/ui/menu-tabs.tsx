@@ -9,7 +9,7 @@ interface MenuTabsProps {
 export const MenuTabs = ({ menus, selectedMenuSlug, onChange }: MenuTabsProps) => {
   return (
     <fieldset className="pt-2.5 sm:pt-5">
-      <legend className="sr-only">Раздел меню»</legend>
+      <legend className="sr-only">Раздел меню</legend>
 
       <ul role="list" className="flex gap-x-5">
         {menus.map(({ id, name, slug }) => (
