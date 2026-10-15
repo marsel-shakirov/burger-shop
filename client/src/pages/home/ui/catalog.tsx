@@ -1,29 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 
-import {
-  type Category,
-  CategoryFilter,
-  CategoryFilterSkeleton,
-  menusQueryOptions,
-  MenuTabs,
-  MenuTabsSkeleton,
-} from '@/entities/menu';
+import { menusQueryOptions } from '@/entities/menu';
 import { productsQueryOptions } from '@/entities/product';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
 import { ALL_CATEGORY } from '../model/catalog.constants';
 import { useCatalogParams } from '../model/use-catalog-params';
+import { CatalogFilters } from './catalog-filters';
 import { CatalogHeader } from './catalog-header';
 
 export const Catalog = () => {
   const { menuSlug, categorySlug, sorting, selectMenu, selectCategory, changeSorting } =
     useCatalogParams();
 
-  const {
-    isError: isMenusError,
-    isPending: isMenusPending,
-    data: menus = [],
-  } = useQuery(menusQueryOptions());
+  const { data: menus = [] } = useQuery(menusQueryOptions());
 
   const {
     isError: isProductsError,
@@ -43,34 +33,18 @@ export const Catalog = () => {
   });
 
   const activeMenu = menus.find((menu) => menu.slug === menuSlug);
-  const categories = activeMenu?.categories ?? [];
-  const categoryOptions: Category[] = [ALL_CATEGORY, ...categories];
-
   const productGridTitle =
-    categories.find((category) => category.slug === categorySlug)?.name ??
+    activeMenu?.categories.find((category) => category.slug === categorySlug)?.name ??
     (activeMenu ? `Все ${activeMenu.name.toLowerCase()}` : 'Все');
 
   return (
     <>
-      {isMenusPending ? (
-        <MenuTabsSkeleton />
-      ) : isMenusError ? null : (
-        <MenuTabs menus={menus} selectedMenuSlug={menuSlug} onChange={selectMenu} />
-      )}
-
-      <div className="pt-4 sm:pt-5">
-        {isMenusPending ? (
-          <CategoryFilterSkeleton />
-        ) : isMenusError ? (
-          <div>Failed to load categories</div>
-        ) : (
-          <CategoryFilter
-            categories={categoryOptions}
-            selectedCategorySlug={categorySlug ?? ALL_CATEGORY.slug}
-            onChange={selectCategory}
-          />
-        )}
-      </div>
+      <CatalogFilters
+        menuSlug={menuSlug}
+        categorySlug={categorySlug ?? ALL_CATEGORY.slug}
+        onMenuChange={selectMenu}
+        onCategoryChange={selectCategory}
+      />
       {isProductsPending ? (
         <ProductGridSkeleton />
       ) : isProductsError ? (
