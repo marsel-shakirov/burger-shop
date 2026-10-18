@@ -16,10 +16,14 @@ const parseProductDetailsId = (searchParams: URLSearchParams) => {
   return value && /^\d+$/.test(value) ? Number(value) : undefined;
 };
 
+export const setProductDetailsParam = (params: URLSearchParams, productId: number) => {
+  params.set(PRODUCT_DETAILS_PARAM, String(productId));
+};
+
 export const useProductDetailsLink = (productId: number): Pick<LinkProps, 'to' | 'state'> => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
-  params.set(PRODUCT_DETAILS_PARAM, String(productId));
+  setProductDetailsParam(params, productId);
 
   return { to: { search: `?${params}` }, state: OPENED_FROM_LIST_STATE };
 };

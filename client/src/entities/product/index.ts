@@ -1,7 +1,7 @@
 export { productsQueryOptions } from './api/products-query-options';
 export { useProduct } from './api/use-product';
 export { useProductsById } from './api/use-products-by-id';
-export { useProductDetailsParam } from './lib/product-details-link';
+export { setProductDetailsParam, useProductDetailsParam } from './lib/product-details-link';
 export {
   ALL_PRODUCTS_PARAMS,
   PRODUCT_SORT_BY,
