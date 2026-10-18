@@ -21,6 +21,11 @@
 
   --font-display: 'Unbounded', var(--sans);
 
+  --color-mustard: #f5b800;
+  --color-ketchup: #d9311f;
+  --color-pickle: #dde7b5;
+  --color-paper: #fffcf5;
+
   --animate-modal-rise: modal-rise 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-sheet-up: sheet-up 380ms cubic-bezier(0.2, 0.85, 0.25, 1) both;
   --animate-dish-drop: dish-drop 560ms cubic-bezier(0.2, 0.9, 0.25, 1) 140ms both;
@@ -88,6 +93,24 @@
   padding-top: calc(var(--receipt-tooth) / 2);
   mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg)
     calc(50% + var(--receipt-tooth) / 2) / var(--receipt-tooth) 100%;
+}
+
+@utility ticket-perforation-row {
+  --ticket-notch: 11px;
+  mask:
+    radial-gradient(circle var(--ticket-notch) at 0 var(--ticket-cut), #0000 98%, #000) left / 51%
+      100% no-repeat,
+    radial-gradient(circle var(--ticket-notch) at 100% var(--ticket-cut), #0000 98%, #000) right /
+      51% 100% no-repeat;
+}
+
+@utility ticket-perforation-col {
+  --ticket-notch: 11px;
+  mask:
+    radial-gradient(circle var(--ticket-notch) at var(--ticket-cut) 0, #0000 98%, #000) top / 100%
+      51% no-repeat,
+    radial-gradient(circle var(--ticket-notch) at var(--ticket-cut) 100%, #0000 98%, #000) bottom /
+      100% 51% no-repeat;
 }
 
 @utility modal-fade {
