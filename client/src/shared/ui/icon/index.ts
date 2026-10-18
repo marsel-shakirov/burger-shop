@@ -9,6 +9,8 @@ export { EmptyPlate } from './icons/empty-plate-icon';
 export { HeartIcon } from './icons/heart-icon';
 export { MenuIcon } from './icons/menu-icon';
 export { MinusIcon } from './icons/minus-icon';
+export { PauseIcon } from './icons/pause-icon';
+export { PlayIcon } from './icons/play-icon';
 export { PlusIcon } from './icons/plus-icon';
 export { ProfileIcon } from './icons/profile-icon';
 export { RatingStarIcon } from './icons/rating-star-icon';
