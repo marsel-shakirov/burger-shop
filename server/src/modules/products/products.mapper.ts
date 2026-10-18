@@ -9,14 +9,17 @@ function toImageUrl(imagePath: string, width: number) {
   return `${SUPABASE_STORAGE_URL}/${width}/${imagePath}.webp`;
 }
 
+export function toProductImage(imagePath: string) {
+  return {
+    imageUrl: toImageUrl(imagePath, PRODUCT_IMAGE_FALLBACK_WIDTH),
+    imageSrcSet: PRODUCT_IMAGE_WIDTHS.map(
+      (width) => `${toImageUrl(imagePath, width)} ${width}w`,
+    ).join(', '),
+  };
+}
+
 export function toProductResponse(product: ProductRow) {
   const { image_path, ...rest } = product;
 
-  return {
-    ...rest,
-    imageUrl: toImageUrl(image_path, PRODUCT_IMAGE_FALLBACK_WIDTH),
-    imageSrcSet: PRODUCT_IMAGE_WIDTHS.map(
-      (width) => `${toImageUrl(image_path, width)} ${width}w`,
-    ).join(', '),
-  };
+  return { ...rest, ...toProductImage(image_path) };
 }
