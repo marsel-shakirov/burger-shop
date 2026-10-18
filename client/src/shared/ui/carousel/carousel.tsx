@@ -5,7 +5,7 @@ import { cn } from '@/shared/lib';
 import { CarouselControls } from './carousel-controls';
 import { useCarousel } from './use-carousel';
 
-const DEFAULT_AUTOPLAY_DELAY_MS = 1000;
+const DEFAULT_AUTOPLAY_DELAY_MS = 6000;
 
 interface CarouselProps<T> {
   items: T[];
