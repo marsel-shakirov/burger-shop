@@ -66,6 +66,12 @@ GET /api/products?menu=burgers&category=beef&sort=popularity&order=desc
 - `/api/products` — все параметры необязательные: `menu` и `category` — slug, `sort` — `popularity | price | rating` (по умолчанию `rating`), `order` — `asc | desc` (по умолчанию `desc`).
 
 ```text
+GET /api/promos   активные акции в порядке sort_order
+```
+
+- `/api/promos` — без сессии. Акция активна, если `starts_at` уже наступил, а `ends_at` пуст или ещё не наступил. У каждой акции есть `id`, `title`, `description`, `terms` и `theme` — `mustard | pickle | ketchup`. `kind` — `coupon` с полями `value`, `valueCaption`, `code` или `bonus` с полями `value`, `valueCaption`, `ctaLabel`. `link` — `{ menu, category?, productId? }`, куда ведёт карточка, у бонуса его нет. `imageUrl` и `imageSrcSet` есть, только если у акции есть картинка.
+
+```text
 POST /api/auth/sign-up     { email, password }
 POST /api/auth/sign-in     { email, password }
 POST /api/auth/sign-out
