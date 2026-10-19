@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { selectSessionStatus, selectUser, useSessionStore } from '@/entities/session/@x/cart';
 
 import { cartQueryOptions } from '../api/cart-query-options';
-import { getProductQuantity, getTotalQuantity } from './cart.lib';
 import { selectCartItems } from './cart.selectors';
 import { useCartStore } from './cart.store';
 import type { CartEntry } from './cart.types';
+import { getProductQuantity, getTotalQuantity } from './cart-entries';
 
 interface CartResult<T> {
   data: T | undefined;
