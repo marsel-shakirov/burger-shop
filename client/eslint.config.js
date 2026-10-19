@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
+import jsxA11y from 'eslint-plugin-jsx-a11y-x';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import { defineConfig, globalIgnores } from 'eslint/config';
@@ -53,6 +54,7 @@ export default defineConfig([
       tseslint.configs.recommendedTypeChecked,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
+      jsxA11y.configs.recommended,
     ],
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -68,6 +70,7 @@ export default defineConfig([
       'simple-import-sort/exports': 'error',
       'max-lines': ['warn', { max: 200, skipBlankLines: true, skipComments: true }],
       'max-lines-per-function': ['warn', { max: 80, skipBlankLines: true, skipComments: true }],
+      'jsx-a11y-x/no-redundant-roles': ['error', { nav: ['navigation'], ul: ['list'] }],
     },
     languageOptions: {
       globals: globals.browser,
@@ -75,6 +78,13 @@ export default defineConfig([
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
+    },
+  },
+  {
+    files: ['src/shared/ui/modal/modal.tsx', 'src/pages/home/ui/product-sort-menu.tsx'],
+    rules: {
+      'jsx-a11y-x/click-events-have-key-events': 'off',
+      'jsx-a11y-x/no-noninteractive-element-interactions': 'off',
     },
   },
   ...LAYERS.map((layer) => ({

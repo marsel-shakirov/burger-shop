@@ -55,7 +55,7 @@ export const ProductSortMenu = ({ sorting, highlights, onChange }: ProductSortMe
     popoverRef.current?.hidePopover();
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       closeMenu();
@@ -89,7 +89,7 @@ export const ProductSortMenu = ({ sorting, highlights, onChange }: ProductSortMe
       >
         <fieldset>
           <legend className="sr-only">Сортировка</legend>
-          <ul role="list" onKeyDown={handleKeyDown} className="py-3.25">
+          <ul role="list" className="py-3.25">
             {SORT_OPTIONS.map((option) => {
               const optionId = `${option.sort}-${option.order}`;
 
@@ -98,6 +98,7 @@ export const ProductSortMenu = ({ sorting, highlights, onChange }: ProductSortMe
                   <label className="group" onClick={handleOptionClick}>
                     <input
                       onChange={() => onChange(option)}
+                      onKeyDown={handleKeyDown}
                       checked={isSameSorting(option, sorting)}
                       type="radio"
                       name="sort"

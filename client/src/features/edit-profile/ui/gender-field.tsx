@@ -12,7 +12,7 @@ interface GenderFieldProps {
 
 export const GenderField = ({ gender, invalid }: GenderFieldProps) => {
   return (
-    <fieldset className="min-w-0">
+    <fieldset role="radiogroup" aria-invalid={invalid ? true : undefined} className="group min-w-0">
       <legend className="mb-2 font-bold">Пол</legend>
 
       <div className="flex flex-wrap gap-2">
@@ -23,10 +23,9 @@ export const GenderField = ({ gender, invalid }: GenderFieldProps) => {
               name="gender"
               value={value}
               defaultChecked={(gender ?? '') === value}
-              aria-invalid={invalid ? true : undefined}
               className="peer sr-only"
             />
-            <span className="flex h-12 cursor-pointer items-center justify-center rounded-md border border-stone-400 peer-checked-orange bg-white px-2 text-sm font-bold whitespace-nowrap text-stone-600 peer-focus-ring transition-colors duration-150 peer-checked:border-transparent peer-aria-invalid:border-red-600 peer-not-checked:hover:border-stone-600 sm:text-base">
+            <span className="flex h-12 cursor-pointer items-center justify-center rounded-md border border-stone-400 peer-checked-orange bg-white px-2 text-sm font-bold whitespace-nowrap text-stone-600 peer-focus-ring transition-colors duration-150 group-aria-invalid:border-red-600 peer-checked:border-transparent group-aria-invalid:peer-checked:border-red-600 peer-not-checked:hover:border-stone-600 sm:text-base">
               {label}
             </span>
           </label>
