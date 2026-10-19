@@ -6,9 +6,9 @@ export const useIsStuck = (sentinel: Element | null) => {
   useEffect(() => {
     if (!sentinel) return;
 
-    const observer = new IntersectionObserver(([entry]) =>
-      setIsStuck(entry.boundingClientRect.top < 0),
-    );
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry) setIsStuck(entry.boundingClientRect.top < 0);
+    });
 
     observer.observe(sentinel);
     return () => observer.disconnect();

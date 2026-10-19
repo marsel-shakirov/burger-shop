@@ -23,7 +23,9 @@ export const parseBirthDate = (
   yearInput: string,
   today = new Date(),
 ): BirthDateResult => {
-  const parts = [dayInput.trim(), monthInput, yearInput.trim()];
+  const dayValue = dayInput.trim();
+  const yearValue = yearInput.trim();
+  const parts = [dayValue, monthInput, yearValue];
 
   if (parts.every((part) => part === '')) {
     return { ok: true, value: null };
@@ -33,7 +35,9 @@ export const parseBirthDate = (
     return { ok: false, error: 'Укажите день, месяц и год рождения' };
   }
 
-  const [day, month, year] = parts.map(Number);
+  const day = Number(dayValue);
+  const month = Number(monthInput);
+  const year = Number(yearValue);
   const currentYear = today.getFullYear();
 
   if (!Number.isInteger(year) || year < MIN_BIRTH_YEAR || year > currentYear) {
