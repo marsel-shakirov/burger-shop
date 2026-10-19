@@ -1,4 +1,4 @@
-export { cartQueryOptions } from './api/cart-query-options';
+export { CART_QUERY_KEY, cartQueryOptions } from './api/cart-query-options';
 export { MAX_ITEM_QUANTITY, MIN_ITEM_QUANTITY } from './config/cart.constants';
 export type { CartEntry } from './model/cart.types';
 export { mergeGuestCart } from './model/merge-guest-cart';

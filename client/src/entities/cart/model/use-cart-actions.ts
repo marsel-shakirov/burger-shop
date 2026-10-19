@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useSessionStore } from '@/entities/session/@x/cart';
 
-import { cartQueryOptions } from '../api/cart-query-options';
+import { CART_QUERY_KEY, cartQueryOptions } from '../api/cart-query-options';
 import { deleteCart } from '../api/delete-cart';
 import { deleteCartItem } from '../api/delete-cart-item';
 import { updateCartItem } from '../api/update-cart-item';
@@ -20,7 +20,7 @@ interface CartChangeVariables {
   change: CartChange;
 }
 
-const CART_MUTATION_KEY = ['cart', 'change'];
+const CART_MUTATION_KEY = [...CART_QUERY_KEY, 'change'];
 
 const GUEST_ACTIONS = {
   add: 'addItem',

@@ -2,11 +2,11 @@ import { type QueryClient, useQuery, useQueryClient } from '@tanstack/react-quer
 
 import { ALL_PRODUCTS_PARAMS } from '../config/product.constants';
 import type { Product } from '../model/product.types';
-import { productsQueryOptions } from './products-query-options';
+import { PRODUCTS_QUERY_KEY, productsQueryOptions } from './products-query-options';
 
 const getProductsFromLoadedCatalogs = (queryClient: QueryClient) =>
   queryClient
-    .getQueriesData<Product[]>({ queryKey: ['products'] })
+    .getQueriesData<Product[]>({ queryKey: PRODUCTS_QUERY_KEY })
     .flatMap(([, products]) => products ?? []);
 
 export const useProduct = (productId: number | undefined) => {

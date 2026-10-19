@@ -3,11 +3,13 @@ import { queryOptions } from '@tanstack/react-query';
 import type { ProductsQueryParams } from '../model/product.types';
 import { getProducts } from './get-products';
 
+export const PRODUCTS_QUERY_KEY = ['products'] as const;
+
 const PRODUCTS_STALE_TIME_MS = 1000 * 60 * 60;
 
 export const productsQueryOptions = (params: ProductsQueryParams) =>
   queryOptions({
-    queryKey: ['products', params],
+    queryKey: [...PRODUCTS_QUERY_KEY, params],
     queryFn: ({ signal }) => getProducts(params, { signal }),
     staleTime: PRODUCTS_STALE_TIME_MS,
   });

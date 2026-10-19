@@ -1,8 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { type PropsWithChildren, useEffect } from 'react';
 
-import { cartQueryOptions, mergeGuestCart } from '@/entities/cart';
-import { favoritesQueryOptions, mergeGuestFavorites } from '@/entities/favorite';
+import { CART_QUERY_KEY, cartQueryOptions, mergeGuestCart } from '@/entities/cart';
+import {
+  FAVORITES_QUERY_KEY,
+  favoritesQueryOptions,
+  mergeGuestFavorites,
+} from '@/entities/favorite';
+import { PROFILE_QUERY_KEY } from '@/entities/profile';
 import { getSession, type SessionUser, useSessionStore } from '@/entities/session';
 import { onUnauthorized } from '@/shared/api';
 
@@ -61,9 +66,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
     const unsubscribeStore = useSessionStore.subscribe((state, prevState) => {
       if (prevState.user && state.user?.id !== prevState.user.id) {
-        queryClient.removeQueries({ queryKey: ['profile'] });
-        queryClient.removeQueries({ queryKey: ['favorites'] });
-        queryClient.removeQueries({ queryKey: ['cart'] });
+        queryClient.removeQueries({ queryKey: PROFILE_QUERY_KEY });
+        queryClient.removeQueries({ queryKey: FAVORITES_QUERY_KEY });
+        queryClient.removeQueries({ queryKey: CART_QUERY_KEY });
       }
 
       if (state.user && state.user.id !== prevState.user?.id) {
