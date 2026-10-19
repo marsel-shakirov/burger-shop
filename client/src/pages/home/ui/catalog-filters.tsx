@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { CategoryFilterSkeleton, MenuTabsSkeleton } from '@/entities/menu';
 import { cn, useIsStuck } from '@/shared/lib';
+import { Container } from '@/shared/ui/container';
 
 import { CatalogFiltersContent } from './catalog-filters-content';
 import { CatalogFiltersError } from './catalog-filters-error';
@@ -38,29 +39,31 @@ export const CatalogFilters = ({
           isStuck && 'shadow-[0_12px_12px_-12px_rgb(0_0_0/0.18)]',
         )}
       >
-        <ErrorBoundary onReset={reset} FallbackComponent={CatalogFiltersError}>
-          <Suspense
-            fallback={
-              <CatalogFiltersLayout
-                menuTabs={<MenuTabsSkeleton />}
-                categoryFilter={<CategoryFilterSkeleton />}
+        <Container>
+          <ErrorBoundary onReset={reset} FallbackComponent={CatalogFiltersError}>
+            <Suspense
+              fallback={
+                <CatalogFiltersLayout
+                  menuTabs={<MenuTabsSkeleton />}
+                  categoryFilter={<CategoryFilterSkeleton />}
+                />
+              }
+            >
+              <CatalogFiltersContent
+                menuSlug={menuSlug}
+                categorySlug={categorySlug}
+                onMenuChange={(slug) => {
+                  onMenuChange(slug);
+                  scrollToCatalogStart();
+                }}
+                onCategoryChange={(slug) => {
+                  onCategoryChange(slug);
+                  scrollToCatalogStart();
+                }}
               />
-            }
-          >
-            <CatalogFiltersContent
-              menuSlug={menuSlug}
-              categorySlug={categorySlug}
-              onMenuChange={(slug) => {
-                onMenuChange(slug);
-                scrollToCatalogStart();
-              }}
-              onCategoryChange={(slug) => {
-                onCategoryChange(slug);
-                scrollToCatalogStart();
-              }}
-            />
-          </Suspense>
-        </ErrorBoundary>
+            </Suspense>
+          </ErrorBoundary>
+        </Container>
       </div>
     </>
   );

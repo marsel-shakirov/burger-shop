@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { menusQueryOptions } from '@/entities/menu';
 import { productsQueryOptions } from '@/entities/product';
+import { Container } from '@/shared/ui/container';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
 import { ALL_CATEGORY } from '../model/catalog.constants';
@@ -60,21 +61,23 @@ export const Catalog = () => {
         onMenuChange={selectMenu}
         onCategoryChange={selectCategory}
       />
-      {isProductsPending ? (
-        <ProductGridSkeleton />
-      ) : isProductsError ? (
-        <div>Failed to load products</div>
-      ) : (
-        <section className="py-5 sm:py-8">
-          <CatalogHeader
-            title={productGridTitle}
-            sorting={sorting}
-            products={products}
-            onSortingChange={changeSorting}
-          />
-          <ProductGrid products={products} isUpdating={isProductsPlaceholder} />
-        </section>
-      )}
+      <Container>
+        {isProductsPending ? (
+          <ProductGridSkeleton />
+        ) : isProductsError ? (
+          <div>Failed to load products</div>
+        ) : (
+          <section className="py-5 sm:py-8">
+            <CatalogHeader
+              title={productGridTitle}
+              sorting={sorting}
+              products={products}
+              onSortingChange={changeSorting}
+            />
+            <ProductGrid products={products} isUpdating={isProductsPlaceholder} />
+          </section>
+        )}
+      </Container>
     </>
   );
 };
