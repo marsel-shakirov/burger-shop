@@ -1,9 +1,9 @@
 import { parseCatalogParams, setCatalogCategoryParam, setCatalogMenuParam } from '@/entities/menu';
 import type { ProductSorting } from '@/entities/product';
+import { useUpdateSearchParams } from '@/shared/lib';
 
 import { ALL_CATEGORY, DEFAULT_MENU_SLUG } from '../config/catalog.constants';
 import { parseSorting } from './parse-sorting';
-import { useUpdateSearchParams } from './use-update-search-params';
 
 export const useCatalogParams = () => {
   const [searchParams, updateParams] = useUpdateSearchParams();

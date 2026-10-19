@@ -1,4 +1,6 @@
-import { type LinkProps, useLocation, useNavigate, useSearchParams } from 'react-router';
+import { type LinkProps, useLocation, useNavigate } from 'react-router';
+
+import { useUpdateSearchParams } from '@/shared/lib';
 
 const PRODUCT_DETAILS_PARAM = 'product';
 
@@ -29,21 +31,14 @@ export const useProductDetailsLink = (productId: number): Pick<LinkProps, 'to' |
 };
 
 export const useProductDetailsParam = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, updateParams] = useUpdateSearchParams();
   const { state } = useLocation();
   const navigate = useNavigate();
 
   const productId = parseProductDetailsId(searchParams);
 
   const removeProductDetailsParam = () =>
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev);
-        next.delete(PRODUCT_DETAILS_PARAM);
-        return next;
-      },
-      { replace: true },
-    );
+    updateParams((next) => next.delete(PRODUCT_DETAILS_PARAM));
 
   const returnToList = () => navigate(-1);
 
