@@ -14,7 +14,7 @@ import { ProfileContent } from './profile-content';
 import { ProfileError } from './profile-error';
 import { ProfileSkeleton } from './profile-skeleton';
 
-export const Profile = () => {
+export const ProfilePage = () => {
   const isGuest = useSessionStore(selectIsGuest);
   const user = useSessionStore(selectUser);
   const { reset } = useQueryErrorResetBoundary();

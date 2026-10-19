@@ -14,7 +14,7 @@ import { ProfileEditContent } from './profile-edit-content';
 import { ProfileEditSkeleton } from './profile-edit-skeleton';
 import { ProfileError } from './profile-error';
 
-export const ProfileEdit = () => {
+export const ProfileEditPage = () => {
   const isGuest = useSessionStore(selectIsGuest);
   const user = useSessionStore(selectUser);
   const { reset } = useQueryErrorResetBoundary();

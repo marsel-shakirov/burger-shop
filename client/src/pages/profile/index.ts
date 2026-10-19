@@ -1,2 +1,2 @@
-export { Profile } from './ui/profile';
-export { ProfileEdit } from './ui/profile-edit';
+export { ProfileEditPage } from './ui/profile-edit-page';
+export { ProfilePage } from './ui/profile-page';
