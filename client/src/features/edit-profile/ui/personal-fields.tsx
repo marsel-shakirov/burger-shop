@@ -3,7 +3,7 @@ import { useId } from 'react';
 import type { Profile } from '@/entities/profile';
 import { TextInput } from '@/shared/ui/text-input';
 
-import { NAME_MAX_LENGTH } from '../model/edit-profile.constants';
+import { NAME_MAX_LENGTH } from '../config/edit-profile.constants';
 import type { ProfileFormField } from '../model/edit-profile.types';
 import { BirthDateField } from './birth-date-field';
 import { GenderField } from './gender-field';

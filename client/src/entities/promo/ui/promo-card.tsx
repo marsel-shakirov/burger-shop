@@ -3,7 +3,7 @@ import { Link, type To } from 'react-router';
 
 import { cn } from '@/shared/lib';
 
-import { PROMO_THEME_CLASS } from '../model/promo.constants';
+import { PROMO_THEME_CLASS } from '../config/promo.constants';
 import type { Promo } from '../model/promo.types';
 
 interface PromoCardProps {

@@ -2,7 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { type Category, CategoryFilter, menusQueryOptions, MenuTabs } from '@/entities/menu';
 
-import { ALL_CATEGORY } from '../model/catalog.constants';
+import { ALL_CATEGORY } from '../config/catalog.constants';
 import { CatalogFiltersLayout } from './catalog-filters-layout';
 
 interface CatalogFiltersContentProps {

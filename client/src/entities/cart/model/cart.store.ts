@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-import { CART_STORAGE_KEY, MAX_ITEM_QUANTITY, MIN_ITEM_QUANTITY } from './cart.constants';
+import { CART_STORAGE_KEY, MAX_ITEM_QUANTITY, MIN_ITEM_QUANTITY } from '../config/cart.constants';
 import { findCartEntryByProductId } from './cart.lib';
 import type { CartState } from './cart.types';
 

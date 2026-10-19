@@ -1,6 +1,6 @@
 import type { Product, ProductSorting } from '@/entities/product';
 
-import { getSortHighlights } from '../model/get-sort-highlights';
+import { getSortHighlights } from '../lib/get-sort-highlights';
 import { ProductSortMenu } from './product-sort-menu';
 
 interface CatalogHeaderProps {

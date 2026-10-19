@@ -1,4 +1,6 @@
-import type { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER, PRODUCT_UNIT } from './product.constants';
+export const PRODUCT_SORT_BY = ['popularity', 'price', 'rating'] as const;
+export const PRODUCT_SORT_ORDER = ['desc', 'asc'] as const;
+export const PRODUCT_UNIT = ['g', 'ml'] as const;
 
 export type ProductSortBy = (typeof PRODUCT_SORT_BY)[number];
 export type ProductSortOrder = (typeof PRODUCT_SORT_ORDER)[number];

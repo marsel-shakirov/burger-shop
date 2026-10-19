@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { RatingStarIcon } from '@/shared/ui/icon';
 
-import { PRODUCT_UNIT_LABEL } from '../model/product.constants';
+import { PRODUCT_UNIT_LABEL } from '../config/product.constants';
 import type { Product } from '../model/product.types';
 
 export interface ProductDetailsProps {

@@ -3,8 +3,8 @@ import { Link } from 'react-router';
 
 import { RatingStarIcon } from '@/shared/ui/icon';
 
+import { PRODUCT_UNIT_LABEL } from '../config/product.constants';
 import { useProductDetailsLink } from '../lib/product-details-link';
-import { PRODUCT_UNIT_LABEL } from '../model/product.constants';
 import type { Product } from '../model/product.types';
 export interface ProductCardProps {
   product: Product;

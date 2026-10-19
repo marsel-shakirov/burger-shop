@@ -1,7 +1,7 @@
 import { cn } from '@/shared/lib';
 import { Skeleton } from '@/shared/ui/skeleton';
 
-import { PROMO_SLIDE_CLASS, PROMO_TRACK_CLASS } from '../model/promo-carousel.constants';
+import { PROMO_SLIDE_CLASS, PROMO_TRACK_CLASS } from '../config/promo-carousel.constants';
 
 const SKELETON_SLIDES_COUNT = 2;
 

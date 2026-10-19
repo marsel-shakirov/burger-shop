@@ -1,6 +1,6 @@
 import type { Category, Menu } from '@/entities/menu';
 
-import { DEFAULT_MENU_SLUG } from './catalog.constants';
+import { DEFAULT_MENU_SLUG } from '../config/catalog.constants';
 
 interface CatalogSelection {
   menuSlug: string;

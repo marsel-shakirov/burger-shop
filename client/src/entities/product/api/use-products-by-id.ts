@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { ALL_PRODUCTS_PARAMS } from '../model/product.constants';
+import { ALL_PRODUCTS_PARAMS } from '../config/product.constants';
 import type { Product } from '../model/product.types';
 import { productsQueryOptions } from './products-query-options';
 

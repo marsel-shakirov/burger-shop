@@ -12,7 +12,7 @@ import type { ProductSorting } from '@/entities/product';
 import { formatPrice } from '@/shared/lib';
 import { RatingStarIcon } from '@/shared/ui/icon';
 
-import type { SortHighlights } from '../model/get-sort-highlights';
+import type { SortHighlights } from '../lib/get-sort-highlights';
 import { isSameSorting, SORT_OPTIONS, type SortOption } from '../model/sort-options';
 
 const renderHighlight = ({ sort, order }: SortOption, highlights: SortHighlights): ReactNode => {

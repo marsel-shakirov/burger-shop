@@ -5,7 +5,7 @@ import { productsQueryOptions } from '@/entities/product';
 import { Container } from '@/shared/ui/container';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
-import { ALL_CATEGORY } from '../model/catalog.constants';
+import { ALL_CATEGORY } from '../config/catalog.constants';
 import { resolveCatalogSelection } from '../model/resolve-catalog-selection';
 import { useCatalogParams } from '../model/use-catalog-params';
 import { CatalogFilters } from './catalog-filters';

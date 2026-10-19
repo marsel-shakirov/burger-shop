@@ -4,7 +4,7 @@ import { promosQueryOptions } from '@/entities/promo';
 import { selectIsAuthenticated, selectIsGuest, useSessionStore } from '@/entities/session';
 import { Carousel } from '@/shared/ui/carousel';
 
-import { PROMO_SLIDE_CLASS, PROMO_TRACK_CLASS } from '../model/promo-carousel.constants';
+import { PROMO_SLIDE_CLASS, PROMO_TRACK_CLASS } from '../config/promo-carousel.constants';
 import { PromoCarouselSkeleton } from './promo-carousel-skeleton';
 import { PromoSlide } from './promo-slide';
 

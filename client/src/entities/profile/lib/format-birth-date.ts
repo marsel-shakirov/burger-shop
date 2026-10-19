@@ -1,4 +1,4 @@
-import { MONTHS_GENITIVE } from '../model/profile.constants';
+import { MONTHS_GENITIVE } from '../config/profile.constants';
 
 export const formatBirthDay = (birthDate: string) => {
   const [, month, day] = birthDate.split('-');

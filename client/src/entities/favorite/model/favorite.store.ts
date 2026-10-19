@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-import { FAVORITE_STORAGE_KEY } from './favorite.constants';
+import { FAVORITE_STORAGE_KEY } from '../config/favorite.constants';
 import type { FavoriteState } from './favorite.types';
 
 export const useFavoriteStore = create<FavoriteState>()(

@@ -1,4 +1,4 @@
-import { MIN_BIRTH_YEAR, MONTHS_PREPOSITIONAL } from '../model/edit-profile.constants';
+import { MIN_BIRTH_YEAR, MONTHS_PREPOSITIONAL } from '../config/edit-profile.constants';
 
 type BirthDateResult = { ok: true; value: string | null } | { ok: false; error: string };
 
