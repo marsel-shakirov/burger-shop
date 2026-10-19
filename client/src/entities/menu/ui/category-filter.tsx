@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import type { Category } from '../model/menu.types';
 
 interface CategoryFilterProps {
@@ -10,16 +12,42 @@ const revealChip = (input: HTMLInputElement) => {
   input.closest('li')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 };
 
+const revealSelectedChip = (list: HTMLUListElement) => {
+  const chip = list.querySelector('input:checked')?.closest('li');
+  if (!chip) return;
+
+  const scrollPadding = parseFloat(getComputedStyle(list).scrollPaddingInlineEnd) || 0;
+  const overflow =
+    chip.getBoundingClientRect().right - (list.getBoundingClientRect().right - scrollPadding);
+
+  if (overflow > 0) list.scrollTo({ left: list.scrollLeft + overflow, behavior: 'instant' });
+};
+
 export const CategoryFilter = ({
   selectedCategorySlug,
   categories,
   onChange,
 }: CategoryFilterProps) => {
+  const listRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    let isActive = true;
+
+    document.fonts.ready.then(() => {
+      if (isActive && listRef.current) revealSelectedChip(listRef.current);
+    });
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
   return (
     <fieldset className="min-w-0">
       <legend className="sr-only">Раздел категории</legend>
 
       <ul
+        ref={listRef}
         role="list"
         className="-m-1 flex scroll-px-4 scrollbar-none gap-2 overflow-x-auto overscroll-x-contain mask-r-from-[calc(100%-1rem)] p-1 pr-4 motion-safe:scroll-smooth [&::-webkit-scrollbar]:hidden"
       >

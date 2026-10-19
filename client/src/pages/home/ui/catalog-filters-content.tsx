@@ -28,6 +28,7 @@ export const CatalogFiltersContent = ({
       menuTabs={<MenuTabs menus={menus} selectedMenuSlug={menuSlug} onChange={onMenuChange} />}
       categoryFilter={
         <CategoryFilter
+          key={menuSlug}
           categories={categoryOptions}
           selectedCategorySlug={categorySlug}
           onChange={onCategoryChange}
