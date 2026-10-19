@@ -2,7 +2,7 @@ import type { Category, Menu } from '@/entities/menu';
 
 import { DEFAULT_MENU_SLUG } from '../config/catalog.constants';
 
-interface CatalogSelection {
+interface ResolvedCatalogSelection {
   menuSlug: string;
   categorySlug?: string;
   menu?: Menu;
@@ -13,7 +13,7 @@ export const resolveCatalogSelection = (
   menus: Menu[] | undefined,
   menuSlug: string,
   categorySlug?: string,
-): CatalogSelection => {
+): ResolvedCatalogSelection => {
   if (!menus) return { menuSlug, categorySlug };
 
   const menu =
