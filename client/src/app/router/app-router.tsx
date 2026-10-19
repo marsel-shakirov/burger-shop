@@ -10,6 +10,8 @@ import { RegisterPage } from '@/pages/register';
 import { routes } from '@/shared/config';
 
 import { AppLayout } from '../layouts/app-layout';
+import { RequireAuth } from './require-auth';
+import { RequireGuest } from './require-guest';
 
 export const AppRouter = () => {
   return (
@@ -19,10 +21,14 @@ export const AppRouter = () => {
           <Route index element={<HomePage />} />
           <Route path={routes.cart} element={<CartPage />} />
           <Route path={routes.favorites} element={<FavoritePage />} />
-          <Route path={routes.profile} element={<ProfilePage />} />
-          <Route path={routes.edit} element={<ProfileEditPage />} />
-          <Route path={routes.login} element={<LoginPage />} />
-          <Route path={routes.register} element={<RegisterPage />} />
+          <Route element={<RequireAuth />}>
+            <Route path={routes.profile} element={<ProfilePage />} />
+            <Route path={routes.edit} element={<ProfileEditPage />} />
+          </Route>
+          <Route element={<RequireGuest />}>
+            <Route path={routes.login} element={<LoginPage />} />
+            <Route path={routes.register} element={<RegisterPage />} />
+          </Route>
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

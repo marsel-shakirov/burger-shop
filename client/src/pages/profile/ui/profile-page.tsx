@@ -1,11 +1,9 @@
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Navigate } from 'react-router';
 
-import { selectIsGuest, selectUser, useSessionStore } from '@/entities/session';
+import { selectUser, useSessionStore } from '@/entities/session';
 import { SignOutButton } from '@/features/sign-out';
-import { routes } from '@/shared/config';
 import { Container } from '@/shared/ui/container';
 import { PageMeta } from '@/shared/ui/page-meta';
 import { ReceiptCard } from '@/shared/ui/receipt-card';
@@ -15,13 +13,8 @@ import { ProfileError } from './profile-error';
 import { ProfileSkeleton } from './profile-skeleton';
 
 export const ProfilePage = () => {
-  const isGuest = useSessionStore(selectIsGuest);
   const user = useSessionStore(selectUser);
   const { reset } = useQueryErrorResetBoundary();
-
-  if (isGuest) {
-    return <Navigate to={routes.login} replace />;
-  }
 
   if (!user) {
     return null;

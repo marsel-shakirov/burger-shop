@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router';
 
-import { selectIsAuthenticated, useSessionStore } from '@/entities/session';
 import { SignUpForm } from '@/features/sign-up';
 import { routes } from '@/shared/config';
 import { PageMeta } from '@/shared/ui/page-meta';
@@ -10,13 +8,8 @@ import { AuthCard } from '@/widgets/auth-card';
 import { CheckEmail } from './check-email';
 
 export const RegisterPage = () => {
-  const isAuthenticated = useSessionStore(selectIsAuthenticated);
   const [email, setEmail] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
-
-  if (isAuthenticated) {
-    return <Navigate to={routes.profile} replace />;
-  }
 
   const handleEmailSent = (sentEmail: string) => {
     setEmail(sentEmail);

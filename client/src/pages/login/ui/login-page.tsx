@@ -1,18 +1,9 @@
-import { Navigate } from 'react-router';
-
-import { selectIsAuthenticated, useSessionStore } from '@/entities/session';
 import { SignInForm } from '@/features/sign-in';
 import { routes } from '@/shared/config';
 import { PageMeta } from '@/shared/ui/page-meta';
 import { AuthCard } from '@/widgets/auth-card';
 
 export const LoginPage = () => {
-  const isAuthenticated = useSessionStore(selectIsAuthenticated);
-
-  if (isAuthenticated) {
-    return <Navigate to={routes.profile} replace />;
-  }
-
   return (
     <>
       <PageMeta title="Вход" noindex />
