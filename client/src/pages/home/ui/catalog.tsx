@@ -1,80 +1,39 @@
-import { useQuery } from '@tanstack/react-query';
-
-import { menusQueryOptions } from '@/entities/menu';
-import { productsQueryOptions } from '@/entities/product';
 import { Container } from '@/shared/ui/container';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
+import { useCatalogProducts } from '../api/use-catalog-products';
 import { ALL_CATEGORY } from '../config/catalog.constants';
-import { resolveCatalogSelection } from '../model/resolve-catalog-selection';
-import { useCatalogParams } from '../model/use-catalog-params';
+import { useCatalogSelection } from '../model/use-catalog-selection';
 import { CatalogFilters } from './catalog-filters';
 import { CatalogHeader } from './catalog-header';
+import { getCatalogTitle } from './get-catalog-title';
 
 export const Catalog = () => {
-  const {
-    menuSlug: requestedMenuSlug,
-    categorySlug: requestedCategorySlug,
-    sorting,
-    selectMenu,
-    selectCategory,
-    changeSorting,
-  } = useCatalogParams();
-
-  const {
-    data: menus,
-    isSuccess: isMenusSuccess,
-    isError: isMenusError,
-  } = useQuery(menusQueryOptions());
-
-  const { menuSlug, categorySlug, menu, category } = resolveCatalogSelection(
-    menus,
-    requestedMenuSlug,
-    requestedCategorySlug,
-  );
-
-  const {
-    isError: isProductsError,
-    isPending: isProductsPending,
-    isPlaceholderData: isProductsPlaceholder,
-    data: products,
-  } = useQuery({
-    ...productsQueryOptions({ sorting, menu: menuSlug, category: categorySlug }),
-    enabled: isMenusSuccess || isMenusError,
-    placeholderData: (previousData, previousQuery) => {
-      const previousParams = previousQuery?.queryKey[1];
-      if (typeof previousParams !== 'object') return undefined;
-
-      return previousParams.menu === menuSlug && previousParams.category === categorySlug
-        ? previousData
-        : undefined;
-    },
-  });
-
-  const productGridTitle = category?.name ?? (menu ? `Все ${menu.name.toLowerCase()}` : 'Все');
+  const selection = useCatalogSelection();
+  const { isPending, isError, isPlaceholderData, data: products } = useCatalogProducts(selection);
 
   return (
     <>
       <CatalogFilters
-        menuSlug={menuSlug}
-        categorySlug={categorySlug ?? ALL_CATEGORY.slug}
-        onMenuChange={selectMenu}
-        onCategoryChange={selectCategory}
+        menuSlug={selection.menuSlug}
+        categorySlug={selection.categorySlug ?? ALL_CATEGORY.slug}
+        onMenuChange={selection.selectMenu}
+        onCategoryChange={selection.selectCategory}
       />
       <Container>
-        {isProductsPending ? (
+        {isPending ? (
           <ProductGridSkeleton />
-        ) : isProductsError ? (
+        ) : isError ? (
           <div>Failed to load products</div>
         ) : (
           <section className="py-5 sm:py-8">
             <CatalogHeader
-              title={productGridTitle}
-              sorting={sorting}
+              title={getCatalogTitle(selection)}
+              sorting={selection.sorting}
               products={products}
-              onSortingChange={changeSorting}
+              onSortingChange={selection.changeSorting}
             />
-            <ProductGrid products={products} isUpdating={isProductsPlaceholder} />
+            <ProductGrid products={products} isUpdating={isPlaceholderData} />
           </section>
         )}
       </Container>
