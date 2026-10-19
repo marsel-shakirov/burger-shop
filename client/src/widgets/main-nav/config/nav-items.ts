@@ -1,8 +1,7 @@
 import type { ComponentType, SVGProps } from 'react';
 
+import { routes } from '@/shared/config';
 import { CartIcon, HeartIcon, MenuIcon, ProfileIcon } from '@/shared/ui/icon';
-
-import { routes } from './routes';
 
 export interface NavItem {
   to: (typeof routes)[keyof typeof routes];

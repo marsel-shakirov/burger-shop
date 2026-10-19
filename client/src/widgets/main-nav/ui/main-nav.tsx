@@ -1,8 +1,10 @@
 import { NavLink } from 'react-router';
 
 import { CartNavBadge } from '@/entities/cart';
-import { navItems, routes } from '@/shared/config';
+import { routes } from '@/shared/config';
 import { cn, selectSearchByPath, useLastSearchStore } from '@/shared/lib';
+
+import { navItems } from '../config/nav-items';
 
 type Variant = 'bottom' | 'header';
 
