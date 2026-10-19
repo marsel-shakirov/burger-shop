@@ -1,9 +1,7 @@
-import type { SessionUser } from '@/entities/session';
+import type { AuthCredentials, SessionUser } from '@/entities/session';
 import { createApiError, readJson } from '@/shared/api';
 
-import type { SignUpCredentials } from '../model/sign-up.types';
-
-export const signUp = async (credentials: SignUpCredentials): Promise<SessionUser | null> => {
+export const signUp = async (credentials: AuthCredentials): Promise<SessionUser | null> => {
   const response = await fetch('/api/auth/sign-up', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

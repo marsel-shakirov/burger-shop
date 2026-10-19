@@ -5,6 +5,11 @@ export interface SessionUser {
   email: string | null;
 }
 
+export interface AuthCredentials {
+  email: string;
+  password: string;
+}
+
 export interface SessionState {
   user: SessionUser | null;
   status: SessionStatus;
