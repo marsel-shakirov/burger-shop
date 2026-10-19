@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export const useIsStuck = () => {
-  const sentinelRef = useRef<HTMLDivElement>(null);
+export const useIsStuck = (sentinel: Element | null) => {
   const [isStuck, setIsStuck] = useState(false);
 
   useEffect(() => {
-    const sentinel = sentinelRef.current;
     if (!sentinel) return;
 
     const observer = new IntersectionObserver(([entry]) =>
@@ -14,7 +12,7 @@ export const useIsStuck = () => {
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, []);
+  }, [sentinel]);
 
-  return { sentinelRef, isStuck };
+  return isStuck;
 };
