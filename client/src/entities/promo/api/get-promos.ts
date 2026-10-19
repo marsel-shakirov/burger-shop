@@ -1,4 +1,4 @@
-import type { RequestOptions } from '@/shared/api';
+import { readJson, type RequestOptions } from '@/shared/api';
 
 import type { Promo } from '../model/promo.types';
 
@@ -9,5 +9,5 @@ export const getPromos = async ({ signal }: RequestOptions = {}): Promise<Promo[
     throw new Error('Failed to load promos');
   }
 
-  return response.json();
+  return readJson<Promo[]>(response);
 };

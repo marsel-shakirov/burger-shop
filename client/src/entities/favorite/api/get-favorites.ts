@@ -1,4 +1,4 @@
-import { authFetch, createApiError, type RequestOptions } from '@/shared/api';
+import { authFetch, createApiError, readJson, type RequestOptions } from '@/shared/api';
 
 import type { FavoriteProductId } from '../model/favorite.types';
 import type { FavoritesResponse } from './favorites.types';
@@ -12,7 +12,7 @@ export const getFavorites = async ({ signal }: RequestOptions = {}): Promise<
     throw await createApiError(response);
   }
 
-  const { productIds }: FavoritesResponse = await response.json();
+  const { productIds } = await readJson<FavoritesResponse>(response);
 
   return productIds;
 };

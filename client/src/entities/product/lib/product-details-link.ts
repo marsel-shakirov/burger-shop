@@ -32,7 +32,7 @@ export const useProductDetailsLink = (productId: number): Pick<LinkProps, 'to' |
 
 export const useProductDetailsParam = () => {
   const [searchParams, updateParams] = useUpdateSearchParams();
-  const { state } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const productId = parseProductDetailsId(searchParams);
@@ -40,10 +40,10 @@ export const useProductDetailsParam = () => {
   const removeProductDetailsParam = () =>
     updateParams((next) => next.delete(PRODUCT_DETAILS_PARAM));
 
-  const returnToList = () => navigate(-1);
+  const returnToList = () => void navigate(-1);
 
   const closeProductDetails = () => {
-    if (isOpenedFromList(state)) returnToList();
+    if (isOpenedFromList(location.state)) returnToList();
     else removeProductDetailsParam();
   };
 

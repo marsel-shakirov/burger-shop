@@ -16,7 +16,7 @@ export default defineConfig([
     },
     extends: [
       js.configs.recommended,
-      tseslint.configs.recommended,
+      tseslint.configs.recommendedTypeChecked,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
@@ -38,6 +38,7 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },

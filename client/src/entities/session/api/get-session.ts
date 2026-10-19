@@ -1,4 +1,4 @@
-import { createApiError, type RequestOptions } from '@/shared/api';
+import { createApiError, readJson, type RequestOptions } from '@/shared/api';
 
 import type { SessionUser } from '../model/session.types';
 
@@ -9,7 +9,7 @@ export const getSession = async ({ signal }: RequestOptions = {}): Promise<Sessi
     throw await createApiError(response);
   }
 
-  const { user } = await response.json();
+  const { user } = await readJson<{ user: SessionUser | null }>(response);
 
   return user;
 };

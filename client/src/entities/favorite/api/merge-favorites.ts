@@ -1,4 +1,4 @@
-import { authFetch, createApiError } from '@/shared/api';
+import { authFetch, createApiError, readJson } from '@/shared/api';
 
 import type { FavoriteProductId } from '../model/favorite.types';
 import type { FavoritesResponse } from './favorites.types';
@@ -16,7 +16,7 @@ export const mergeFavorites = async (
     throw await createApiError(response);
   }
 
-  const { productIds: mergedIds }: FavoritesResponse = await response.json();
+  const { productIds: mergedIds } = await readJson<FavoritesResponse>(response);
 
   return mergedIds;
 };

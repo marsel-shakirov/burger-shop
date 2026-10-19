@@ -1,5 +1,5 @@
 import type { SessionUser } from '@/entities/session';
-import { createApiError } from '@/shared/api';
+import { createApiError, readJson } from '@/shared/api';
 
 import type { SignUpCredentials } from '../model/sign-up.types';
 
@@ -14,7 +14,7 @@ export const signUp = async (credentials: SignUpCredentials): Promise<SessionUse
     throw await createApiError(response);
   }
 
-  const { user } = await response.json();
+  const { user } = await readJson<{ user: SessionUser | null }>(response);
 
   return user;
 };

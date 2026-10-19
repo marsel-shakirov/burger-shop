@@ -1,4 +1,4 @@
-import { authFetch, type RequestOptions } from '@/shared/api';
+import { authFetch, readJson, type RequestOptions } from '@/shared/api';
 
 import type { Profile } from '../model/profile.types';
 
@@ -9,5 +9,5 @@ export const getProfile = async ({ signal }: RequestOptions = {}): Promise<Profi
     throw new Error('Failed to load profile');
   }
 
-  return response.json();
+  return readJson<Profile>(response);
 };

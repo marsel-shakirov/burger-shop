@@ -1,3 +1,5 @@
+import { readJson } from './read-json';
+
 interface ApiErrorBody {
   message?: string;
   code?: string;
@@ -23,7 +25,7 @@ export const isApiError = (error: unknown): error is ApiError => error instanceo
 export const isNetworkError = (error: unknown): error is TypeError => error instanceof TypeError;
 
 export const createApiError = async (response: Response): Promise<ApiError> => {
-  const body: ApiErrorBody = await response.json().catch(() => ({}));
+  const body = await readJson<ApiErrorBody>(response).catch(() => ({}));
 
   return new ApiError(response.status, body);
 };

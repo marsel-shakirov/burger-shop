@@ -1,4 +1,4 @@
-import { authFetch, createApiError, type RequestOptions } from '@/shared/api';
+import { authFetch, createApiError, readJson, type RequestOptions } from '@/shared/api';
 
 import type { CartEntry } from '../model/cart.types';
 import type { CartResponse } from './cart.types';
@@ -10,7 +10,7 @@ export const getCart = async ({ signal }: RequestOptions = {}): Promise<CartEntr
     throw await createApiError(response);
   }
 
-  const { items }: CartResponse = await response.json();
+  const { items } = await readJson<CartResponse>(response);
 
   return items;
 };

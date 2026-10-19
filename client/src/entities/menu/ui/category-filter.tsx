@@ -40,7 +40,7 @@ export const CategoryFilter = ({
   useEffect(() => {
     let isActive = true;
 
-    document.fonts.ready.then(() => {
+    void document.fonts.ready.then(() => {
       if (isActive && listRef.current) revealSelectedChip(listRef.current);
     });
 

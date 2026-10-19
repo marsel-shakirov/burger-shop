@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { type SubmitEvent, useId } from 'react';
 
 import { setSessionUser } from '@/entities/session';
+import { getFormString } from '@/shared/lib';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { TextInput } from '@/shared/ui/text-input';
 
@@ -22,8 +23,8 @@ export const SignInForm = () => {
     const formData = new FormData(event.currentTarget);
 
     mutate({
-      email: String(formData.get('email')).trim(),
-      password: String(formData.get('password')),
+      email: getFormString(formData, 'email').trim(),
+      password: getFormString(formData, 'password'),
     });
   };
 

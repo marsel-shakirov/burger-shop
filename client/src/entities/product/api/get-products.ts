@@ -1,4 +1,4 @@
-import type { RequestOptions } from '@/shared/api';
+import { readJson, type RequestOptions } from '@/shared/api';
 
 import type { Product, ProductsQueryParams } from '../model/product.types';
 
@@ -22,5 +22,5 @@ export const getProducts = async (
     throw new Error('Failed to load products');
   }
 
-  return response.json();
+  return readJson<Product[]>(response);
 };

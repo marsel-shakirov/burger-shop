@@ -1,4 +1,4 @@
-import { authFetch, createApiError } from '@/shared/api';
+import { authFetch, createApiError, readJson } from '@/shared/api';
 
 import type { CartEntry } from '../model/cart.types';
 import type { CartResponse } from './cart.types';
@@ -14,7 +14,7 @@ export const mergeCart = async (items: CartEntry[]): Promise<CartEntry[]> => {
     throw await createApiError(response);
   }
 
-  const { items: mergedItems }: CartResponse = await response.json();
+  const { items: mergedItems } = await readJson<CartResponse>(response);
 
   return mergedItems;
 };

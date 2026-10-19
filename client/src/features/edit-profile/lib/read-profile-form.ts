@@ -1,5 +1,5 @@
 import { GENDERS, type Profile } from '@/entities/profile';
-import { isOneOf } from '@/shared/lib';
+import { getFormString, isOneOf } from '@/shared/lib';
 
 import type { ProfileFormError, ProfileSection, ProfileUpdate } from '../model/edit-profile.types';
 import { parseBirthDate } from './birth-date';
@@ -9,7 +9,7 @@ type ReadResult = { ok: true; update: ProfileUpdate } | { ok: false; error: Prof
 const toNullable = (value: string) => value.trim() || null;
 
 export const readProfileForm = (section: ProfileSection, formData: FormData): ReadResult => {
-  const get = (name: string) => String(formData.get(name) ?? '');
+  const get = (name: string) => getFormString(formData, name);
 
   if (section === 'phone') {
     return { ok: true, update: { phone: toNullable(get('phone')) } };

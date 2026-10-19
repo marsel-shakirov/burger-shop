@@ -1,5 +1,5 @@
 import type { Profile } from '@/entities/profile';
-import { authFetch, createApiError } from '@/shared/api';
+import { authFetch, createApiError, readJson } from '@/shared/api';
 
 import type { ProfileUpdate } from '../model/edit-profile.types';
 
@@ -14,5 +14,5 @@ export const updateProfile = async (data: ProfileUpdate): Promise<Profile> => {
     throw await createApiError(response);
   }
 
-  return response.json();
+  return readJson<Profile>(response);
 };

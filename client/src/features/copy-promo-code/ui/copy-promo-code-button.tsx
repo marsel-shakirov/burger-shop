@@ -24,7 +24,7 @@ export const CopyPromoCodeButton = ({ code }: CopyPromoCodeButtonProps) => {
   return (
     <button
       type="button"
-      onClick={copyCode}
+      onClick={() => void copyCode()}
       data-copied={status === 'copied' || undefined}
       className="rounded-full bg-stone-900 px-3.5 py-2.5 text-sm leading-none font-bold whitespace-nowrap text-paper focus-ring transition-colors hover:bg-stone-700 data-copied:bg-lime-800"
     >
