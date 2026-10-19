@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { cn } from '@/shared/lib';
 
-import type { AddToCartVariant } from '../model/add-to-cart.types';
+import type { AddToCartVariant } from './add-to-cart.types';
 
 interface AddToCartFrameProps {
   variant: AddToCartVariant;
