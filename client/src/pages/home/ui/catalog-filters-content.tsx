@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { type Category, CategoryFilter, menusQueryOptions, MenuTabs } from '@/entities/menu';
 
 import { ALL_CATEGORY } from '../model/catalog.constants';
+import { CatalogFiltersLayout } from './catalog-filters-layout';
 
 interface CatalogFiltersContentProps {
   menuSlug: string;
@@ -23,16 +24,15 @@ export const CatalogFiltersContent = ({
   const categoryOptions: Category[] = [ALL_CATEGORY, ...categories];
 
   return (
-    <>
-      <MenuTabs menus={menus} selectedMenuSlug={menuSlug} onChange={onMenuChange} />
-
-      <div className="pt-4 sm:pt-5">
+    <CatalogFiltersLayout
+      menuTabs={<MenuTabs menus={menus} selectedMenuSlug={menuSlug} onChange={onMenuChange} />}
+      categoryFilter={
         <CategoryFilter
           categories={categoryOptions}
           selectedCategorySlug={categorySlug}
           onChange={onCategoryChange}
         />
-      </div>
-    </>
+      }
+    />
   );
 };

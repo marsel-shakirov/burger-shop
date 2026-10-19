@@ -8,29 +8,32 @@ interface MenuTabsProps {
 
 export const MenuTabs = ({ menus, selectedMenuSlug, onChange }: MenuTabsProps) => {
   return (
-    <fieldset className="pt-2.5 sm:pt-5">
+    <fieldset className="min-w-0">
       <legend className="sr-only">Раздел меню</legend>
 
-      <ul role="list" className="flex gap-x-5">
-        {menus.map(({ id, name, slug }) => (
-          <li key={id}>
-            <label className="group">
-              <input
-                onChange={() => onChange(slug)}
-                checked={selectedMenuSlug === slug}
-                type="radio"
-                className="peer sr-only"
-                value={slug}
-                name="menu"
-              />
-              <span className="-mx-1 -my-1 block cursor-pointer rounded-md p-1 text-lg font-bold text-stone-600 peer-focus-ring transition-colors duration-150 peer-checked:text-stone-900 peer-not-checked:hover:text-stone-900">
-                <span className="block border-b-2 border-transparent transition-colors duration-150 group-has-checked:border-orange-600">
+      <ul
+        role="list"
+        className="flex gap-1 rounded-full bg-white p-1 shadow-[0_1px_3px_rgb(0_0_0/0.08)] sm:w-fit"
+      >
+        {menus.map(({ id, name, slug }) => {
+          return (
+            <li key={id} className="flex-1 sm:flex-none">
+              <label className="block">
+                <input
+                  onChange={() => onChange(slug)}
+                  checked={selectedMenuSlug === slug}
+                  type="radio"
+                  className="peer sr-only"
+                  value={slug}
+                  name="menu"
+                />
+                <span className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-full px-4.5 text-base font-bold whitespace-nowrap text-stone-600 peer-focus-ring transition-colors duration-150 peer-checked:bg-stone-900 peer-checked:text-white peer-not-checked:hover:text-stone-900">
                   {name}
                 </span>
-              </span>
-            </label>
-          </li>
-        ))}
+              </label>
+            </li>
+          );
+        })}
       </ul>
     </fieldset>
   );

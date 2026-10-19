@@ -6,28 +6,38 @@ interface CategoryFilterProps {
   onChange: (slug: string) => void;
 }
 
+const revealChip = (input: HTMLInputElement) => {
+  input.closest('li')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+};
+
 export const CategoryFilter = ({
   selectedCategorySlug,
   categories,
   onChange,
 }: CategoryFilterProps) => {
   return (
-    <fieldset>
+    <fieldset className="min-w-0">
       <legend className="sr-only">Раздел категории</legend>
 
-      <ul role="list" className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 md:gap-x-3.5">
+      <ul
+        role="list"
+        className="-m-1 flex scroll-px-4 scrollbar-none gap-2 overflow-x-auto overscroll-x-contain mask-r-from-[calc(100%-1rem)] p-1 pr-4 motion-safe:scroll-smooth [&::-webkit-scrollbar]:hidden"
+      >
         {categories.map(({ id, name, slug }) => (
-          <li key={id}>
+          <li key={id} className="shrink-0">
             <label>
               <input
-                onChange={() => onChange(slug)}
+                onChange={(event) => {
+                  onChange(slug);
+                  revealChip(event.currentTarget);
+                }}
                 checked={selectedCategorySlug === slug}
                 type="radio"
                 className="peer sr-only"
                 value={slug}
                 name="category"
               />
-              <span className="block cursor-pointer rounded-4xl peer-checked-orange bg-white px-3 py-1.5 text-base font-bold text-stone-600 peer-focus-ring transition-colors duration-150 sm:px-4 sm:py-2">
+              <span className="flex h-10 cursor-pointer items-center rounded-full border border-stone-200 bg-white px-3.5 text-base font-bold whitespace-nowrap text-stone-700 peer-focus-ring transition-colors duration-150 peer-checked:border-mustard peer-checked:bg-mustard peer-checked:text-stone-900 peer-not-checked:hover:border-stone-300 peer-not-checked:hover:text-stone-900">
                 {name}
               </span>
             </label>
