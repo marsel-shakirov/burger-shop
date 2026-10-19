@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { type SubmitEvent, useId } from 'react';
 
-import { useSessionStore } from '@/entities/session';
+import { setSessionUser } from '@/entities/session';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { TextInput } from '@/shared/ui/text-input';
 
@@ -14,7 +14,7 @@ export const SignInForm = () => {
   const passwordId = useId();
   const { mutate, isPending, error, reset } = useMutation({
     mutationFn: signIn,
-    onSuccess: (user) => useSessionStore.getState().setUser(user),
+    onSuccess: (user) => setSessionUser(user),
   });
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {

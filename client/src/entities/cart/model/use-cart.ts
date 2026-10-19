@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { selectSessionStatus, selectUser, useSessionStore } from '@/entities/session/@x/cart';
+import { useSessionStatus, useSessionUser } from '@/entities/session/@x/cart';
 
 import { cartQueryOptions } from '../api/cart-query-options';
 import { selectCartItems } from './cart.selectors';
@@ -19,8 +19,8 @@ const EMPTY_ITEMS: CartEntry[] = [];
 const selectAll = (items: CartEntry[]) => items;
 
 const useCart = <T>(select: (items: CartEntry[]) => T): CartResult<T> => {
-  const status = useSessionStore(selectSessionStatus);
-  const user = useSessionStore(selectUser);
+  const status = useSessionStatus();
+  const user = useSessionUser();
   const guestItems = useCartStore(selectCartItems);
   const query = useQuery({
     ...cartQueryOptions(user?.id ?? ''),

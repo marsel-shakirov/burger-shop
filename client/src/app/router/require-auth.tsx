@@ -1,12 +1,12 @@
 import { Navigate, Outlet } from 'react-router';
 
-import { selectIsGuest, useSessionStore } from '@/entities/session';
+import { useSessionStatus } from '@/entities/session';
 import { routes } from '@/shared/config';
 
 export const RequireAuth = () => {
-  const isGuest = useSessionStore(selectIsGuest);
+  const status = useSessionStatus();
 
-  if (isGuest) {
+  if (status === 'guest') {
     return <Navigate to={routes.login} replace />;
   }
 

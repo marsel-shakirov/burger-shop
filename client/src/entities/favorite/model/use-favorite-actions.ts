@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useSessionStore } from '@/entities/session/@x/favorite';
+import { getSessionState } from '@/entities/session/@x/favorite';
 
 import { addFavorite } from '../api/add-favorite';
 import { FAVORITES_QUERY_KEY, favoritesQueryOptions } from '../api/favorites-query-options';
@@ -62,7 +62,7 @@ export const useFavoriteActions = () => {
   });
 
   const toggleFavorite = (productId: FavoriteProductId) => {
-    const { status, user } = useSessionStore.getState();
+    const { status, user } = getSessionState();
 
     if (status === 'guest') {
       useFavoriteStore.getState().toggleFavorite(productId);

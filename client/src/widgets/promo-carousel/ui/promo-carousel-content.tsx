@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { promosQueryOptions } from '@/entities/promo';
-import { selectIsAuthenticated, selectIsGuest, useSessionStore } from '@/entities/session';
+import { useSessionStatus } from '@/entities/session';
 import { Carousel } from '@/shared/ui/carousel';
 
 import { PROMO_SLIDE_CLASS, PROMO_TRACK_CLASS } from '../config/promo-carousel.constants';
@@ -13,12 +13,11 @@ interface PromoCarouselContentProps {
 }
 
 export const PromoCarouselContent = ({ className }: PromoCarouselContentProps) => {
-  const isAuthenticated = useSessionStore(selectIsAuthenticated);
-  const isGuest = useSessionStore(selectIsGuest);
+  const status = useSessionStatus();
   const { data } = useSuspenseQuery(promosQueryOptions());
 
-  if (!isAuthenticated && !isGuest) return <PromoCarouselSkeleton className={className} />;
-  const promos = data.filter((promo) => !(isAuthenticated && promo.kind === 'bonus'));
+  if (status === 'loading') return <PromoCarouselSkeleton className={className} />;
+  const promos = data.filter((promo) => !(status === 'authenticated' && promo.kind === 'bonus'));
 
   if (promos.length === 0) return null;
 

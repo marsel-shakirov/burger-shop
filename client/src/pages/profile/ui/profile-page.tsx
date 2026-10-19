@@ -2,7 +2,7 @@ import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { selectUser, useSessionStore } from '@/entities/session';
+import { useSessionUser } from '@/entities/session';
 import { SignOutButton } from '@/features/sign-out';
 import { Container } from '@/shared/ui/container';
 import { PageMeta } from '@/shared/ui/page-meta';
@@ -13,7 +13,7 @@ import { ProfileError } from './profile-error';
 import { ProfileSkeleton } from './profile-skeleton';
 
 export const ProfilePage = () => {
-  const user = useSessionStore(selectUser);
+  const user = useSessionUser();
   const { reset } = useQueryErrorResetBoundary();
 
   if (!user) {

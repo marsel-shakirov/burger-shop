@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Link } from 'react-router';
 
-import { selectUser, useSessionStore } from '@/entities/session';
+import { useSessionUser } from '@/entities/session';
 import { routes } from '@/shared/config';
 import { Container } from '@/shared/ui/container';
 import { ArrowIcon } from '@/shared/ui/icon';
@@ -15,7 +15,7 @@ import { ProfileEditSkeleton } from './profile-edit-skeleton';
 import { ProfileError } from './profile-error';
 
 export const ProfileEditPage = () => {
-  const user = useSessionStore(selectUser);
+  const user = useSessionUser();
   const { reset } = useQueryErrorResetBoundary();
 
   if (!user) {

@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { useSessionStore } from '@/entities/session';
+import { setSessionUser } from '@/entities/session';
 import { cn } from '@/shared/lib';
 
 import { signOut } from '../api/sign-out';
@@ -12,7 +12,7 @@ interface SignOutButtonProps {
 export const SignOutButton = ({ className }: SignOutButtonProps) => {
   const { mutate, isPending, isError } = useMutation({
     mutationFn: signOut,
-    onSuccess: () => useSessionStore.getState().setUser(null),
+    onSuccess: () => setSessionUser(null),
   });
 
   return (

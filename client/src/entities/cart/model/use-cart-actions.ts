@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useSessionStore } from '@/entities/session/@x/cart';
+import { getSessionState } from '@/entities/session/@x/cart';
 
 import { CART_QUERY_KEY, cartQueryOptions } from '../api/cart-query-options';
 import { deleteCart } from '../api/delete-cart';
@@ -98,7 +98,7 @@ export const useCartActions = () => {
   });
 
   const changeItem = (productId: CartItemPayload, action: CartItemAction) => {
-    const { status, user } = useSessionStore.getState();
+    const { status, user } = getSessionState();
 
     if (status === 'guest') {
       useCartStore.getState()[GUEST_ACTIONS[action]](productId);
@@ -120,7 +120,7 @@ export const useCartActions = () => {
   };
 
   const clearCart = () => {
-    const { status, user } = useSessionStore.getState();
+    const { status, user } = getSessionState();
 
     if (status === 'guest') {
       useCartStore.getState().clearCart();

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { selectSessionStatus, selectUser, useSessionStore } from '@/entities/session/@x/favorite';
+import { useSessionStatus, useSessionUser } from '@/entities/session/@x/favorite';
 
 import { favoritesQueryOptions } from '../api/favorites-query-options';
 import { selectFavoriteIds } from './favorite.selectors';
@@ -20,8 +20,8 @@ const selectAll = (productIds: FavoriteProductId[]) => productIds;
 const selectCount = (productIds: FavoriteProductId[]) => productIds.length;
 
 const useFavorites = <T>(select: (productIds: FavoriteProductId[]) => T): FavoritesResult<T> => {
-  const status = useSessionStore(selectSessionStatus);
-  const user = useSessionStore(selectUser);
+  const status = useSessionStatus();
+  const user = useSessionUser();
   const guestIds = useFavoriteStore(selectFavoriteIds);
   const query = useQuery({
     ...favoritesQueryOptions(user?.id ?? ''),
