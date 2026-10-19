@@ -1,3 +1,4 @@
+import { parseCatalogParams, setCatalogCategoryParam, setCatalogMenuParam } from '@/entities/menu';
 import type { ProductSorting } from '@/entities/product';
 
 import { ALL_CATEGORY, DEFAULT_MENU_SLUG } from '../config/catalog.constants';
@@ -7,19 +8,14 @@ import { useUpdateSearchParams } from './use-update-search-params';
 export const useCatalogParams = () => {
   const [searchParams, updateParams] = useUpdateSearchParams();
 
-  const menuSlug = searchParams.get('menu') || DEFAULT_MENU_SLUG;
-  const categorySlug = searchParams.get('category') || undefined;
+  const { menuSlug = DEFAULT_MENU_SLUG, categorySlug } = parseCatalogParams(searchParams);
   const sorting = parseSorting(searchParams);
 
-  const selectMenu = (slug: string) =>
-    updateParams((next) => {
-      next.set('menu', slug);
-      next.delete('category');
-    });
+  const selectMenu = (slug: string) => updateParams((next) => setCatalogMenuParam(next, slug));
 
   const selectCategory = (slug: string) =>
     updateParams((next) =>
-      slug === ALL_CATEGORY.slug ? next.delete('category') : next.set('category', slug),
+      setCatalogCategoryParam(next, slug === ALL_CATEGORY.slug ? undefined : slug),
     );
 
   const changeSorting = ({ sort, order }: ProductSorting) =>

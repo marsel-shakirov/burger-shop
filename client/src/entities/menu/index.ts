@@ -1,4 +1,9 @@
 export { menusQueryOptions } from './api/menus-query-options';
+export {
+  parseCatalogParams,
+  setCatalogCategoryParam,
+  setCatalogMenuParam,
+} from './lib/catalog-link';
 export type { Category, Menu } from './model/menu.types';
 export { CategoryFilter } from './ui/category-filter';
 export { CategoryFilterSkeleton } from './ui/category-filter-skeleton';
