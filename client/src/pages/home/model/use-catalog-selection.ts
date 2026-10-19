@@ -15,3 +15,5 @@ export const useCatalogSelection = () => {
     isMenusSettled: isSuccess || isError,
   };
 };
+
+export type CatalogSelection = ReturnType<typeof useCatalogSelection>;
