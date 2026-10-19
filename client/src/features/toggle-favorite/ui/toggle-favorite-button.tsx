@@ -1,9 +1,7 @@
-import { useIsFavorite } from '@/entities/favorite';
+import { useFavoriteActions, useIsFavorite } from '@/entities/favorite';
 import type { Product } from '@/entities/product';
 import { cn } from '@/shared/lib';
 import { HeartIcon } from '@/shared/ui/icon';
-
-import { useToggleFavorite } from '../model/use-toggle-favorite';
 
 type Variant = 'product' | 'cart' | 'details';
 
@@ -41,7 +39,7 @@ export const ToggleFavoriteButton = ({
   className,
 }: ToggleFavoriteButtonProps) => {
   const { isFavorite } = useIsFavorite(product.id);
-  const toggleFavorite = useToggleFavorite();
+  const { toggleFavorite } = useFavoriteActions();
 
   const s = styles[variant];
 

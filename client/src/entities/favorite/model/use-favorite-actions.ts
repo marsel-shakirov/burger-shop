@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import {
-  addFavorite,
-  type FavoriteProductId,
-  favoritesQueryOptions,
-  removeFavorite,
-  useFavoriteStore,
-} from '@/entities/favorite';
-import { useSessionStore } from '@/entities/session';
+import { useSessionStore } from '@/entities/session/@x/favorite';
+
+import { addFavorite } from '../api/add-favorite';
+import { FAVORITES_QUERY_KEY, favoritesQueryOptions } from '../api/favorites-query-options';
+import { removeFavorite } from '../api/remove-favorite';
+import { useFavoriteStore } from './favorite.store';
+import type { FavoriteProductId } from './favorite.types';
 
 type FavoriteAction = 'add' | 'remove';
 
@@ -20,7 +19,7 @@ interface ToggleFavoriteVariables extends FavoriteChange {
   userId: string;
 }
 
-const TOGGLE_MUTATION_KEY = ['favorites', 'toggle'];
+const TOGGLE_MUTATION_KEY = [...FAVORITES_QUERY_KEY, 'toggle'];
 
 const getQueryKey = (userId: string) => favoritesQueryOptions(userId).queryKey;
 
@@ -30,7 +29,7 @@ const applyChange = (productIds: FavoriteProductId[], { productId, action }: Fav
   return action === 'add' ? [productId, ...rest] : rest;
 };
 
-export const useToggleFavorite = () => {
+export const useFavoriteActions = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -62,7 +61,7 @@ export const useToggleFavorite = () => {
     },
   });
 
-  return (productId: FavoriteProductId) => {
+  const toggleFavorite = (productId: FavoriteProductId) => {
     const { status, user } = useSessionStore.getState();
 
     if (status === 'guest') {
@@ -78,4 +77,6 @@ export const useToggleFavorite = () => {
 
     mutate({ userId: user.id, productId, action: isFavorite ? 'remove' : 'add' });
   };
+
+  return { toggleFavorite };
 };
