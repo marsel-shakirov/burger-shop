@@ -7,8 +7,8 @@ import { useUpdateSearchParams } from './use-update-search-params';
 export const useCatalogParams = () => {
   const [searchParams, updateParams] = useUpdateSearchParams();
 
-  const menuSlug = searchParams.get('menu') ?? DEFAULT_MENU_SLUG;
-  const categorySlug = searchParams.get('category') ?? undefined;
+  const menuSlug = searchParams.get('menu') || DEFAULT_MENU_SLUG;
+  const categorySlug = searchParams.get('category') || undefined;
   const sorting = parseSorting(searchParams);
 
   const selectMenu = (slug: string) =>

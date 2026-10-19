@@ -5,15 +5,32 @@ import { productsQueryOptions } from '@/entities/product';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
 import { ALL_CATEGORY } from '../model/catalog.constants';
+import { resolveCatalogSelection } from '../model/resolve-catalog-selection';
 import { useCatalogParams } from '../model/use-catalog-params';
 import { CatalogFilters } from './catalog-filters';
 import { CatalogHeader } from './catalog-header';
 
 export const Catalog = () => {
-  const { menuSlug, categorySlug, sorting, selectMenu, selectCategory, changeSorting } =
-    useCatalogParams();
+  const {
+    menuSlug: requestedMenuSlug,
+    categorySlug: requestedCategorySlug,
+    sorting,
+    selectMenu,
+    selectCategory,
+    changeSorting,
+  } = useCatalogParams();
 
-  const { data: menus = [] } = useQuery(menusQueryOptions());
+  const {
+    data: menus,
+    isSuccess: isMenusSuccess,
+    isError: isMenusError,
+  } = useQuery(menusQueryOptions());
+
+  const { menuSlug, categorySlug, menu, category } = resolveCatalogSelection(
+    menus,
+    requestedMenuSlug,
+    requestedCategorySlug,
+  );
 
   const {
     isError: isProductsError,
@@ -22,6 +39,7 @@ export const Catalog = () => {
     data: products,
   } = useQuery({
     ...productsQueryOptions({ sorting, menu: menuSlug, category: categorySlug }),
+    enabled: isMenusSuccess || isMenusError,
     placeholderData: (previousData, previousQuery) => {
       const previousParams = previousQuery?.queryKey[1];
       if (typeof previousParams !== 'object') return undefined;
@@ -32,10 +50,7 @@ export const Catalog = () => {
     },
   });
 
-  const activeMenu = menus.find((menu) => menu.slug === menuSlug);
-  const productGridTitle =
-    activeMenu?.categories.find((category) => category.slug === categorySlug)?.name ??
-    (activeMenu ? `Все ${activeMenu.name.toLowerCase()}` : 'Все');
+  const productGridTitle = category?.name ?? (menu ? `Все ${menu.name.toLowerCase()}` : 'Все');
 
   return (
     <>
