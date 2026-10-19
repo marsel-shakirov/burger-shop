@@ -7,6 +7,40 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+const SLICED_LAYERS = ['pages', 'widgets', 'features', 'entities'];
+const LAYERS = ['app', ...SLICED_LAYERS, 'shared'];
+
+const publicApiPattern = {
+  regex: `^@/(${SLICED_LAYERS.join('|')})/[^/]+/(?!@x/)`,
+  message: 'Import a slice through its public API (index.ts).',
+};
+
+const getLayerPatterns = (layer) => {
+  const upperLayers = LAYERS.slice(0, LAYERS.indexOf(layer));
+  const patterns = [publicApiPattern];
+
+  if (upperLayers.length > 0) {
+    patterns.push({
+      regex: `^@/(${upperLayers.join('|')})(/|$)`,
+      message: `The ${layer} layer cannot import from upper layers.`,
+    });
+  }
+
+  if (layer === 'entities') {
+    patterns.push({
+      regex: '^@/entities/[^/]+$',
+      message: 'Import another entity through its @x API.',
+    });
+  } else if (SLICED_LAYERS.includes(layer)) {
+    patterns.push({
+      regex: `^@/${layer}/`,
+      message: 'Slices on the same layer cannot import each other.',
+    });
+  }
+
+  return patterns;
+};
+
 export default defineConfig([
   globalIgnores(['dist']),
   {
@@ -43,4 +77,10 @@ export default defineConfig([
       },
     },
   },
+  ...LAYERS.map((layer) => ({
+    files: [`src/${layer}/**/*.{ts,tsx}`],
+    rules: {
+      'no-restricted-imports': ['error', { patterns: getLayerPatterns(layer) }],
+    },
+  })),
 ]);
