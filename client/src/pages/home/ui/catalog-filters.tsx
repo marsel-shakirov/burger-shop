@@ -10,19 +10,7 @@ import { CatalogFiltersContent } from './catalog-filters-content';
 import { CatalogFiltersError } from './catalog-filters-error';
 import { CatalogFiltersLayout } from './catalog-filters-layout';
 
-interface CatalogFiltersProps {
-  menuSlug: string;
-  categorySlug: string;
-  onMenuChange: (slug: string) => void;
-  onCategoryChange: (slug: string) => void;
-}
-
-export const CatalogFilters = ({
-  menuSlug,
-  categorySlug,
-  onMenuChange,
-  onCategoryChange,
-}: CatalogFiltersProps) => {
+export const CatalogFilters = () => {
   const { sentinelRef, isStuck } = useIsStuck();
   const { reset } = useQueryErrorResetBoundary();
 
@@ -49,18 +37,7 @@ export const CatalogFilters = ({
                 />
               }
             >
-              <CatalogFiltersContent
-                menuSlug={menuSlug}
-                categorySlug={categorySlug}
-                onMenuChange={(slug) => {
-                  onMenuChange(slug);
-                  scrollToCatalogStart();
-                }}
-                onCategoryChange={(slug) => {
-                  onCategoryChange(slug);
-                  scrollToCatalogStart();
-                }}
-              />
+              <CatalogFiltersContent onSelectionChange={scrollToCatalogStart} />
             </Suspense>
           </ErrorBoundary>
         </Container>
