@@ -2,7 +2,7 @@ import { parseCatalogParams, setCatalogCategoryParam, setCatalogMenuParam } from
 import type { ProductSorting } from '@/entities/product';
 import { useUpdateSearchParams } from '@/shared/lib';
 
-import { ALL_CATEGORY, DEFAULT_MENU_SLUG } from '../config/catalog.constants';
+import { DEFAULT_MENU_SLUG } from '../config/catalog.constants';
 import { parseSorting } from './parse-sorting';
 
 export const useCatalogParams = () => {
@@ -13,10 +13,8 @@ export const useCatalogParams = () => {
 
   const selectMenu = (slug: string) => updateParams((next) => setCatalogMenuParam(next, slug));
 
-  const selectCategory = (slug: string) =>
-    updateParams((next) =>
-      setCatalogCategoryParam(next, slug === ALL_CATEGORY.slug ? undefined : slug),
-    );
+  const selectCategory = (slug?: string) =>
+    updateParams((next) => setCatalogCategoryParam(next, slug));
 
   const changeSorting = ({ sort, order }: ProductSorting) =>
     updateParams((next) => {

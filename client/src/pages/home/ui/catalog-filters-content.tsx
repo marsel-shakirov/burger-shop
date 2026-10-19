@@ -1,8 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { type Category, CategoryFilter, menusQueryOptions, MenuTabs } from '@/entities/menu';
+import { CategoryFilter, menusQueryOptions, MenuTabs } from '@/entities/menu';
 
-import { ALL_CATEGORY } from '../config/catalog.constants';
 import { useCatalogSelection } from '../model/use-catalog-selection';
 import { CatalogFiltersLayout } from './catalog-filters-layout';
 
@@ -12,15 +11,14 @@ interface CatalogFiltersContentProps {
 
 export const CatalogFiltersContent = ({ onSelectionChange }: CatalogFiltersContentProps) => {
   const { data: menus } = useSuspenseQuery(menusQueryOptions());
-  const {
-    menu,
-    menuSlug,
-    categorySlug = ALL_CATEGORY.slug,
-    selectMenu,
-    selectCategory,
-  } = useCatalogSelection();
+  const { menu, menuSlug, categorySlug, selectMenu, selectCategory } = useCatalogSelection();
 
-  const categoryOptions: Category[] = [ALL_CATEGORY, ...(menu?.categories ?? [])];
+  const withSelectionChange =
+    <T,>(select: (slug: T) => void) =>
+    (slug: T) => {
+      select(slug);
+      onSelectionChange();
+    };
 
   return (
     <CatalogFiltersLayout
@@ -28,21 +26,15 @@ export const CatalogFiltersContent = ({ onSelectionChange }: CatalogFiltersConte
         <MenuTabs
           menus={menus}
           selectedMenuSlug={menuSlug}
-          onChange={(slug) => {
-            selectMenu(slug);
-            onSelectionChange();
-          }}
+          onChange={withSelectionChange(selectMenu)}
         />
       }
       categoryFilter={
         <CategoryFilter
           key={menuSlug}
-          categories={categoryOptions}
+          categories={menu?.categories ?? []}
           selectedCategorySlug={categorySlug}
-          onChange={(slug) => {
-            selectCategory(slug);
-            onSelectionChange();
-          }}
+          onChange={withSelectionChange(selectCategory)}
         />
       }
     />
