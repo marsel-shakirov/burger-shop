@@ -32,5 +32,8 @@ jobs:
       - name: Format
         run: npm run format
 
+      - name: Test
+        run: npm run test:run -w client
+
       - name: Build
         run: npm run build -ws
