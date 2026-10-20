@@ -31,3 +31,7 @@ export interface Product {
   imageSrcSet: string;
   unit: ProductUnit;
 }
+
+export interface OpenedFromListState {
+  openedFromList: true;
+}

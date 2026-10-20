@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import { RatingStarIcon } from '@/shared/ui/icon';
 
 import { PRODUCT_UNIT_LABEL } from '../config/product.constants';
-import { useProductDetailsLink } from '../lib/product-details-link';
 import type { Product } from '../model/product.types';
+import { useProductDetailsLink } from '../model/use-product-details-link';
 export interface ProductCardProps {
   product: Product;
   priority: boolean;
