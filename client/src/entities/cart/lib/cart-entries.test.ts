@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { CartEntry } from './cart.types';
+import type { CartEntry } from '../model/cart.types';
 import {
   findCartEntryByProductId,
   getProductQuantity,

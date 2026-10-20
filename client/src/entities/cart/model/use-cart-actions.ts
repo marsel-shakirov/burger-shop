@@ -7,9 +7,9 @@ import { deleteCart } from '../api/delete-cart';
 import { deleteCartItem } from '../api/delete-cart-item';
 import { updateCartItem } from '../api/update-cart-item';
 import { MAX_ITEM_QUANTITY, MIN_ITEM_QUANTITY } from '../config/cart.constants';
+import { getProductQuantity, setEntryQuantity } from '../lib/cart-entries';
 import { useCartStore } from './cart.store';
 import type { CartEntry, CartItemPayload } from './cart.types';
-import { getProductQuantity, setEntryQuantity } from './cart-entries';
 
 type CartItemAction = 'add' | 'increment' | 'decrement' | 'remove';
 
