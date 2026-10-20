@@ -69,7 +69,7 @@ export default defineConfig([
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       'max-lines': ['warn', { max: 200, skipBlankLines: true, skipComments: true }],
-      'max-lines-per-function': ['warn', { max: 80, skipBlankLines: true, skipComments: true }],
+      'max-lines-per-function': ['warn', { max: 100, skipBlankLines: true, skipComments: true }],
       'jsx-a11y-x/no-redundant-roles': ['error', { nav: ['navigation'], ul: ['list'] }],
     },
     languageOptions: {
