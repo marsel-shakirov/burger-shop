@@ -30,6 +30,10 @@ const validateDate = (day: number, month: number, year: number, today: Date): Bi
     return fail(`Год рождения — от ${MIN_BIRTH_YEAR} до ${currentYear}`);
   }
 
+  if (!isIntegerInRange(month, 1, 12)) {
+    return fail('Месяц — число от 1 до 12');
+  }
+
   if (!isIntegerInRange(day, 1, 31)) {
     return fail('День — число от 1 до 31');
   }

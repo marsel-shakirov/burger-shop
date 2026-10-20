@@ -4,7 +4,7 @@ import { parseBirthDate } from './parse-birth-date';
 
 const today = new Date(2026, 4, 15);
 
-describe('parseBirthDate', () => {
+describe('parseBirthDate: заполнение полей', () => {
   it('возвращает null, если все поля пустые', () => {
     expect(parseBirthDate('', '', '', today)).toEqual({ ok: true, value: null });
   });
@@ -34,7 +34,9 @@ describe('parseBirthDate', () => {
       value: '1990-03-07',
     });
   });
+});
 
+describe('parseBirthDate: диапазоны года, месяца и дня', () => {
   it.each(['1899', '2027', '19a0', '1990.5'])('отклоняет год %s', (year) => {
     expect(parseBirthDate('7', '3', year, today)).toEqual({
       ok: false,
@@ -46,6 +48,13 @@ describe('parseBirthDate', () => {
     expect(parseBirthDate('1', '1', '1900', today)).toEqual({ ok: true, value: '1900-01-01' });
   });
 
+  it.each(['0', '13', 'abc', '1.5'])('отклоняет месяц %s', (month) => {
+    expect(parseBirthDate('7', month, '1990', today)).toEqual({
+      ok: false,
+      error: 'Месяц — число от 1 до 12',
+    });
+  });
+
   it.each(['0', '32', 'abc', '1.5'])('отклоняет день %s', (day) => {
     expect(parseBirthDate(day, '3', '1990', today)).toEqual({
       ok: false,
@@ -53,13 +62,22 @@ describe('parseBirthDate', () => {
     });
   });
 
-  it('проверяет год раньше дня', () => {
-    expect(parseBirthDate('40', '3', '1800', today)).toEqual({
+  it('проверяет год раньше месяца и дня', () => {
+    expect(parseBirthDate('40', '13', '1800', today)).toEqual({
       ok: false,
       error: 'Год рождения — от 1900 до 2026',
     });
   });
 
+  it('проверяет месяц раньше дня', () => {
+    expect(parseBirthDate('40', '13', '1990', today)).toEqual({
+      ok: false,
+      error: 'Месяц — число от 1 до 12',
+    });
+  });
+});
+
+describe('parseBirthDate: календарь', () => {
   it('отклоняет 31-е число в месяце из 30 дней', () => {
     expect(parseBirthDate('31', '4', '1990', today)).toEqual({
       ok: false,
