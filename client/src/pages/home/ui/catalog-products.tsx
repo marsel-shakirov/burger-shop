@@ -1,10 +1,10 @@
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
 import { useCatalogProducts } from '../api/use-catalog-products';
+import { getCatalogTitle } from '../lib/get-catalog-title';
 import type { CatalogSelection } from '../model/use-catalog-selection';
 import { CatalogHeader } from './catalog-header';
 import { CatalogProductsError } from './catalog-products-error';
-import { getCatalogTitle } from './get-catalog-title';
 
 interface CatalogProductsProps {
   selection: CatalogSelection;
