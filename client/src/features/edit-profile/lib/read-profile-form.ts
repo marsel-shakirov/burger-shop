@@ -1,4 +1,4 @@
-import { GENDERS, type Profile } from '@/entities/profile';
+import { GENDERS } from '@/entities/profile';
 import { getFormString, isOneOf } from '@/shared/lib';
 
 import type { ProfileFormError, ProfileSection, ProfileUpdate } from '../model/edit-profile.types';
@@ -32,8 +32,3 @@ export const readProfileForm = (section: ProfileSection, formData: FormData): Re
     },
   };
 };
-
-export const getChangedFields = (profile: Profile, update: ProfileUpdate): ProfileUpdate =>
-  Object.fromEntries(
-    Object.entries(update).filter(([key, value]) => profile[key as keyof Profile] !== value),
-  );

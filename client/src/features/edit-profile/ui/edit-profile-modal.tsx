@@ -5,8 +5,9 @@ import { type Profile, profileQueryOptions } from '@/entities/profile';
 import { Modal } from '@/shared/ui/modal';
 
 import { updateProfile } from '../api/update-profile';
+import { getChangedFields } from '../lib/get-changed-fields';
 import { getEditProfileError } from '../lib/get-edit-profile-error';
-import { getChangedFields, readProfileForm } from '../lib/read-profile-form';
+import { readProfileForm } from '../lib/read-profile-form';
 import type { ProfileFormError, ProfileSection } from '../model/edit-profile.types';
 import { PersonalFields } from './personal-fields';
 import { PhoneField } from './phone-field';
