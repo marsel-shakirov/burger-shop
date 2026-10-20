@@ -4,7 +4,7 @@ import { MONTHS_GENITIVE } from '@/entities/profile';
 import { ArrowIcon } from '@/shared/ui/icon';
 import { TextInput } from '@/shared/ui/text-input';
 
-import { splitBirthDate } from '../lib/birth-date';
+import { splitBirthDate } from '../lib/split-birth-date';
 
 interface BirthDateFieldProps {
   birthDate: string | null;

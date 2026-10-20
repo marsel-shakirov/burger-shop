@@ -2,7 +2,7 @@ import { GENDERS, type Profile } from '@/entities/profile';
 import { getFormString, isOneOf } from '@/shared/lib';
 
 import type { ProfileFormError, ProfileSection, ProfileUpdate } from '../model/edit-profile.types';
-import { parseBirthDate } from './birth-date';
+import { parseBirthDate } from './parse-birth-date';
 
 type ReadResult = { ok: true; update: ProfileUpdate } | { ok: false; error: ProfileFormError };
 
