@@ -3,6 +3,7 @@ import { type SubmitEvent, useId } from 'react';
 
 import { setSessionUser } from '@/entities/session';
 import { getFormString } from '@/shared/lib';
+import { FormField } from '@/shared/ui/form-field';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { TextInput } from '@/shared/ui/text-input';
 
@@ -11,8 +12,7 @@ import { getSignInErrorMessage } from '../lib/get-sign-in-error-message';
 import { TestUserButtons } from './test-user-button';
 
 export const SignInForm = () => {
-  const emailId = useId();
-  const passwordId = useId();
+  const errorId = useId();
   const { mutate, isPending, error, reset } = useMutation({
     mutationFn: signIn,
     onSuccess: (user) => setSessionUser(user),
@@ -36,38 +36,38 @@ export const SignInForm = () => {
 
   return (
     <form onSubmit={handleSubmit} onInput={handleInput} className="flex flex-col gap-y-5">
-      <div className="flex flex-col gap-y-2">
-        <label htmlFor={emailId} className="font-bold">
-          Email
-        </label>
-        <TextInput
-          id={emailId}
-          name="email"
-          type="email"
-          inputMode="email"
-          autoComplete="email"
-          placeholder="введите email"
-          required
-          aria-invalid={error ? true : undefined}
-        />
-      </div>
+      <FormField label="Email" invalid={!!error} errorId={errorId}>
+        {(controlProps) => (
+          <TextInput
+            {...controlProps}
+            name="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            placeholder="введите email"
+            required
+          />
+        )}
+      </FormField>
 
-      <div className="flex flex-col gap-y-2">
-        <label htmlFor={passwordId} className="font-bold">
-          Пароль
-        </label>
-        <PasswordInput
-          id={passwordId}
-          name="password"
-          autoComplete="current-password"
-          placeholder="введите пароль"
-          required
-          aria-invalid={error ? true : undefined}
-        />
-      </div>
+      <FormField label="Пароль" invalid={!!error} errorId={errorId}>
+        {(controlProps) => (
+          <PasswordInput
+            {...controlProps}
+            name="password"
+            autoComplete="current-password"
+            placeholder="введите пароль"
+            required
+          />
+        )}
+      </FormField>
 
       {error && (
-        <p role="alert" className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p
+          id={errorId}
+          role="alert"
+          className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
+        >
           {getSignInErrorMessage(error)}
         </p>
       )}

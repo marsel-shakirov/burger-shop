@@ -1,4 +1,5 @@
 import { type Gender, GENDER_LABEL, GENDERS } from '@/entities/profile';
+import { getFieldErrorProps } from '@/shared/ui/form-field';
 
 const options = [
   ...GENDERS.map((gender) => ({ value: gender, label: GENDER_LABEL[gender] })),
@@ -8,11 +9,16 @@ const options = [
 interface GenderFieldProps {
   gender: Gender | null;
   invalid: boolean;
+  errorId: string;
 }
 
-export const GenderField = ({ gender, invalid }: GenderFieldProps) => {
+export const GenderField = ({ gender, invalid, errorId }: GenderFieldProps) => {
   return (
-    <fieldset role="radiogroup" aria-invalid={invalid ? true : undefined} className="group min-w-0">
+    <fieldset
+      role="radiogroup"
+      {...getFieldErrorProps({ invalid, errorId })}
+      className="group min-w-0"
+    >
       <legend className="mb-2 font-bold">Пол</legend>
 
       <div className="flex flex-wrap gap-2">

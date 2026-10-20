@@ -1,6 +1,7 @@
 import { useId } from 'react';
 
 import { MONTHS_GENITIVE } from '@/entities/profile';
+import { getFieldErrorProps } from '@/shared/ui/form-field';
 import { ArrowIcon } from '@/shared/ui/icon';
 import { TextInput } from '@/shared/ui/text-input';
 
@@ -9,14 +10,15 @@ import { splitBirthDate } from '../lib/split-birth-date';
 interface BirthDateFieldProps {
   birthDate: string | null;
   invalid: boolean;
+  errorId: string;
 }
 
-export const BirthDateField = ({ birthDate, invalid }: BirthDateFieldProps) => {
+export const BirthDateField = ({ birthDate, invalid, errorId }: BirthDateFieldProps) => {
   const dayId = useId();
   const monthId = useId();
   const yearId = useId();
   const { day, month, year } = splitBirthDate(birthDate);
-  const ariaInvalid = invalid ? true : undefined;
+  const errorProps = getFieldErrorProps({ invalid, errorId });
 
   return (
     <fieldset className="min-w-0">
@@ -34,7 +36,7 @@ export const BirthDateField = ({ birthDate, invalid }: BirthDateFieldProps) => {
           autoComplete="bday-day"
           maxLength={2}
           placeholder="день"
-          aria-invalid={ariaInvalid}
+          {...errorProps}
           className="tabular-nums"
         />
 
@@ -47,7 +49,7 @@ export const BirthDateField = ({ birthDate, invalid }: BirthDateFieldProps) => {
             name="birthMonth"
             defaultValue={month}
             autoComplete="bday-month"
-            aria-invalid={ariaInvalid}
+            {...errorProps}
             className="h-12 w-full cursor-pointer appearance-none rounded-md border border-stone-400 bg-white pr-9 pl-4 text-base text-stone-900 focus-ring transition-colors duration-150 hover:border-stone-600 has-[option[value='']:checked]:text-stone-400 aria-invalid:border-red-600 [&>option]:text-stone-900"
           >
             <option value="">месяц</option>
@@ -71,7 +73,7 @@ export const BirthDateField = ({ birthDate, invalid }: BirthDateFieldProps) => {
           autoComplete="bday-year"
           maxLength={4}
           placeholder="год"
-          aria-invalid={ariaInvalid}
+          {...errorProps}
           className="tabular-nums"
         />
       </div>

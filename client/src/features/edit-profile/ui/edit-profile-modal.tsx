@@ -32,6 +32,7 @@ export const EditProfileModal = ({
   onClose,
 }: EditProfileModalProps) => {
   const titleId = useId();
+  const errorId = useId();
   const queryClient = useQueryClient();
   const [validationError, setValidationError] = useState<ProfileFormError | null>(null);
 
@@ -84,13 +85,21 @@ export const EditProfileModal = ({
         </h2>
 
         {section === 'personal' ? (
-          <PersonalFields profile={profile} invalidField={formError?.field} />
+          <PersonalFields profile={profile} invalidField={formError?.field} errorId={errorId} />
         ) : (
-          <PhoneField phone={profile.phone} invalid={formError?.field === 'phone'} />
+          <PhoneField
+            phone={profile.phone}
+            invalid={formError?.field === 'phone'}
+            errorId={errorId}
+          />
         )}
 
         {formError && (
-          <p role="alert" className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p
+            id={errorId}
+            role="alert"
+            className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
+          >
             {formError.message}
           </p>
         )}
