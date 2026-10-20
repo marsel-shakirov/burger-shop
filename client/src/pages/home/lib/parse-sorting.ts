@@ -1,9 +1,8 @@
 import { PRODUCT_SORT_BY, PRODUCT_SORT_ORDER, type ProductSorting } from '@/entities/product';
 import { isOneOf } from '@/shared/lib';
 
-import { isSameSorting, SORT_OPTIONS } from './sort-options';
-
-const DEFAULT_SORTING: ProductSorting = { sort: 'rating', order: 'desc' };
+import { DEFAULT_SORTING, SORT_OPTIONS } from '../config/catalog.constants';
+import { isSameSorting } from './is-same-sorting';
 
 export const parseSorting = (searchParams: URLSearchParams): ProductSorting => {
   const sort = searchParams.get('sort');

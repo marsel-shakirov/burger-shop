@@ -3,7 +3,7 @@ import type { ProductSorting } from '@/entities/product';
 import { useUpdateSearchParams } from '@/shared/lib';
 
 import { DEFAULT_MENU_SLUG } from '../config/catalog.constants';
-import { parseSorting } from './parse-sorting';
+import { parseSorting } from '../lib/parse-sorting';
 
 export const useCatalogParams = () => {
   const [searchParams, updateParams] = useUpdateSearchParams();

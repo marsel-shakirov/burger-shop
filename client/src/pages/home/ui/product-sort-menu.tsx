@@ -12,8 +12,10 @@ import type { ProductSorting } from '@/entities/product';
 import { formatPrice } from '@/shared/lib';
 import { RatingStarIcon } from '@/shared/ui/icon';
 
+import { SORT_OPTIONS } from '../config/catalog.constants';
 import type { SortHighlights } from '../lib/get-sort-highlights';
-import { isSameSorting, SORT_OPTIONS, type SortOption } from '../model/sort-options';
+import { isSameSorting } from '../lib/is-same-sorting';
+import type { SortOption } from '../model/catalog.types';
 
 const renderHighlight = ({ sort, order }: SortOption, highlights: SortHighlights): ReactNode => {
   if (sort === 'popularity') return <span className="truncate">{highlights.mostPopularName}</span>;
