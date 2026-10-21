@@ -2,61 +2,39 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 import { CART_STORAGE_KEY, MAX_ITEM_QUANTITY, MIN_ITEM_QUANTITY } from '../config/cart.constants';
-import { findCartEntryByProductId } from '../lib/cart-entries';
+import {
+  findCartEntryByProductId,
+  getProductQuantity,
+  setEntryQuantity,
+} from '../lib/cart-entries';
 import type { CartState } from './cart.types';
 
 export const useCartStore = create<CartState>()(
   devtools(
     persist(
-      (set) => ({
+      (set, get) => ({
         items: [],
         addItem: (productId) =>
           set((state) => {
-            const currentItem = findCartEntryByProductId(state.items, productId);
+            const quantity = getProductQuantity(state.items, productId);
 
-            if (currentItem && currentItem?.quantity >= MAX_ITEM_QUANTITY) {
+            if (quantity >= MAX_ITEM_QUANTITY) {
               return state;
             }
 
-            if (currentItem) {
-              return {
-                items: state.items.map((item) =>
-                  item.productId === productId ? { ...item, quantity: item.quantity + 1 } : item,
-                ),
-              };
-            } else {
-              return { items: [{ productId, quantity: 1 }, ...state.items] };
-            }
+            return { items: setEntryQuantity(state.items, { productId, quantity: quantity + 1 }) };
           }),
-        incrementItem: (productId) =>
-          set((state) => {
-            const currentItem = findCartEntryByProductId(state.items, productId);
-
-            if (!currentItem || currentItem.quantity >= MAX_ITEM_QUANTITY) {
-              return state;
-            }
-
-            return {
-              items: state.items.map((item) =>
-                item.productId === productId ? { ...item, quantity: item.quantity + 1 } : item,
-              ),
-            };
-          }),
+        incrementItem: (productId) => {
+          if (findCartEntryByProductId(get().items, productId)) {
+            get().addItem(productId);
+          }
+        },
         decrementItem: (productId) =>
           set((state) => {
-            const currentItem = findCartEntryByProductId(state.items, productId);
+            const quantity = getProductQuantity(state.items, productId);
+            const nextQuantity = quantity > MIN_ITEM_QUANTITY ? quantity - 1 : 0;
 
-            if (!currentItem || currentItem.quantity <= MIN_ITEM_QUANTITY) {
-              return {
-                items: state.items.filter((item) => item.productId !== productId),
-              };
-            }
-
-            return {
-              items: state.items.map((item) =>
-                item.productId === productId ? { ...item, quantity: item.quantity - 1 } : item,
-              ),
-            };
+            return { items: setEntryQuantity(state.items, { productId, quantity: nextQuantity }) };
           }),
         removeItem: (productId) =>
           set((state) => {
