@@ -19,7 +19,7 @@ export async function updateProfile(req: Request, res: Response) {
     const field = result.error.issues[0]?.path[0];
     throw new BadRequest(
       'Bad request',
-      typeof field === 'string' ? INVALID_FIELD_CODES[field] : undefined,
+      typeof field === 'string' ? INVALID_FIELD_CODES.get(field) : undefined,
     );
   }
 
