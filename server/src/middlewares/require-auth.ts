@@ -22,11 +22,3 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
 
   next();
 }
-
-export function getUserId(req: Request): string {
-  if (!req.userId) {
-    throw new Unauthorized();
-  }
-
-  return req.userId;
-}

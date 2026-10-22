@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
 import { BadRequest } from '../../errors/bad-request.error.ts';
-import { getUserId } from '../../middlewares/require-auth.ts';
+import { getUserId } from '../../lib/get-user-id.ts';
 import { addFavoriteUseCase } from './add-favorite.use-case.ts';
 import { favoriteParamsSchema, mergeFavoritesBodySchema } from './favorites.schema.ts';
 import { getFavoritesUseCase } from './get-favorites.use-case.ts';
