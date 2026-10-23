@@ -40,6 +40,8 @@ export const Carousel = <T,>({
     showPreviousSlide,
     showNextSlide,
   } = useCarousel({ slidesCount: items.length, autoplayDelay });
+  const hasControls = items.length > 1;
+
   return (
     <section
       aria-roledescription="carousel"
@@ -68,23 +70,23 @@ export const Carousel = <T,>({
         ))}
       </div>
 
-      {items.length > 1 && (
-        <p aria-live={isAutoplayActive ? 'off' : 'polite'} aria-atomic="true" className="sr-only">
-          Слайд {activeIndex + 1} из {items.length}
-        </p>
-      )}
+      {hasControls && (
+        <>
+          <p aria-live={isAutoplayActive ? 'off' : 'polite'} aria-atomic="true" className="sr-only">
+            Слайд {activeIndex + 1} из {items.length}
+          </p>
 
-      {items.length > 1 && (
-        <CarouselControls
-          slidesCount={items.length}
-          activeIndex={activeIndex}
-          isPlaying={isPlaying}
-          onTogglePlaying={togglePlaying}
-          onSelect={scrollToSlide}
-          onPrevious={showPreviousSlide}
-          onNext={showNextSlide}
-          hoverHandlers={hoverHandlers}
-        />
+          <CarouselControls
+            slidesCount={items.length}
+            activeIndex={activeIndex}
+            isPlaying={isPlaying}
+            onTogglePlaying={togglePlaying}
+            onSelect={scrollToSlide}
+            onPrevious={showPreviousSlide}
+            onNext={showNextSlide}
+            hoverHandlers={hoverHandlers}
+          />
+        </>
       )}
     </section>
   );
