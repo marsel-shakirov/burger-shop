@@ -2,9 +2,15 @@ import type { Request, Response } from 'express';
 
 import { BadRequest } from '../../errors/bad-request.error.ts';
 import { WeakPassword } from '../../errors/weak-password.error.ts';
-import { createSupabase } from '../../supabase.ts';
+import { createStatelessSupabase, createSupabase } from '../../supabase.ts';
 import { LOGIN_PATH } from './auth.constants.ts';
-import { authCallbackQuerySchema, signInBodySchema, signUpBodySchema } from './auth.schema.ts';
+import {
+  authCallbackQuerySchema,
+  changePasswordBodySchema,
+  signInBodySchema,
+  signUpBodySchema,
+} from './auth.schema.ts';
+import { changePasswordUseCase } from './change-password.use-case.ts';
 import { exchangeCodeUseCase } from './exchange-code.use-case.ts';
 import { getSessionUseCase } from './get-session.use-case.ts';
 import { signInUseCase } from './sign-in.use-case.ts';
@@ -48,6 +54,19 @@ export async function getSession(req: Request, res: Response) {
   const user = await getSessionUseCase(createSupabase(req, res));
 
   res.json({ user });
+}
+
+export async function changePassword(req: Request, res: Response) {
+  const result = changePasswordBodySchema.safeParse(req.body);
+
+  if (!result.success) {
+    const isPasswordIssue = result.error.issues.some((issue) => issue.path[0] === 'newPassword');
+    throw isPasswordIssue ? new WeakPassword(['length']) : new BadRequest();
+  }
+
+  await changePasswordUseCase(createSupabase(req, res), createStatelessSupabase(req), result.data);
+
+  res.status(204).end();
 }
 
 export async function authCallback(req: Request, res: Response) {

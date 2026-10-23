@@ -12,8 +12,15 @@ export const signUpBodySchema = z.strictObject({
   password: z.string().min(PASSWORD_MIN_LENGTH).max(PASSWORD_MAX_LENGTH),
 });
 
+export const changePasswordBodySchema = z.strictObject({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(PASSWORD_MIN_LENGTH).max(PASSWORD_MAX_LENGTH),
+});
+
 export const authCallbackQuerySchema = z.object({
   code: z.string().min(1),
 });
 
 export type Credentials = z.infer<typeof signInBodySchema>;
+
+export type PasswordChange = z.infer<typeof changePasswordBodySchema>;
