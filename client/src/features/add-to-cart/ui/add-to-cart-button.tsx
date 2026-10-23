@@ -8,11 +8,11 @@ import type { Product } from '@/entities/product';
 import { cn } from '@/shared/lib';
 import { QuantityControls } from '@/shared/ui/quantity-controls';
 
+import { useSwapFocus } from '../model/use-swap-focus';
 import { AddButton } from './add-button';
 import type { AddToCartVariant } from './add-to-cart.types';
 import { AddToCartFrame } from './add-to-cart-frame';
 import { CartLineTotal } from './cart-line-total';
-import { useSwapFocus } from './use-swap-focus';
 
 interface AddToCartButtonProps {
   product: Product;
