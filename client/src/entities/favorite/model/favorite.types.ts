@@ -6,3 +6,10 @@ export interface FavoriteState {
   removeFavorite: (productId: FavoriteProductId) => void;
   clearFavorites: () => void;
 }
+
+export type FavoriteAction = 'add' | 'remove';
+
+export interface FavoriteChange {
+  productId: FavoriteProductId;
+  action: FavoriteAction;
+}

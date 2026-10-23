@@ -5,15 +5,9 @@ import { getSessionState } from '@/entities/session/@x/favorite';
 import { addFavorite } from '../api/add-favorite';
 import { FAVORITES_QUERY_KEY, favoritesQueryOptions } from '../api/favorites-query-options';
 import { removeFavorite } from '../api/remove-favorite';
+import { applyFavoriteChange, revertFavoriteChange } from '../lib/favorite-changes';
 import { useFavoriteStore } from './favorite.store';
-import type { FavoriteProductId } from './favorite.types';
-
-type FavoriteAction = 'add' | 'remove';
-
-interface FavoriteChange {
-  productId: FavoriteProductId;
-  action: FavoriteAction;
-}
+import type { FavoriteChange, FavoriteProductId } from './favorite.types';
 
 interface ToggleFavoriteVariables extends FavoriteChange {
   userId: string;
@@ -22,12 +16,6 @@ interface ToggleFavoriteVariables extends FavoriteChange {
 const TOGGLE_MUTATION_KEY = [...FAVORITES_QUERY_KEY, 'toggle'];
 
 const getQueryKey = (userId: string) => favoritesQueryOptions(userId).queryKey;
-
-const applyChange = (productIds: FavoriteProductId[], { productId, action }: FavoriteChange) => {
-  const rest = productIds.filter((id) => id !== productId);
-
-  return action === 'add' ? [productId, ...rest] : rest;
-};
 
 export const useFavoriteActions = () => {
   const queryClient = useQueryClient();
@@ -43,15 +31,13 @@ export const useFavoriteActions = () => {
       await queryClient.cancelQueries({ queryKey });
       queryClient.setQueryData(
         queryKey,
-        (productIds) => productIds && applyChange(productIds, change),
+        (productIds) => productIds && applyFavoriteChange(productIds, change),
       );
     },
-    onError: (_error, { userId, productId, action }) => {
-      const revert: FavoriteChange = { productId, action: action === 'add' ? 'remove' : 'add' };
-
+    onError: (_error, { userId, ...change }) => {
       queryClient.setQueryData(
         getQueryKey(userId),
-        (productIds) => productIds && applyChange(productIds, revert),
+        (productIds) => productIds && revertFavoriteChange(productIds, change),
       );
     },
     onSettled: (_data, _error, { userId }) => {
