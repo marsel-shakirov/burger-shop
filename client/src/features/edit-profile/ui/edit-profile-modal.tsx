@@ -1,7 +1,7 @@
 import { useId } from 'react';
 
 import type { Profile } from '@/entities/profile';
-import { Modal } from '@/shared/ui/modal';
+import { ModalForm } from '@/shared/ui/modal-form';
 
 import type { ProfileSection } from '../model/edit-profile.types';
 import { useEditProfileForm } from '../model/use-edit-profile-form';
@@ -28,7 +28,6 @@ export const EditProfileModal = ({
   open,
   onClose,
 }: EditProfileModalProps) => {
-  const titleId = useId();
   const errorId = useId();
   const { formError, isPending, handleSubmit, handleInput } = useEditProfileForm({
     userId,
@@ -38,44 +37,27 @@ export const EditProfileModal = ({
   });
 
   return (
-    <Modal open={open} onClose={onClose} labelledBy={titleId}>
-      <form
-        onSubmit={handleSubmit}
-        onInput={handleInput}
-        className="flex flex-col gap-y-5 pt-8 sm:pt-10"
-      >
-        <h2 id={titleId} className="pr-12 font-display text-2xl font-extrabold">
-          {titles[section]}
-        </h2>
-
-        {section === 'personal' ? (
-          <PersonalFields profile={profile} invalidField={formError?.field} errorId={errorId} />
-        ) : (
-          <PhoneField
-            phone={profile.phone}
-            invalid={formError?.field === 'phone'}
-            errorId={errorId}
-          />
-        )}
-
-        {formError && (
-          <p
-            id={errorId}
-            role="alert"
-            className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
-          >
-            {formError.message}
-          </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={isPending}
-          className="h-12 w-full cursor-pointer rounded-md bg-orange-500 font-bold text-stone-900 focus-ring transition-colors duration-150 hover:bg-orange-600 disabled:cursor-wait disabled:opacity-60 disabled:hover:bg-orange-500"
-        >
-          {isPending ? 'Сохраняем…' : 'Сохранить'}
-        </button>
-      </form>
-    </Modal>
+    <ModalForm
+      open={open}
+      onClose={onClose}
+      title={titles[section]}
+      errorId={errorId}
+      errorMessage={formError?.message}
+      isPending={isPending}
+      submitLabel="Сохранить"
+      pendingLabel="Сохраняем…"
+      onSubmit={handleSubmit}
+      onInput={handleInput}
+    >
+      {section === 'personal' ? (
+        <PersonalFields profile={profile} invalidField={formError?.field} errorId={errorId} />
+      ) : (
+        <PhoneField
+          phone={profile.phone}
+          invalid={formError?.field === 'phone'}
+          errorId={errorId}
+        />
+      )}
+    </ModalForm>
   );
 };
