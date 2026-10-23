@@ -1,10 +1,7 @@
-import { type CartEntry, useCartItems } from '@/entities/cart';
-import { type Product, useProductsById } from '@/entities/product';
+import { useCartItems } from '@/entities/cart';
+import { useProductsById } from '@/entities/product';
 
-export interface CartLine {
-  product: Product;
-  entry: CartEntry;
-}
+import { getCartLines, getCartTotalPrice } from '../lib/get-cart-lines';
 
 export const useCartLines = () => {
   const cart = useCartItems();
@@ -13,16 +10,8 @@ export const useCartLines = () => {
   const isPending = cart.isPending || products.isPending;
   const isError = cart.isError || products.isError;
 
-  const lines = cart.items.flatMap((entry): CartLine[] => {
-    const product = products.data?.get(entry.productId);
-
-    return product ? [{ product, entry }] : [];
-  });
-
-  const totalPrice = lines.reduce(
-    (total, { product, entry }) => total + product.price * entry.quantity,
-    0,
-  );
+  const lines = getCartLines(cart.items, products.data);
+  const totalPrice = getCartTotalPrice(lines);
 
   return { isPending, isError, lines, totalPrice };
 };

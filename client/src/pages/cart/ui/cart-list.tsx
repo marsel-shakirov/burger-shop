@@ -1,4 +1,4 @@
-import type { CartLine } from '../model/use-cart-lines';
+import type { CartLine } from '../model/cart.types';
 import { CartItem } from './cart-item';
 
 interface CartListProps {

@@ -8,7 +8,7 @@ import { DotLeaderRow } from '@/shared/ui/dot-leader-row';
 import { ArrowIcon } from '@/shared/ui/icon';
 import { Receipt } from '@/shared/ui/receipt';
 
-import type { CartLine } from '../model/use-cart-lines';
+import type { CartLine } from '../model/cart.types';
 
 interface CartSummaryProps {
   lines: CartLine[];
