@@ -1,8 +1,9 @@
 import { Link } from 'react-router';
 
 import { useFavoritesCount } from '@/entities/favorite';
+import { formatItemsCount } from '@/entities/product';
 import { routes } from '@/shared/config';
-import { cn, formatItemsCount } from '@/shared/lib';
+import { cn } from '@/shared/lib';
 import { BagIcon, HeartIcon } from '@/shared/ui/icon';
 
 const tileClassName = 'flex h-full flex-col gap-y-3 rounded-2xl bg-stone-100 p-3 sm:p-4';

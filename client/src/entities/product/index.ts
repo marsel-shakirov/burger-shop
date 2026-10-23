@@ -2,6 +2,7 @@ export { productsQueryOptions } from './api/products-query-options';
 export { useProduct } from './api/use-product';
 export { useProductsById } from './api/use-products-by-id';
 export { ALL_PRODUCTS_PARAMS, PRODUCT_UNIT_LABEL } from './config/product.constants';
+export { formatItemsCount } from './lib/format-items-count';
 export { setProductDetailsParam } from './lib/product-details-link';
 export {
   type Product,

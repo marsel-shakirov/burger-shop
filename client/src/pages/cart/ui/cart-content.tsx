@@ -1,5 +1,5 @@
 import { useCartActions, useCartTotalQuantity } from '@/entities/cart';
-import { formatItemsCount } from '@/shared/lib';
+import { formatItemsCount } from '@/entities/product';
 import { DeleteIcon } from '@/shared/ui/icon';
 
 import { useCartLines } from '../model/use-cart-lines';
