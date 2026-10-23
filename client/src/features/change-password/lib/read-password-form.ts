@@ -1,4 +1,8 @@
-import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from '@/shared/config';
+import {
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  PASSWORDS_MISMATCH_MESSAGE,
+} from '@/shared/config';
 import { getFormString, getWeakPasswordMessage } from '@/shared/lib';
 
 import { SAME_PASSWORD_MESSAGE } from '../config/change-password.constants';
@@ -30,7 +34,10 @@ export const readPasswordForm = (formData: FormData): ReadResult => {
   }
 
   if (confirmPassword !== newPassword) {
-    return { ok: false, error: { message: 'Пароли не совпадают', field: 'confirmPassword' } };
+    return {
+      ok: false,
+      error: { message: PASSWORDS_MISMATCH_MESSAGE, field: 'confirmPassword' },
+    };
   }
 
   return { ok: true, change: { currentPassword, newPassword } };
