@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Link } from 'react-router';
 
 import { ProductCard } from '@/entities/product';
@@ -14,6 +15,7 @@ import { CartHeader } from './cart-header';
 export const EmptyCart = () => {
   const homeSearch = useLastSearch(routes.home);
   const suggestions = useCartSuggestions();
+  const suggestionsTitleId = useId();
 
   return (
     <section className="flex flex-1 flex-col gap-y-5 pb-8 sm:gap-y-8 sm:pb-12">
@@ -36,8 +38,8 @@ export const EmptyCart = () => {
       </div>
 
       {suggestions.length > 0 && (
-        <section aria-labelledby="cart-suggestions-title" className="flex flex-col gap-y-4">
-          <h2 id="cart-suggestions-title" className="text-lg font-bold sm:text-xl">
+        <section aria-labelledby={suggestionsTitleId} className="flex flex-col gap-y-4">
+          <h2 id={suggestionsTitleId} className="text-lg font-bold sm:text-xl">
             Чаще всего заказывают
           </h2>
 

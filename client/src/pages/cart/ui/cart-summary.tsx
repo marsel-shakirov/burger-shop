@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Link } from 'react-router';
 
 import { routes } from '@/shared/config';
@@ -16,15 +17,14 @@ interface CartSummaryProps {
 
 export const CartSummary = ({ lines, totalPrice }: CartSummaryProps) => {
   const homeSearch = useLastSearch(routes.home);
+  const titleId = useId();
+  const checkoutNoteId = useId();
 
   return (
-    <aside
-      aria-labelledby="cart-summary-title"
-      className="flex flex-col gap-y-5 lg:sticky lg:top-6"
-    >
+    <aside aria-labelledby={titleId} className="flex flex-col gap-y-5 lg:sticky lg:top-6">
       <Receipt.Root>
         <Receipt.Body className="pt-5 pb-7">
-          <h2 id="cart-summary-title" className="text-lg font-bold">
+          <h2 id={titleId} className="text-lg font-bold">
             Ваш заказ
           </h2>
 
@@ -61,10 +61,10 @@ export const CartSummary = ({ lines, totalPrice }: CartSummaryProps) => {
           </div>
 
           <div className="flex flex-col gap-y-2">
-            <Button disabled aria-describedby="checkout-note">
+            <Button disabled aria-describedby={checkoutNoteId}>
               Оформить заказ
             </Button>
-            <p id="checkout-note" className="text-center text-xs text-stone-500">
+            <p id={checkoutNoteId} className="text-center text-xs text-stone-500">
               Оформление заказа скоро появится
             </p>
           </div>
