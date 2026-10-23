@@ -1,12 +1,12 @@
 import { useId } from 'react';
 
-import { formatBonusCount, useBonus } from '@/entities/bonus';
+import { useBonus } from '@/entities/bonus';
 import { DotLeaderRow } from '@/shared/ui/dot-leader-row';
-import { Skeleton } from '@/shared/ui/skeleton';
 
 import { BONUS_HISTORY_LIMIT } from '../config/profile.constants';
+import { BonusBalance } from './bonus-balance';
 
-const getStatusText = ({ isPending, isError }: ReturnType<typeof useBonus>) => {
+const getStatusText = ({ isPending, isError }: { isPending: boolean; isError: boolean }) => {
   if (isPending) return 'Загружаем…';
   if (isError) return 'Не удалось загрузить';
 
@@ -14,8 +14,7 @@ const getStatusText = ({ isPending, isError }: ReturnType<typeof useBonus>) => {
 };
 
 export const BonusCard = () => {
-  const bonusResult = useBonus();
-  const { bonus, isPending } = bonusResult;
+  const { bonus, isPending, isError } = useBonus();
   const titleId = useId();
   const transactions = bonus?.transactions.slice(0, BONUS_HISTORY_LIMIT) ?? [];
 
@@ -39,27 +38,10 @@ export const BonusCard = () => {
           ))}
         </ul>
       ) : (
-        <p className="text-sm text-stone-500">{getStatusText(bonusResult)}</p>
+        <p className="text-sm text-stone-500">{getStatusText({ isPending, isError })}</p>
       )}
 
-      {(bonus || isPending) && (
-        <div className="flex items-baseline justify-between gap-x-4 border-t border-dashed border-stone-300 pt-3">
-          <span className="font-bold">Баланс</span>
-          {bonus ? (
-            <data
-              value={bonus.balance}
-              className="font-display text-2xl font-extrabold text-ketchup tabular-nums"
-            >
-              <span aria-hidden="true">{bonus.balance}</span>
-              <span className="sr-only">{formatBonusCount(bonus.balance)}</span>
-            </data>
-          ) : (
-            <div className="flex h-8 items-center">
-              <Skeleton className="h-5 w-12" />
-            </div>
-          )}
-        </div>
-      )}
+      {(bonus || isPending) && <BonusBalance balance={bonus?.balance} />}
 
       <p className="text-xs text-stone-500">1 бонус = 1 ₽</p>
     </section>
