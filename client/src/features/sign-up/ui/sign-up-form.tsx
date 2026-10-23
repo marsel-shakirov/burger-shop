@@ -2,6 +2,8 @@ import { useMutation } from '@tanstack/react-query';
 import { type SubmitEvent, useId, useState } from 'react';
 
 import { setSessionUser } from '@/entities/session';
+import { Button } from '@/shared/ui/button';
+import { FormAlert } from '@/shared/ui/form-alert';
 import { FormField } from '@/shared/ui/form-field';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { PasswordLengthHint } from '@/shared/ui/password-length-hint';
@@ -106,24 +108,12 @@ export const SignUpForm = ({ defaultEmail, onEmailSent }: SignUpFormProps) => {
         )}
       </FormField>
 
-      {errorMessage && (
-        <p
-          id={errorId}
-          role="alert"
-          className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
-        >
-          {errorMessage}
-        </p>
-      )}
+      {errorMessage && <FormAlert id={errorId}>{errorMessage}</FormAlert>}
 
       <div className="border-t border-dashed border-stone-300 pt-5">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="h-12 w-full cursor-pointer rounded-md bg-orange-500 font-bold text-stone-900 focus-ring transition-colors duration-150 hover:bg-orange-600 disabled:cursor-wait disabled:opacity-60 disabled:hover:bg-orange-500"
-        >
+        <Button type="submit" pending={isPending} className="w-full">
           {isPending ? 'Создаём профиль…' : 'Создать профиль'}
-        </button>
+        </Button>
       </div>
     </form>
   );

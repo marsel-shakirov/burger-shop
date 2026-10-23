@@ -4,7 +4,8 @@ import { ProductCard } from '@/entities/product';
 import { AddToCartButton } from '@/features/add-to-cart';
 import { ToggleFavoriteButton } from '@/features/toggle-favorite';
 import { routes } from '@/shared/config';
-import { useLastSearch } from '@/shared/lib';
+import { cn, useLastSearch } from '@/shared/lib';
+import { buttonClass } from '@/shared/ui/button';
 import { EmptyPlate } from '@/shared/ui/icon';
 
 import { useCartSuggestions } from '../model/use-cart-suggestions';
@@ -28,7 +29,7 @@ export const EmptyCart = () => {
 
         <Link
           to={{ pathname: routes.home, search: homeSearch }}
-          className="mt-6 inline-flex h-12 items-center rounded-md bg-orange-500 px-6 font-bold text-stone-900 focus-ring transition-colors duration-150 hover:bg-orange-600"
+          className={cn(buttonClass, 'mt-6')}
         >
           Открыть меню
         </Link>

@@ -1,6 +1,7 @@
 import type { FallbackProps } from 'react-error-boundary';
 
 import { isNetworkError } from '@/shared/api';
+import { Button } from '@/shared/ui/button';
 
 export const ProfileError = ({ error, resetErrorBoundary }: FallbackProps) => {
   return (
@@ -15,13 +16,9 @@ export const ProfileError = ({ error, resetErrorBoundary }: FallbackProps) => {
       </div>
 
       <div className="border-t border-dashed border-stone-300 pt-5">
-        <button
-          type="button"
-          onClick={resetErrorBoundary}
-          className="h-12 w-full cursor-pointer rounded-md bg-orange-500 font-bold text-stone-900 focus-ring transition-colors duration-150 hover:bg-orange-600"
-        >
+        <Button onClick={resetErrorBoundary} className="w-full">
           Загрузить снова
-        </button>
+        </Button>
       </div>
     </div>
   );

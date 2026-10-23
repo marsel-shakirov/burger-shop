@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 
 import { routes } from '@/shared/config';
 import { formatPrice, useLastSearch } from '@/shared/lib';
+import { Button } from '@/shared/ui/button';
 import { ArrowIcon } from '@/shared/ui/icon';
 import { Receipt } from '@/shared/ui/receipt';
 
@@ -53,14 +54,9 @@ export const CartSummary = ({ lines, totalPrice }: CartSummaryProps) => {
           </div>
 
           <div className="flex flex-col gap-y-2">
-            <button
-              type="button"
-              disabled
-              aria-describedby="checkout-note"
-              className="h-12 cursor-pointer rounded-md bg-orange-500 font-bold text-stone-900 focus-ring transition-colors duration-150 hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-orange-500"
-            >
+            <Button disabled aria-describedby="checkout-note">
               Оформить заказ
-            </button>
+            </Button>
             <p id="checkout-note" className="text-center text-xs text-stone-500">
               Оформление заказа скоро появится
             </p>
