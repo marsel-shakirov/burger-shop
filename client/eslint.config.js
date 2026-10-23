@@ -87,6 +87,12 @@ export default defineConfig([
       'jsx-a11y-x/no-noninteractive-element-interactions': 'off',
     },
   },
+  {
+    files: ['**/*.test.{ts,tsx}'],
+    rules: {
+      'max-lines': 'off',
+    },
+  },
   ...LAYERS.map((layer) => ({
     files: [`src/${layer}/**/*.{ts,tsx}`],
     rules: {
