@@ -6,14 +6,10 @@ import { CART_QUERY_KEY, cartQueryOptions } from '../api/cart-query-options';
 import { deleteCart } from '../api/delete-cart';
 import { deleteCartItem } from '../api/delete-cart-item';
 import { updateCartItem } from '../api/update-cart-item';
-import { MAX_ITEM_QUANTITY, MIN_ITEM_QUANTITY } from '../config/cart.constants';
-import { getProductQuantity, setEntryQuantity } from '../lib/cart-entries';
+import { applyCartChange, getNextQuantity, revertCartChange } from '../lib/cart-changes';
+import { getProductQuantity } from '../lib/cart-entries';
 import { useCartStore } from './cart.store';
-import type { CartEntry, CartItemPayload } from './cart.types';
-
-type CartItemAction = 'add' | 'increment' | 'decrement' | 'remove';
-
-type CartChange = ({ type: 'item' } & CartEntry) | { type: 'clear' };
+import type { CartChange, CartItemAction, CartItemPayload } from './cart.types';
 
 interface CartChangeVariables {
   userId: string;
@@ -30,22 +26,6 @@ const GUEST_ACTIONS = {
 } as const;
 
 const getQueryKey = (userId: string) => cartQueryOptions(userId).queryKey;
-
-const getNextQuantity = (quantity: number, action: CartItemAction) => {
-  switch (action) {
-    case 'add':
-      return Math.min(quantity + 1, MAX_ITEM_QUANTITY);
-    case 'increment':
-      return quantity > 0 ? Math.min(quantity + 1, MAX_ITEM_QUANTITY) : 0;
-    case 'decrement':
-      return quantity > MIN_ITEM_QUANTITY ? quantity - 1 : 0;
-    case 'remove':
-      return 0;
-  }
-};
-
-const applyChange = (items: CartEntry[], change: CartChange) =>
-  change.type === 'clear' ? [] : setEntryQuantity(items, change);
 
 const sendChange = (change: CartChange) => {
   if (change.type === 'clear') {
@@ -69,7 +49,7 @@ export const useCartActions = () => {
 
       const previousItems = queryClient.getQueryData(queryKey);
 
-      queryClient.setQueryData(queryKey, (items) => items && applyChange(items, change));
+      queryClient.setQueryData(queryKey, (items) => items && applyCartChange(items, change));
 
       return { previousItems };
     },
@@ -80,15 +60,9 @@ export const useCartActions = () => {
         return;
       }
 
-      queryClient.setQueryData(getQueryKey(userId), (items) => {
-        if (!items || change.type === 'clear') {
-          return previousItems;
-        }
-
-        const quantity = getProductQuantity(previousItems, change.productId);
-
-        return setEntryQuantity(items, { productId: change.productId, quantity });
-      });
+      queryClient.setQueryData(getQueryKey(userId), (items) =>
+        revertCartChange(items, previousItems, change),
+      );
     },
     onSettled: (_data, _error, { userId }) => {
       if (queryClient.isMutating({ mutationKey: CART_MUTATION_KEY }) === 1) {

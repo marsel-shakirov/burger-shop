@@ -13,3 +13,7 @@ export interface CartState {
   removeItem: (productId: CartItemPayload) => void;
   clearCart: () => void;
 }
+
+export type CartItemAction = 'add' | 'increment' | 'decrement' | 'remove';
+
+export type CartChange = ({ type: 'item' } & CartEntry) | { type: 'clear' };
