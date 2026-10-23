@@ -2,6 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { profileQueryOptions } from '@/entities/profile';
 
+import { BonusCard } from './bonus-card';
 import { ProfileHeader } from './profile-header';
 import { ProfileShortcuts } from './profile-shortcuts';
 interface ProfileContentProps {
@@ -15,6 +16,7 @@ export const ProfileContent = ({ userId }: ProfileContentProps) => {
     <>
       <ProfileHeader name={profile.name} />
       <ProfileShortcuts />
+      <BonusCard />
     </>
   );
 };

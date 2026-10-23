@@ -6,7 +6,7 @@ import { routes } from '@/shared/config';
 import { cn } from '@/shared/lib';
 import { BagIcon, HeartIcon } from '@/shared/ui/icon';
 
-const tileClassName = 'flex h-full flex-col gap-y-3 rounded-2xl bg-stone-100 p-3 sm:p-4';
+const tileClassName = 'flex h-full flex-col gap-y-1 rounded-2xl bg-stone-100 p-3';
 
 const getFavoritesLabel = ({ count, isPending, isError }: ReturnType<typeof useFavoritesCount>) => {
   if (isPending) return 'Загружаем…';
@@ -28,10 +28,10 @@ export const ProfileShortcuts = () => {
             'focus-ring transition-colors duration-150 hover:bg-stone-200/70',
           )}
         >
-          <HeartIcon className="size-7 text-stone-400" />
+          <HeartIcon className="size-6 text-stone-400" />
           <span className="flex min-w-0 flex-col gap-y-0.5">
-            <span className="truncate font-bold">Избранное</span>
-            <span className="truncate text-sm text-stone-500">
+            <span className="truncate text-sm font-bold">Избранное</span>
+            <span className="truncate text-xs text-stone-500">
               {getFavoritesLabel(favoritesCount)}
             </span>
           </span>
@@ -40,10 +40,10 @@ export const ProfileShortcuts = () => {
 
       <li>
         <div className={tileClassName}>
-          <BagIcon className="size-7 text-stone-400" />
+          <BagIcon className="size-6 text-stone-400" />
           <span className="flex min-w-0 flex-col gap-y-0.5">
-            <span className="truncate font-bold">Покупки</span>
-            <span className="truncate text-sm text-stone-500">Скоро появятся</span>
+            <span className="truncate text-sm font-bold">Покупки</span>
+            <span className="truncate text-xs text-stone-500">Скоро появятся</span>
           </span>
         </div>
       </li>
