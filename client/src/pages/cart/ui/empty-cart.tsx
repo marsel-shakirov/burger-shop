@@ -1,21 +1,15 @@
-import { useId } from 'react';
 import { Link } from 'react-router';
 
-import { ProductCard } from '@/entities/product';
-import { AddToCartButton } from '@/features/add-to-cart';
-import { ToggleFavoriteButton } from '@/features/toggle-favorite';
 import { routes } from '@/shared/config';
 import { cn, useLastSearch } from '@/shared/lib';
 import { buttonClass } from '@/shared/ui/button';
 import { EmptyPlate } from '@/shared/ui/icon';
 
-import { useCartSuggestions } from '../model/use-cart-suggestions';
 import { CartHeader } from './cart-header';
+import { CartSuggestions } from './cart-suggestions';
 
 export const EmptyCart = () => {
   const homeSearch = useLastSearch(routes.home);
-  const suggestions = useCartSuggestions();
-  const suggestionsTitleId = useId();
 
   return (
     <section className="flex flex-1 flex-col gap-y-5 pb-8 sm:gap-y-8 sm:pb-12">
@@ -37,26 +31,7 @@ export const EmptyCart = () => {
         </Link>
       </div>
 
-      {suggestions.length > 0 && (
-        <section aria-labelledby={suggestionsTitleId} className="flex flex-col gap-y-4">
-          <h2 id={suggestionsTitleId} className="text-lg font-bold sm:text-xl">
-            Чаще всего заказывают
-          </h2>
-
-          <ul role="list" className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-            {suggestions.map((product) => (
-              <li key={product.id}>
-                <ProductCard
-                  product={product}
-                  priority={false}
-                  favoriteAction={<ToggleFavoriteButton variant="product" product={product} />}
-                  cartAction={<AddToCartButton product={product} />}
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <CartSuggestions />
     </section>
   );
 };
