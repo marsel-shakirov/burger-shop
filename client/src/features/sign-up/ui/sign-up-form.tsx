@@ -2,7 +2,6 @@ import { useMutation } from '@tanstack/react-query';
 import { type SubmitEvent, useId, useState } from 'react';
 
 import { setSessionUser } from '@/entities/session';
-import { getFormString } from '@/shared/lib';
 import { FormField } from '@/shared/ui/form-field';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { PasswordLengthHint } from '@/shared/ui/password-length-hint';
@@ -10,6 +9,8 @@ import { TextInput } from '@/shared/ui/text-input';
 
 import { signUp } from '../api/sign-up';
 import { getSignUpErrorMessage } from '../lib/get-sign-up-error-message';
+import { readSignUpForm } from '../lib/read-sign-up-form';
+import type { SignUpFormError } from '../model/sign-up.types';
 
 interface SignUpFormProps {
   defaultEmail?: string;
@@ -20,28 +21,37 @@ export const SignUpForm = ({ defaultEmail, onEmailSent }: SignUpFormProps) => {
   const passwordHintId = useId();
   const errorId = useId();
   const [passwordLength, setPasswordLength] = useState(0);
+  const [validationError, setValidationError] = useState<SignUpFormError | null>(null);
   const { mutate, isPending, error, reset } = useMutation({ mutationFn: signUp });
+
+  const errorMessage = validationError?.message ?? (error ? getSignUpErrorMessage(error) : null);
+  const isServerError = !validationError && !!error;
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const email = getFormString(formData, 'email').trim();
+    const result = readSignUpForm(new FormData(event.currentTarget));
 
-    mutate(
-      { email, password: getFormString(formData, 'password') },
-      {
-        onSuccess: (user) => {
-          if (user) {
-            setSessionUser(user);
-          } else {
-            onEmailSent(email);
-          }
-        },
+    if (!result.ok) {
+      setValidationError(result.error);
+      return;
+    }
+
+    const { credentials } = result;
+
+    mutate(credentials, {
+      onSuccess: (user) => {
+        if (user) {
+          setSessionUser(user);
+        } else {
+          onEmailSent(credentials.email);
+        }
       },
-    );
+    });
   };
 
   const handleInput = () => {
+    setValidationError(null);
+
     if (error) {
       reset();
     }
@@ -49,7 +59,7 @@ export const SignUpForm = ({ defaultEmail, onEmailSent }: SignUpFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} onInput={handleInput} className="flex flex-col gap-y-5">
-      <FormField label="Email" invalid={!!error} errorId={errorId}>
+      <FormField label="Email" invalid={isServerError} errorId={errorId}>
         {(controlProps) => (
           <TextInput
             {...controlProps}
@@ -64,7 +74,7 @@ export const SignUpForm = ({ defaultEmail, onEmailSent }: SignUpFormProps) => {
         )}
       </FormField>
 
-      <FormField label="Пароль" invalid={!!error} errorId={errorId} hintId={passwordHintId}>
+      <FormField label="Пароль" invalid={isServerError} errorId={errorId} hintId={passwordHintId}>
         {(controlProps) => (
           <>
             <PasswordInput
@@ -80,13 +90,29 @@ export const SignUpForm = ({ defaultEmail, onEmailSent }: SignUpFormProps) => {
         )}
       </FormField>
 
-      {error && (
+      <FormField
+        label="Повторите пароль"
+        invalid={validationError?.field === 'confirmPassword'}
+        errorId={errorId}
+      >
+        {(controlProps) => (
+          <PasswordInput
+            {...controlProps}
+            name="confirmPassword"
+            autoComplete="new-password"
+            placeholder="повторите пароль"
+            required
+          />
+        )}
+      </FormField>
+
+      {errorMessage && (
         <p
           id={errorId}
           role="alert"
           className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
         >
-          {getSignUpErrorMessage(error)}
+          {errorMessage}
         </p>
       )}
 
