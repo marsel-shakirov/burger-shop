@@ -33,7 +33,7 @@ export const PromoSlide = ({ promo, priority }: PromoSlideProps) => {
       return (
         <PromoCard
           promo={promo}
-          to={routes.login}
+          to={routes.register}
           priority={priority}
           stub={
             <>
