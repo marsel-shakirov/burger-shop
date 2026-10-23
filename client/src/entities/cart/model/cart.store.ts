@@ -1,52 +1,39 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-import { CART_STORAGE_KEY, MAX_ITEM_QUANTITY, MIN_ITEM_QUANTITY } from '../config/cart.constants';
-import {
-  findCartEntryByProductId,
-  getProductQuantity,
-  setEntryQuantity,
-} from '../lib/cart-entries';
-import type { CartState } from './cart.types';
+import { CART_STORAGE_KEY } from '../config/cart.constants';
+import { getNextQuantity } from '../lib/cart-changes';
+import { getProductQuantity, setEntryQuantity } from '../lib/cart-entries';
+import type { CartItemAction, CartItemPayload, CartState } from './cart.types';
 
 export const useCartStore = create<CartState>()(
   devtools(
     persist(
-      (set, get) => ({
-        items: [],
-        addItem: (productId) =>
+      (set) => {
+        const changeItem = (productId: CartItemPayload, action: CartItemAction) =>
           set((state) => {
             const quantity = getProductQuantity(state.items, productId);
+            const nextQuantity = getNextQuantity(quantity, action);
 
-            if (quantity >= MAX_ITEM_QUANTITY) {
+            if (nextQuantity === quantity) {
               return state;
             }
 
-            return { items: setEntryQuantity(state.items, { productId, quantity: quantity + 1 }) };
-          }),
-        incrementItem: (productId) => {
-          if (findCartEntryByProductId(get().items, productId)) {
-            get().addItem(productId);
-          }
-        },
-        decrementItem: (productId) =>
-          set((state) => {
-            const quantity = getProductQuantity(state.items, productId);
-            const nextQuantity = quantity > MIN_ITEM_QUANTITY ? quantity - 1 : 0;
-
             return { items: setEntryQuantity(state.items, { productId, quantity: nextQuantity }) };
-          }),
-        removeItem: (productId) =>
-          set((state) => {
-            return {
-              items: state.items.filter((item) => item.productId !== productId),
-            };
-          }),
-        clearCart: () =>
-          set({
-            items: [],
-          }),
-      }),
+          });
+
+        return {
+          items: [],
+          addItem: (productId) => changeItem(productId, 'add'),
+          incrementItem: (productId) => changeItem(productId, 'increment'),
+          decrementItem: (productId) => changeItem(productId, 'decrement'),
+          removeItem: (productId) => changeItem(productId, 'remove'),
+          clearCart: () =>
+            set({
+              items: [],
+            }),
+        };
+      },
       {
         name: CART_STORAGE_KEY,
         version: 1,

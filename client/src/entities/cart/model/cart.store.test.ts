@@ -96,6 +96,14 @@ describe('addItem', () => {
 
     expect(listener).not.toHaveBeenCalled();
   });
+
+  it('опускает до максимума количество, которое уже больше лимита', () => {
+    setItems([{ productId: 1, quantity: MAX_ITEM_QUANTITY + 5 }]);
+
+    useCartStore.getState().addItem(1);
+
+    expect(getItems()).toEqual([{ productId: 1, quantity: MAX_ITEM_QUANTITY }]);
+  });
 });
 
 describe('incrementItem', () => {
@@ -196,6 +204,17 @@ describe('removeItem', () => {
 
     expect(getItems()).toEqual([]);
   });
+
+  it('удаляет все позиции, если productId повторяется', () => {
+    setItems([
+      { productId: 1, quantity: 1 },
+      { productId: 1, quantity: 7 },
+    ]);
+
+    useCartStore.getState().removeItem(1);
+
+    expect(getItems()).toEqual([]);
+  });
 });
 
 describe('clearCart', () => {
@@ -209,6 +228,43 @@ describe('clearCart', () => {
 
     expect(getItems()).toEqual([]);
   });
+});
+
+describe('неизменность состояния', () => {
+  it('не мутирует предыдущий массив товаров', () => {
+    const items: CartEntry[] = [
+      { productId: 1, quantity: 2 },
+      { productId: 2, quantity: 1 },
+    ];
+    const before = structuredClone(items);
+
+    setItems(items);
+    useCartStore.getState().addItem(1);
+    useCartStore.getState().decrementItem(2);
+    useCartStore.getState().addItem(3);
+
+    expect(items).toEqual(before);
+  });
+
+  it.each([
+    ['incrementItem', () => useCartStore.getState().incrementItem(2)],
+    ['decrementItem', () => useCartStore.getState().decrementItem(2)],
+    ['removeItem', () => useCartStore.getState().removeItem(2)],
+  ])(
+    '%s для отсутствующего товара не меняет состояние и не уведомляет подписчиков',
+    (_name, action) => {
+      setItems([{ productId: 1, quantity: 2 }]);
+      const before = useCartStore.getState();
+      const listener = vi.fn();
+      const unsubscribe = useCartStore.subscribe(listener);
+
+      action();
+      unsubscribe();
+
+      expect(useCartStore.getState()).toBe(before);
+      expect(listener).not.toHaveBeenCalled();
+    },
+  );
 });
 
 describe('сохранение в localStorage', () => {
