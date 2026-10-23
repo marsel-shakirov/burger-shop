@@ -3,13 +3,11 @@ import { useEffect } from 'react';
 import { onUnauthorized } from '@/shared/api';
 
 import { getSession } from '../api/get-session';
+import { isSameUser } from '../lib/is-same-user';
 import { useSessionStore } from './session.store';
 import type { SessionUser } from './session.types';
 
 const SESSION_CHANNEL_NAME = 'session';
-
-const isSameUser = (a: SessionUser | null, b: SessionUser | null) =>
-  a?.id === b?.id && a?.email === b?.email;
 
 export const useSessionSync = () => {
   useEffect(() => {
