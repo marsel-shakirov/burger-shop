@@ -16,7 +16,7 @@ export const Root = ({ children, className }: ReceiptPartProps) => (
 
 export const Body = ({ children, className }: ReceiptPartProps) => (
   <div className="rounded-t-xl bg-white receipt-edge">
-    <div className={cn('flex flex-col gap-y-5 px-5', className)}>{children}</div>
+    <div className={cn('flex flex-col gap-y-4 px-5', className)}>{children}</div>
   </div>
 );
 
