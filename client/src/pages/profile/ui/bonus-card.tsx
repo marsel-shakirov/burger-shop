@@ -1,6 +1,7 @@
 import { useId } from 'react';
 
 import { formatBonusCount, useBonus } from '@/entities/bonus';
+import { DotLeaderRow } from '@/shared/ui/dot-leader-row';
 import { Skeleton } from '@/shared/ui/skeleton';
 
 import { BONUS_HISTORY_LIMIT } from '../config/profile.constants';
@@ -27,13 +28,13 @@ export const BonusCard = () => {
       {transactions.length > 0 ? (
         <ul role="list" className="flex flex-col gap-y-2.5 text-sm">
           {transactions.map((transaction) => (
-            <li key={transaction.id} className="flex items-baseline gap-x-1.5">
-              <span className="min-w-0 truncate">{transaction.title}</span>
-              <span
-                aria-hidden="true"
-                className="min-w-4 flex-1 border-b border-dotted border-stone-300"
+            <li key={transaction.id}>
+              <DotLeaderRow
+                label={<span className="min-w-0 truncate">{transaction.title}</span>}
+                value={
+                  <span className="shrink-0 font-bold tabular-nums">+{transaction.amount}</span>
+                }
               />
-              <span className="shrink-0 font-bold tabular-nums">+{transaction.amount}</span>
             </li>
           ))}
         </ul>

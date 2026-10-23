@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { routes } from '@/shared/config';
 import { formatPrice, useLastSearch } from '@/shared/lib';
 import { Button } from '@/shared/ui/button';
+import { DotLeaderRow } from '@/shared/ui/dot-leader-row';
 import { ArrowIcon } from '@/shared/ui/icon';
 import { Receipt } from '@/shared/ui/receipt';
 
@@ -29,16 +30,22 @@ export const CartSummary = ({ lines, totalPrice }: CartSummaryProps) => {
 
           <ul role="list" className="flex flex-col gap-y-2.5 text-sm">
             {lines.map(({ product, entry }) => (
-              <li key={entry.productId} className="flex items-baseline gap-x-1.5">
-                <span className="min-w-0 truncate">{product.name}</span>
-                <span className="shrink-0 text-stone-500 tabular-nums">×{entry.quantity}</span>
-                <span
-                  aria-hidden="true"
-                  className="min-w-4 flex-1 border-b border-dotted border-stone-300"
+              <li key={entry.productId}>
+                <DotLeaderRow
+                  label={
+                    <>
+                      <span className="min-w-0 truncate">{product.name}</span>
+                      <span className="shrink-0 text-stone-500 tabular-nums">
+                        ×{entry.quantity}
+                      </span>
+                    </>
+                  }
+                  value={
+                    <span className="shrink-0 font-bold tabular-nums">
+                      {formatPrice(product.price * entry.quantity)}
+                    </span>
+                  }
                 />
-                <span className="shrink-0 font-bold tabular-nums">
-                  {formatPrice(product.price * entry.quantity)}
-                </span>
               </li>
             ))}
           </ul>

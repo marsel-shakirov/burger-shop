@@ -1,5 +1,6 @@
 import { PASSWORD_MIN_LENGTH } from '@/shared/config';
 import { cn } from '@/shared/lib';
+import { DotLeaderRow } from '@/shared/ui/dot-leader-row';
 
 interface PasswordLengthHintProps {
   id: string;
@@ -10,20 +11,24 @@ export const PasswordLengthHint = ({ id, length }: PasswordLengthHintProps) => {
   const isLongEnough = length >= PASSWORD_MIN_LENGTH;
 
   return (
-    <p className="flex items-baseline gap-x-1.5 text-sm">
-      <span id={id} className="text-stone-500">
-        Не короче {PASSWORD_MIN_LENGTH} символов
-      </span>
-      <span aria-hidden="true" className="min-w-4 flex-1 border-b border-dotted border-stone-300" />
-      <span
-        aria-hidden="true"
-        className={cn(
-          'shrink-0 tabular-nums',
-          isLongEnough ? 'font-bold text-stone-900' : 'text-stone-500',
-        )}
-      >
-        {isLongEnough ? 'подходит' : `${length} из ${PASSWORD_MIN_LENGTH}`}
-      </span>
-    </p>
+    <DotLeaderRow
+      className="text-sm"
+      label={
+        <span id={id} className="text-stone-500">
+          Не короче {PASSWORD_MIN_LENGTH} символов
+        </span>
+      }
+      value={
+        <span
+          aria-hidden="true"
+          className={cn(
+            'shrink-0 tabular-nums',
+            isLongEnough ? 'font-bold text-stone-900' : 'text-stone-500',
+          )}
+        >
+          {isLongEnough ? 'подходит' : `${length} из ${PASSWORD_MIN_LENGTH}`}
+        </span>
+      }
+    />
   );
 };
