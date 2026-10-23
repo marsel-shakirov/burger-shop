@@ -5,6 +5,7 @@ import { profileQueryOptions } from '@/entities/profile';
 import { BonusCard } from './bonus-card';
 import { ProfileHeader } from './profile-header';
 import { ProfileShortcuts } from './profile-shortcuts';
+
 interface ProfileContentProps {
   userId: string;
 }

@@ -35,23 +35,23 @@ const styles: Record<
 };
 
 export const MainNav = ({ variant, className }: MainNavProps) => {
-  const s = styles[variant];
+  const variantStyles = styles[variant];
   const searchByPath = useLastSearchStore(selectSearchByPath);
 
   return (
-    <nav aria-label="Основная навигация" className={cn(s.nav, className)}>
-      <ul role="list" className={s.list}>
+    <nav aria-label="Основная навигация" className={cn(variantStyles.nav, className)}>
+      <ul role="list" className={variantStyles.list}>
         {navItems.map(({ to, label, Icon }) => (
-          <li key={to} className={s.item}>
+          <li key={to} className={variantStyles.item}>
             <NavLink
               to={{ pathname: to, search: searchByPath[to] }}
               end={to === routes.home}
               className={cn(
                 'group rounded-md font-bold focus-ring transition-colors duration-150 ease-out hover:text-stone-900 aria-[current=page]:text-stone-900',
-                s.link,
+                variantStyles.link,
               )}
             >
-              <span className={s.label}>{label}</span>
+              <span className={variantStyles.label}>{label}</span>
               <span className="relative order-first">
                 <Icon className="size-6 transition-colors duration-150 ease-out group-aria-[current=page]:text-orange-600" />
                 {to === routes.cart && (
