@@ -1,6 +1,5 @@
+import { PASSWORD_MIN_LENGTH } from '@/shared/config';
 import { cn } from '@/shared/lib';
-
-import { PASSWORD_MIN_LENGTH } from '../config/sign-up.constants';
 
 interface PasswordLengthHintProps {
   id: string;

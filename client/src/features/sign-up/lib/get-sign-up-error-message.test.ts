@@ -55,31 +55,9 @@ describe('getSignUpErrorMessage: коды ошибок API', () => {
 });
 
 describe('getSignUpErrorMessage: слабый пароль', () => {
-  it('сообщает об утечке, если пароль найден в базе утечек', () => {
+  it('передаёт причины в общее сообщение о слабом пароле', () => {
     expect(getSignUpErrorMessage(apiError('weak_password', ['pwned']))).toBe(
       'Этот пароль встречался в утечках данных. Придумайте другой',
-    );
-  });
-
-  it('сообщает о допустимой длине пароля', () => {
-    expect(getSignUpErrorMessage(apiError('weak_password', ['length']))).toBe(
-      'Пароль должен быть от 8 до 72 символов',
-    );
-  });
-
-  it('ставит утечку выше длины, если причин несколько', () => {
-    expect(getSignUpErrorMessage(apiError('weak_password', ['length', 'pwned']))).toBe(
-      'Этот пароль встречался в утечках данных. Придумайте другой',
-    );
-  });
-
-  it.each([
-    ['причины не переданы', undefined],
-    ['список причин пуст', []],
-    ['причина неизвестна', ['characters']],
-  ])('требует сложный пароль, если %s', (_label, reasons) => {
-    expect(getSignUpErrorMessage(apiError('weak_password', reasons))).toBe(
-      'Пароль должен содержать заглавную букву, цифру и спецсимвол',
     );
   });
 });

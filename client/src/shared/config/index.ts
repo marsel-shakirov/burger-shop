@@ -1,1 +1,2 @@
+export { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from './password.constants';
 export { routes } from './routes';

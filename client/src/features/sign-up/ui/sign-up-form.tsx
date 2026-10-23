@@ -5,11 +5,11 @@ import { setSessionUser } from '@/entities/session';
 import { getFormString } from '@/shared/lib';
 import { FormField } from '@/shared/ui/form-field';
 import { PasswordInput } from '@/shared/ui/password-input';
+import { PasswordLengthHint } from '@/shared/ui/password-length-hint';
 import { TextInput } from '@/shared/ui/text-input';
 
 import { signUp } from '../api/sign-up';
 import { getSignUpErrorMessage } from '../lib/get-sign-up-error-message';
-import { PasswordLengthHint } from './password-length-hint';
 
 interface SignUpFormProps {
   defaultEmail?: string;
