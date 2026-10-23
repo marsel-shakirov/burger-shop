@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
+import { BONUS_QUERY_KEY } from '@/entities/bonus';
 import { CART_QUERY_KEY, cartQueryOptions, mergeGuestCart } from '@/entities/cart';
 import {
   FAVORITES_QUERY_KEY,
@@ -20,6 +21,7 @@ export const useSyncUserData = () => {
           queryClient.removeQueries({ queryKey: PROFILE_QUERY_KEY });
           queryClient.removeQueries({ queryKey: FAVORITES_QUERY_KEY });
           queryClient.removeQueries({ queryKey: CART_QUERY_KEY });
+          queryClient.removeQueries({ queryKey: BONUS_QUERY_KEY });
         }
 
         if (user && user.id !== prevUser?.id) {
