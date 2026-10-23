@@ -1,7 +1,7 @@
 import { type ReactNode, useId } from 'react';
 import { Link, type To } from 'react-router';
 
-import { cn } from '@/shared/lib';
+import { cn, getImagePriorityProps } from '@/shared/lib';
 
 import { PROMO_THEME_CLASS } from '../config/promo.constants';
 import type { Promo } from '../model/promo.types';
@@ -49,8 +49,7 @@ export const PromoCard = ({ promo, to, priority, stub }: PromoCardProps) => {
               sizes="(min-width: 64rem) 260px, (min-width: 40rem) 30vw, 46vw"
               alt=""
               className="pointer-events-none absolute right-[-6%] bottom-[-14%] aspect-square w-[52%] max-w-65 -rotate-4 object-contain sm:right-[-4%] sm:bottom-[-18%] sm:w-[46%]"
-              loading={priority ? 'eager' : 'lazy'}
-              fetchPriority={priority ? 'high' : 'auto'}
+              {...getImagePriorityProps(priority)}
             />
           )}
         </div>

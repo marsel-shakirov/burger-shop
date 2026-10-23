@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 
+import { getImagePriorityProps } from '@/shared/lib';
 import { RatingStarIcon } from '@/shared/ui/icon';
 
 import { PRODUCT_UNIT_LABEL } from '../config/product.constants';
 import type { Product } from '../model/product.types';
 import { useProductDetailsLink } from '../model/use-product-details-link';
+
 export interface ProductCardProps {
   product: Product;
   priority: boolean;
@@ -39,8 +41,7 @@ export const ProductCard = ({
           sizes="(min-width: 80rem) 256px, (min-width: 64rem) 20vw, (min-width: 30rem) 28vw, 43vw"
           alt=""
           className="h-auto w-full object-contain"
-          loading={priority ? 'eager' : 'lazy'}
-          fetchPriority={priority ? 'high' : 'auto'}
+          {...getImagePriorityProps(priority)}
         />
       </div>
 
