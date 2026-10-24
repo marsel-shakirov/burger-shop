@@ -173,14 +173,32 @@ describe('CartPage: корзина пользователя', () => {
     expect(screen.getByText('2 товара')).toBeDefined();
   });
 
-  it('если товары не загрузились, показывает ошибку', async () => {
-    stubApi({
-      'GET /api/cart': json({ items: [{ productId: 3, quantity: 2 }] }),
-      'GET /api/products': json(null, 500),
-    });
-
+  it('если товары не загрузились, показывает ошибку и загружает их снова', async () => {
+    const cart = json({ items: [{ productId: 3, quantity: 2 }] });
+    stubApi({ 'GET /api/cart': cart, 'GET /api/products': json(null, 500) });
     renderPage();
 
-    expect((await screen.findByRole('alert')).textContent).toMatch(/Не удалось загрузить товары/);
+    expect((await screen.findByRole('alert')).textContent).toMatch(/Товары не загрузились/);
+
+    stubApi({ 'GET /api/cart': cart, 'GET /api/products': json(products) });
+    fireEvent.click(screen.getByRole('button', { name: 'Повторить' }));
+
+    expect(await screen.findByRole('heading', { name: 'Гамбургер' })).toBeDefined();
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  it('если корзина не загрузилась, загружает её снова', async () => {
+    stubApi({ 'GET /api/cart': json(null, 500), 'GET /api/products': json(products) });
+    renderPage();
+
+    await screen.findByRole('alert');
+
+    stubApi({
+      'GET /api/cart': json({ items: [{ productId: 1, quantity: 1 }] }),
+      'GET /api/products': json(products),
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Повторить' }));
+
+    expect(await screen.findByRole('heading', { name: 'Чизбургер' })).toBeDefined();
   });
 });

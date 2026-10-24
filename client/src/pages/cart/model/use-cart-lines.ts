@@ -13,5 +13,10 @@ export const useCartLines = () => {
   const lines = getCartLines(cart.items, products.data);
   const totalPrice = getCartTotalPrice(lines);
 
-  return { isPending, isError, lines, totalPrice };
+  const retry = () => {
+    if (cart.isError) cart.refetch();
+    if (products.isError) void products.refetch();
+  };
+
+  return { isPending, isError, lines, totalPrice, retry };
 };
