@@ -1,4 +1,4 @@
-import { act, render, renderHook, screen } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useFavoriteActions, useFavoriteIds } from '@/entities/favorite';
@@ -101,12 +101,25 @@ describe('FavoritePage: есть товары', () => {
     ).toBe('true');
   });
 
-  it('если товары не загрузились, не показывает пустое состояние', async () => {
+  it('если товары не загрузились, показывает ошибку вместо пустого состояния', async () => {
     stubApi({ 'GET /api/products': json(null, 500) });
 
     renderPage();
 
-    expect(await screen.findByText('Failed to load products')).toBeDefined();
+    expect((await screen.findByRole('alert')).textContent).toMatch(/Товары не загрузились/);
     expect(screen.queryByRole('heading', { name: 'В избранном пока пусто' })).toBeNull();
+  });
+
+  it('«Повторить» загружает товары снова', async () => {
+    stubApi({ 'GET /api/products': json(null, 500) });
+    renderPage();
+    await screen.findByRole('alert');
+
+    stubApi({ 'GET /api/products': json(products) });
+    fireEvent.click(screen.getByRole('button', { name: 'Повторить' }));
+
+    await screen.findByRole('heading', { name: 'Фри' });
+    expect(getCardTitles()).toEqual(['Фри', 'Чизбургер']);
+    expect(screen.queryByRole('alert')).toBeNull();
   });
 });

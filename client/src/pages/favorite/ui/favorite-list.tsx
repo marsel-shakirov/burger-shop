@@ -1,5 +1,6 @@
 import { useFavoriteIds } from '@/entities/favorite';
 import { useProductsById } from '@/entities/product';
+import { LoadError } from '@/shared/ui/load-error';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
 export const FavoriteList = () => {
@@ -13,6 +14,11 @@ export const FavoriteList = () => {
     .map((id) => products.data?.get(id))
     .filter((product) => product !== undefined);
 
+  const retry = () => {
+    if (favorites.isError) favorites.refetch();
+    if (products.isError) void products.refetch();
+  };
+
   return (
     <section className="flex flex-1 flex-col">
       <h1 className="pt-4 text-2xl font-bold sm:pt-7 sm:text-4xl">Избранное</h1>
@@ -20,7 +26,7 @@ export const FavoriteList = () => {
       {isPending ? (
         <ProductGridSkeleton />
       ) : isError ? (
-        <div>Failed to load products</div>
+        <LoadError message="Товары не загрузились" onRetry={retry} className="py-4 sm:py-7" />
       ) : (
         <div className="py-4 sm:py-7">
           <ProductGrid products={favoriteProducts} />
