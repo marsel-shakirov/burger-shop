@@ -52,6 +52,25 @@ export const installDomPolyfills = () => {
 
   Element.prototype.scrollIntoView = function scrollIntoView() {};
 
+  Element.prototype.scrollTo = function scrollTo() {};
+
+  window.matchMedia = (query: string) =>
+    ({
+      matches: false,
+      media: query,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    }) as unknown as MediaQueryList;
+
+  window.IntersectionObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords() {
+      return [];
+    }
+  } as unknown as typeof IntersectionObserver;
+
   Object.defineProperty(document, 'fonts', {
     value: { ready: Promise.resolve() },
     configurable: true,
