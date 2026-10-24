@@ -1,12 +1,16 @@
 import { Navigate, Outlet } from 'react-router';
 
-import { useIsAuthenticated } from '@/entities/session';
+import { useSessionStatus } from '@/entities/session';
 import { routes } from '@/shared/config';
 
 export const RequireGuest = () => {
-  const isAuthenticated = useIsAuthenticated();
+  const status = useSessionStatus();
 
-  if (isAuthenticated) {
+  if (status === 'loading') {
+    return null;
+  }
+
+  if (status === 'authenticated') {
     return <Navigate to={routes.profile} replace />;
   }
 
