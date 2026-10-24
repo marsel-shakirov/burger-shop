@@ -21,6 +21,18 @@ export default defineConfig({
   },
 
   test: {
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'src/**/*.test.{ts,tsx}',
+        'src/shared/testing/**',
+        'src/**/index.ts',
+        'src/**/*.types.ts',
+        'src/app/entrypoint/**',
+      ],
+      reporter: ['text-summary', 'html'],
+    },
     projects: [
       {
         extends: true,
