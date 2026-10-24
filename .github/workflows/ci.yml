@@ -35,5 +35,8 @@ jobs:
       - name: Test
         run: npm run test:run -w client
 
+      - name: Coverage
+        run: npm run test:coverage -w client
+
       - name: Build
         run: npm run build -ws
