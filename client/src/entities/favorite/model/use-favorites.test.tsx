@@ -56,7 +56,11 @@ describe('useFavoriteIds: гость', () => {
   it('возвращает гостевое избранное без загрузки', () => {
     const { result } = render(useFavoriteIds);
 
-    expect(result.current).toEqual({ productIds: guestIds, isPending: false, isError: false });
+    expect(result.current).toMatchObject({
+      productIds: guestIds,
+      isPending: false,
+      isError: false,
+    });
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
@@ -75,7 +79,7 @@ describe('useFavoriteIds: сессия загружается', () => {
 
     const { result } = render(useFavoriteIds);
 
-    expect(result.current).toEqual({ productIds: [], isPending: true, isError: false });
+    expect(result.current).toMatchObject({ productIds: [], isPending: true, isError: false });
     expect(fetchMock).not.toHaveBeenCalled();
   });
 });
@@ -87,7 +91,11 @@ describe('useFavoriteIds: авторизованный пользователь'
 
     const { result } = render(useFavoriteIds);
 
-    expect(result.current).toEqual({ productIds: serverIds, isPending: false, isError: false });
+    expect(result.current).toMatchObject({
+      productIds: serverIds,
+      isPending: false,
+      isError: false,
+    });
   });
 
   it('загружает избранное с сервера', async () => {
@@ -110,6 +118,30 @@ describe('useFavoriteIds: авторизованный пользователь'
 
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.productIds).toEqual([]);
+  });
+
+  it('refetch после ошибки загружает избранное снова', async () => {
+    signIn();
+    fetchMock.mockResolvedValueOnce(new Response(null, { status: 500 }));
+    fetchMock.mockResolvedValueOnce(Response.json({ productIds: serverIds }));
+    const { result } = render(useFavoriteIds);
+    await waitFor(() => expect(result.current.isError).toBe(true));
+
+    act(() => result.current.refetch());
+
+    await waitFor(() => expect(result.current.productIds).toEqual(serverIds));
+    expect(result.current.isError).toBe(false);
+  });
+});
+
+describe('useFavoriteIds: refetch без сессии', () => {
+  it.each(['guest', 'loading'] as const)('для статуса %s ничего не запрашивает', (status) => {
+    session.current = { status, user: null };
+    const { result } = render(useFavoriteIds);
+
+    act(() => result.current.refetch());
+
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });
 

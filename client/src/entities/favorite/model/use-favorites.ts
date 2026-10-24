@@ -11,7 +11,10 @@ interface FavoritesResult<T> {
   data: T | undefined;
   isPending: boolean;
   isError: boolean;
+  refetch: () => void;
 }
+
+const noop = () => {};
 
 const EMPTY_IDS: FavoriteProductId[] = [];
 
@@ -30,20 +33,25 @@ const useFavorites = <T>(select: (productIds: FavoriteProductId[]) => T): Favori
   });
 
   if (status === 'guest') {
-    return { data: select(guestIds), isPending: false, isError: false };
+    return { data: select(guestIds), isPending: false, isError: false, refetch: noop };
   }
 
   if (status === 'loading') {
-    return { data: undefined, isPending: true, isError: false };
+    return { data: undefined, isPending: true, isError: false, refetch: noop };
   }
 
-  return { data: query.data, isPending: query.isPending, isError: query.isLoadingError };
+  return {
+    data: query.data,
+    isPending: query.isPending,
+    isError: query.isLoadingError,
+    refetch: () => void query.refetch(),
+  };
 };
 
 export const useFavoriteIds = () => {
-  const { data = EMPTY_IDS, isPending, isError } = useFavorites(selectAll);
+  const { data = EMPTY_IDS, isPending, isError, refetch } = useFavorites(selectAll);
 
-  return { productIds: data, isPending, isError };
+  return { productIds: data, isPending, isError, refetch };
 };
 
 export const useFavoritesCount = () => {
