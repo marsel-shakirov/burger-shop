@@ -83,6 +83,17 @@ describe('ProfilePage', () => {
     expect(bonusSection.querySelector('data')?.getAttribute('value')).toBe('150');
   });
 
+  it('без начислений сообщает об этом и показывает нулевой баланс', async () => {
+    stubApi({ ...api, 'GET /api/bonus': json({ balance: 0, transactions: [] }) });
+
+    renderPage();
+
+    expect(await screen.findByText('Пока нет начислений')).toBeDefined();
+    expect(
+      screen.getByRole('region', { name: 'Бонусы' }).querySelector('data')?.getAttribute('value'),
+    ).toBe('0');
+  });
+
   it('если бонусы не загрузились, остальной профиль показывается', async () => {
     stubApi({ ...api, 'GET /api/bonus': json(null, 500) });
 
