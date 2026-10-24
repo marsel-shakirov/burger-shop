@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "COVERAGE=1 vitest run --coverage"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.102.8",

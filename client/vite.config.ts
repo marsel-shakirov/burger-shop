@@ -5,8 +5,14 @@ import tailwindcss from '@tailwindcss/vite';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
+const withCompiler = !process.env.COVERAGE;
+
 export default defineConfig({
-  plugins: [react(), babel({ presets: [reactCompilerPreset()] }), tailwindcss()],
+  plugins: [
+    react(),
+    ...(withCompiler ? [babel({ presets: [reactCompilerPreset()] })] : []),
+    tailwindcss(),
+  ],
 
   server: {
     proxy: {
@@ -32,6 +38,12 @@ export default defineConfig({
         'src/app/entrypoint/**',
       ],
       reporter: ['text-summary', 'html'],
+      thresholds: {
+        lines: 99,
+        branches: 95,
+        functions: 99,
+        statements: 98,
+      },
     },
     projects: [
       {
