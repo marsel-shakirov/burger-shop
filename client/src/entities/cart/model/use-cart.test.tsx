@@ -60,7 +60,7 @@ describe('useCartItems: гость', () => {
   it('возвращает гостевую корзину без загрузки', () => {
     const { result } = render(useCartItems);
 
-    expect(result.current).toEqual({ items: guestItems, isPending: false, isError: false });
+    expect(result.current).toMatchObject({ items: guestItems, isPending: false, isError: false });
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
@@ -79,7 +79,7 @@ describe('useCartItems: сессия загружается', () => {
 
     const { result } = render(useCartItems);
 
-    expect(result.current).toEqual({ items: [], isPending: true, isError: false });
+    expect(result.current).toMatchObject({ items: [], isPending: true, isError: false });
     expect(fetchMock).not.toHaveBeenCalled();
   });
 });
@@ -91,7 +91,7 @@ describe('useCartItems: авторизованный пользователь', 
 
     const { result } = render(useCartItems);
 
-    expect(result.current).toEqual({ items: serverItems, isPending: false, isError: false });
+    expect(result.current).toMatchObject({ items: serverItems, isPending: false, isError: false });
   });
 
   it('загружает корзину с сервера', async () => {
@@ -114,6 +114,30 @@ describe('useCartItems: авторизованный пользователь', 
 
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.items).toEqual([]);
+  });
+
+  it('refetch после ошибки загружает корзину снова', async () => {
+    signIn();
+    fetchMock.mockResolvedValueOnce(new Response(null, { status: 500 }));
+    fetchMock.mockResolvedValueOnce(Response.json({ items: serverItems }));
+    const { result } = render(useCartItems);
+    await waitFor(() => expect(result.current.isError).toBe(true));
+
+    act(() => result.current.refetch());
+
+    await waitFor(() => expect(result.current.items).toEqual(serverItems));
+    expect(result.current.isError).toBe(false);
+  });
+});
+
+describe('useCartItems: refetch без сессии', () => {
+  it.each(['guest', 'loading'] as const)('для статуса %s ничего не запрашивает', (status) => {
+    session.current = { status, user: null };
+    const { result } = render(useCartItems);
+
+    act(() => result.current.refetch());
+
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });
 

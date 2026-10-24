@@ -12,7 +12,10 @@ interface CartResult<T> {
   data: T | undefined;
   isPending: boolean;
   isError: boolean;
+  refetch: () => void;
 }
+
+const noop = () => {};
 
 const EMPTY_ITEMS: CartEntry[] = [];
 
@@ -29,20 +32,25 @@ const useCart = <T>(select: (items: CartEntry[]) => T): CartResult<T> => {
   });
 
   if (status === 'guest') {
-    return { data: select(guestItems), isPending: false, isError: false };
+    return { data: select(guestItems), isPending: false, isError: false, refetch: noop };
   }
 
   if (status === 'loading') {
-    return { data: undefined, isPending: true, isError: false };
+    return { data: undefined, isPending: true, isError: false, refetch: noop };
   }
 
-  return { data: query.data, isPending: query.isPending, isError: query.isLoadingError };
+  return {
+    data: query.data,
+    isPending: query.isPending,
+    isError: query.isLoadingError,
+    refetch: () => void query.refetch(),
+  };
 };
 
 export const useCartItems = () => {
-  const { data = EMPTY_ITEMS, isPending, isError } = useCart(selectAll);
+  const { data = EMPTY_ITEMS, isPending, isError, refetch } = useCart(selectAll);
 
-  return { items: data, isPending, isError };
+  return { items: data, isPending, isError, refetch };
 };
 
 export const useCartTotalQuantity = () => {
