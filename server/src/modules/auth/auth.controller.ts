@@ -3,14 +3,18 @@ import type { Request, Response } from 'express';
 import { BadRequest } from '../../errors/bad-request.error.ts';
 import { WeakPassword } from '../../errors/weak-password.error.ts';
 import { createStatelessSupabase, createSupabase } from '../../supabase.ts';
-import { LOGIN_PATH } from './auth.constants.ts';
+import { EDIT_PROFILE_PATH, LOGIN_PATH } from './auth.constants.ts';
 import {
   authCallbackQuerySchema,
+  changeEmailBodySchema,
   changePasswordBodySchema,
+  emailCallbackQuerySchema,
   signInBodySchema,
   signUpBodySchema,
 } from './auth.schema.ts';
+import { changeEmailUseCase } from './change-email.use-case.ts';
 import { changePasswordUseCase } from './change-password.use-case.ts';
+import { confirmEmailChangeUseCase } from './confirm-email-change.use-case.ts';
 import { exchangeCodeUseCase } from './exchange-code.use-case.ts';
 import { getSessionUseCase } from './get-session.use-case.ts';
 import { signInUseCase } from './sign-in.use-case.ts';
@@ -69,6 +73,21 @@ export async function changePassword(req: Request, res: Response) {
   res.status(204).end();
 }
 
+export async function changeEmail(req: Request, res: Response) {
+  const result = changeEmailBodySchema.safeParse(req.body);
+
+  if (!result.success) {
+    const isEmailIssue = result.error.issues.some((issue) => issue.path[0] === 'newEmail');
+    throw isEmailIssue
+      ? new BadRequest('Invalid email', 'email_address_invalid')
+      : new BadRequest();
+  }
+
+  await changeEmailUseCase(createSupabase(req, res), createStatelessSupabase(req), result.data);
+
+  res.status(204).end();
+}
+
 export async function authCallback(req: Request, res: Response) {
   const result = authCallbackQuerySchema.safeParse(req.query);
 
@@ -79,4 +98,14 @@ export async function authCallback(req: Request, res: Response) {
   const isSignedIn = await exchangeCodeUseCase(createSupabase(req, res), result.data.code);
 
   res.redirect(isSignedIn ? '/profile' : `${LOGIN_PATH}?email_confirmed=1`);
+}
+
+export async function emailCallback(req: Request, res: Response) {
+  const result = emailCallbackQuerySchema.safeParse(req.query);
+
+  const status = result.success
+    ? await confirmEmailChangeUseCase(createSupabase(req, res), result.data)
+    : 'failed';
+
+  res.redirect(`${EDIT_PROFILE_PATH}?email=${status}`);
 }

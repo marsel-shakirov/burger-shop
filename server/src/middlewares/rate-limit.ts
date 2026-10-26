@@ -27,3 +27,11 @@ export const changePasswordLimiter = rateLimit({
   legacyHeaders: false,
   message: tooManyRequests,
 });
+
+export const changeEmailLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 5,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: tooManyRequests,
+});
