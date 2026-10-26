@@ -19,7 +19,8 @@ const profile: Profile = {
 
 const api: ApiHandlers = { 'GET /api/profile': json(profile) };
 
-const renderPage = () => render(<ProfileEditPage />, { wrapper: createWrapper() });
+const renderPage = (initialEntry: string = routes.edit) =>
+  render(<ProfileEditPage />, { wrapper: createWrapper({ initialEntries: [initialEntry] }) });
 
 const getOpenDialog = () => screen.getByRole('dialog');
 
@@ -136,5 +137,49 @@ describe('ProfileEditPage: редактирование', () => {
 
     expect(await screen.findByText('Пароль изменён')).toBeDefined();
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+});
+
+describe('ProfileEditPage: смена email', () => {
+  it('«Изменить email» открывает форму смены email', async () => {
+    stubApi(api);
+    renderPage();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Изменить email' }));
+
+    expect(getOpenDialog()).toBe(screen.getByRole('dialog', { name: 'Смена email' }));
+  });
+
+  it('после запроса закрывает форму и сообщает, куда отправлены письма', async () => {
+    stubApi({ ...api, 'POST /api/auth/email': status(204) });
+    renderPage(`${routes.edit}?email=failed`);
+    fireEvent.click(await screen.findByRole('button', { name: 'Изменить email' }));
+    const dialog = screen.getByRole('dialog', { name: 'Смена email' });
+
+    fireEvent.change(within(dialog).getByLabelText('Новый email'), {
+      target: { value: 'new@example.com' },
+    });
+    fireEvent.change(within(dialog).getByLabelText('Текущий пароль'), {
+      target: { value: 'old-password' },
+    });
+    fireEvent.submit(within(dialog).getByRole('button', { name: 'Отправить письмо' }));
+
+    expect(
+      await screen.findByText(/Письма отправлены на текущий адрес и new@example.com/),
+    ).toBeDefined();
+    expect(screen.queryByText(/Не удалось подтвердить смену email/)).toBeNull();
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it.each([
+    ['changed', 'Email изменён'],
+    ['confirm_other', 'Первая ссылка подтверждена. Осталось перейти по ссылке из второго письма'],
+    ['failed', 'Не удалось подтвердить смену email. Запросите письмо ещё раз'],
+  ])('после перехода по ссылке со статусом %s показывает сообщение', async (value, message) => {
+    stubApi(api);
+
+    renderPage(`${routes.edit}?email=${value}`);
+
+    expect(await screen.findByText(message)).toBeDefined();
   });
 });

@@ -2,9 +2,11 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { profileQueryOptions } from '@/entities/profile';
+import { ChangeEmailModal } from '@/features/change-email';
 import { ChangePasswordModal } from '@/features/change-password';
 import { EditProfileModal, type ProfileSection } from '@/features/edit-profile';
 
+import { useEmailChangeNotice } from '../model/use-email-change-notice';
 import { useRemountableModal } from '../model/use-remountable-modal';
 import { AccountSection } from './account-section';
 import { BirthdayPromo } from './birthday-promo';
@@ -18,13 +20,20 @@ interface ProfileEditContentProps {
 export const ProfileEditContent = ({ userId, email }: ProfileEditContentProps) => {
   const { data: profile } = useSuspenseQuery(profileQueryOptions(userId));
   const profileModal = useRemountableModal();
+  const emailModal = useRemountableModal();
   const passwordModal = useRemountableModal();
+  const { notice: emailNotice, markRequested: markEmailRequested } = useEmailChangeNotice();
   const [section, setSection] = useState<ProfileSection>('personal');
   const [isPasswordChanged, setIsPasswordChanged] = useState(false);
 
   const openProfileEditor = (nextSection: ProfileSection) => {
     setSection(nextSection);
     profileModal.openModal();
+  };
+
+  const handleEmailRequested = (newEmail: string) => {
+    emailModal.closeModal();
+    markEmailRequested(newEmail);
   };
 
   const openPasswordEditor = () => {
@@ -51,8 +60,10 @@ export const ProfileEditContent = ({ userId, email }: ProfileEditContentProps) =
       <AccountSection
         phone={profile.phone}
         email={email}
+        emailNotice={emailNotice}
         isPasswordChanged={isPasswordChanged}
         onEditPhone={() => openProfileEditor('phone')}
+        onEditEmail={emailModal.openModal}
         onEditPassword={openPasswordEditor}
       />
 
@@ -64,6 +75,16 @@ export const ProfileEditContent = ({ userId, email }: ProfileEditContentProps) =
         open={profileModal.open}
         onClose={profileModal.closeModal}
       />
+
+      {email && (
+        <ChangeEmailModal
+          key={`email-${emailModal.key}`}
+          email={email}
+          open={emailModal.open}
+          onClose={emailModal.closeModal}
+          onRequested={handleEmailRequested}
+        />
+      )}
 
       {email && (
         <ChangePasswordModal
