@@ -24,7 +24,7 @@ COOKIE_SECURE=         # необязательно: false — cookie сесси
 TRUST_PROXY=           # необязательно: настройка trust proxy для IP клиента за прокси
 ```
 
-В Supabase: включить **Confirm email**, добавить `<CLIENT_ORIGIN>/api/auth/callback` в **Redirect URLs**, для реальных пользователей подключить свой SMTP.
+В Supabase: включить **Confirm email** и **Secure email change**, добавить `<CLIENT_ORIGIN>/api/auth/callback` и `<CLIENT_ORIGIN>/api/auth/email-callback` в **Redirect URLs**, для реальных пользователей подключить свой SMTP.
 
 ## Запуск
 
@@ -77,7 +77,14 @@ POST /api/auth/sign-in     { email, password }
 POST /api/auth/sign-out
 GET  /api/auth/session     текущий пользователь или null
 GET  /api/auth/callback    переход по ссылке из письма
+POST /api/auth/password    { currentPassword, newPassword } — сменить пароль, 204
+POST /api/auth/email       { newEmail, currentPassword } — отправить письма для смены email, 204
+GET  /api/auth/email-callback   переход по ссылке из письма о смене email
 ```
+
+- `/api/auth/password` — требует сессию. `newPassword` — от 8 до 72 символов, не из утечек Pwned Passwords и не равен текущему. Ошибки — `400` с `code`: `invalid_current_password`, `same_password`, `weak_password` (`reasons`: `length` или `pwned`) или `email_provider_disabled`. Не больше 5 неудачных попыток за 15 минут, дальше `429` с `code: "over_request_rate_limit"`.
+- `/api/auth/email` — требует сессию. Supabase присылает ссылки на текущий и новый адрес, email меняется после перехода по обеим. Ошибки — `400` с `code`: `invalid_current_password`, `same_email` (без учёта регистра), `email_address_invalid` или `email_provider_disabled`. Занятый адрес — ошибка Supabase с `code: "email_exists"`. Не больше 5 запросов в час, включая успешные, дальше `429` с `code: "over_request_rate_limit"`.
+- `/api/auth/email-callback` — перенаправляет на `/profile/edit?email=<status>`: `changed` — email изменён, `confirm_other` — первая ссылка принята, ждём вторую, `failed` — ссылка не сработала.
 
 ```text
 GET   /api/profile   { name, phone, birthDate, gender }
