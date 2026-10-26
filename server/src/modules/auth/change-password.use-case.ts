@@ -5,18 +5,7 @@ import { WeakPassword } from '../../errors/weak-password.error.ts';
 import { isPasswordPwned } from '../../services/pwned-passwords.ts';
 import type { StatelessSupabase, Supabase } from '../../supabase.ts';
 import type { PasswordChange } from './auth.schema.ts';
-
-async function verifyPassword(verifier: StatelessSupabase, email: string, password: string) {
-  const { error } = await verifier.auth.signInWithPassword({ email, password });
-
-  if (error?.code === 'invalid_credentials') {
-    throw new BadRequest('Invalid current password', 'invalid_current_password');
-  }
-
-  if (error) throw new SupabaseAuthError(error);
-
-  await verifier.auth.signOut({ scope: 'local' });
-}
+import { verifyPassword } from './verify-password.ts';
 
 export async function changePasswordUseCase(
   supabase: Supabase,
