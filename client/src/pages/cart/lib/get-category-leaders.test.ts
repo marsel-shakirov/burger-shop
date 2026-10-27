@@ -12,7 +12,7 @@ const createProduct = (id: number, categoryId: number, popularity: number): Prod
   amount: 100,
   rating: 5,
   popularity,
-  category_id: categoryId,
+  categoryId,
   imageUrl: '',
   imageSrcSet: '',
   unit: 'g',

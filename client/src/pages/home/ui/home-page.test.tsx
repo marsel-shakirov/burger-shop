@@ -34,7 +34,7 @@ const createProduct = (id: number, name: string, menuId: number): Product => ({
   amount: 200,
   rating: 4.5,
   popularity: id,
-  category_id: menuId,
+  categoryId: menuId,
   imageUrl: '',
   imageSrcSet: '',
   unit: 'g',

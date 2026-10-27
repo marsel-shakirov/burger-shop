@@ -22,7 +22,7 @@ const createProduct = (
   amount: 200,
   rating: 4.8,
   popularity,
-  category_id: categoryId,
+  categoryId,
   imageUrl: '',
   imageSrcSet: '',
   unit: 'g',

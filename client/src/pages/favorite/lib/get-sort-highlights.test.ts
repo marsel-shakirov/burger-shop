@@ -12,7 +12,7 @@ const createProduct = (overrides: Partial<Product>): Product => ({
   amount: 250,
   rating: 4.5,
   popularity: 100,
-  category_id: 1,
+  categoryId: 1,
   imageUrl: '',
   imageSrcSet: '',
   unit: 'g',

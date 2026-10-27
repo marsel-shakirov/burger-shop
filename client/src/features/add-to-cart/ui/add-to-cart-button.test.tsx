@@ -16,7 +16,7 @@ const product: Product = {
   amount: 200,
   rating: 4.8,
   popularity: 10,
-  category_id: 1,
+  categoryId: 1,
   imageUrl: '',
   imageSrcSet: '',
   unit: 'g',
