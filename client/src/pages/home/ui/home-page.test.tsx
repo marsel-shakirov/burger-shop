@@ -80,10 +80,10 @@ const renderPage = (initialEntry = '/', preloaded: Preloaded = 'promos') => {
 };
 
 const getProductNames = () => {
-  const grid = document.querySelector<HTMLElement>('ul[aria-busy]');
+  const catalog = screen.queryByRole('heading', { level: 2 })?.parentElement;
 
-  return grid
-    ? within(grid)
+  return catalog
+    ? within(catalog)
         .getAllByRole('heading', { level: 3 })
         .map((heading) => heading.textContent)
     : [];
@@ -117,7 +117,7 @@ describe('HomePage: каталог', () => {
     expect(await screen.findByRole('heading', { name: 'Все бургеры' })).toBeDefined();
     expect(await screen.findByRole('radio', { name: 'Бургеры' })).toHaveProperty('checked', true);
     expect(getProductNames()).toEqual(['Чизбургер', 'Гамбургер']);
-    expect(screen.getByRole('button', { name: /^Сортировка:/ })).toBeDefined();
+    expect(screen.queryByRole('button', { name: /^Сортировка:/ })).toBeNull();
   });
 
   it('смена раздела загружает его товары', async () => {

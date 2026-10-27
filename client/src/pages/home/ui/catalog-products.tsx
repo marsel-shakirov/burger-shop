@@ -3,7 +3,6 @@ import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 import { useCatalogProducts } from '../api/use-catalog-products';
 import { getCatalogTitle } from '../lib/get-catalog-title';
 import type { CatalogSelection } from '../model/use-catalog-selection';
-import { CatalogHeader } from './catalog-header';
 import { CatalogProductsError } from './catalog-products-error';
 
 interface CatalogProductsProps {
@@ -11,14 +10,7 @@ interface CatalogProductsProps {
 }
 
 export const CatalogProducts = ({ selection }: CatalogProductsProps) => {
-  const {
-    data: products,
-    error,
-    isPending,
-    isError,
-    isPlaceholderData,
-    refetch,
-  } = useCatalogProducts(selection);
+  const { data: products, error, isPending, isError, refetch } = useCatalogProducts(selection);
 
   if (isPending) return <ProductGridSkeleton />;
 
@@ -26,13 +18,8 @@ export const CatalogProducts = ({ selection }: CatalogProductsProps) => {
 
   return (
     <section className="py-5 sm:py-8">
-      <CatalogHeader
-        title={getCatalogTitle(selection)}
-        sorting={selection.sorting}
-        products={products}
-        onSortingChange={selection.changeSorting}
-      />
-      <ProductGrid products={products} isUpdating={isPlaceholderData} />
+      <h2 className="text-base font-bold lg:text-lg">{getCatalogTitle(selection)}</h2>
+      <ProductGrid products={products} />
     </section>
   );
 };

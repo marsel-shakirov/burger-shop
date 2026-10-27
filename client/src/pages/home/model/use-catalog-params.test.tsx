@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { createWrapper } from '@/shared/testing';
 
-import { DEFAULT_MENU_SLUG, DEFAULT_SORTING } from '../config/catalog.constants';
+import { DEFAULT_MENU_SLUG } from '../config/catalog.constants';
 import { useCatalogParams } from './use-catalog-params';
 
 const render = (initialEntry = '/') =>
@@ -16,40 +16,32 @@ const getSearchParams = (result: { current: { location: { search: string } } }) 
   Object.fromEntries(new URLSearchParams(result.current.location.search));
 
 describe('useCatalogParams: чтение', () => {
-  it('без параметров возвращает меню и сортировку по умолчанию', () => {
+  it('без параметров возвращает меню по умолчанию', () => {
     const { result } = render();
 
     expect(result.current.params).toMatchObject({
       menuSlug: DEFAULT_MENU_SLUG,
       categorySlug: undefined,
-      sorting: DEFAULT_SORTING,
     });
   });
 
-  it('читает меню, категорию и сортировку из адреса', () => {
-    const { result } = render('/?menu=drinks&category=cola&sort=price&order=asc');
+  it('читает меню и категорию из адреса', () => {
+    const { result } = render('/?menu=drinks&category=cola');
 
     expect(result.current.params).toMatchObject({
       menuSlug: 'drinks',
       categorySlug: 'cola',
-      sorting: { sort: 'price', order: 'asc' },
     });
-  });
-
-  it('подставляет сортировку по умолчанию для неизвестного значения', () => {
-    const { result } = render('/?sort=name&order=asc');
-
-    expect(result.current.params.sorting).toEqual(DEFAULT_SORTING);
   });
 });
 
 describe('useCatalogParams: изменение', () => {
-  it('selectMenu меняет меню и сбрасывает категорию, сохраняя сортировку', () => {
-    const { result } = render('/?menu=drinks&category=cola&sort=price&order=asc');
+  it('selectMenu меняет меню и сбрасывает категорию', () => {
+    const { result } = render('/?menu=drinks&category=cola');
 
     act(() => result.current.params.selectMenu('burgers'));
 
-    expect(getSearchParams(result)).toEqual({ menu: 'burgers', sort: 'price', order: 'asc' });
+    expect(getSearchParams(result)).toEqual({ menu: 'burgers' });
     expect(result.current.params.categorySlug).toBeUndefined();
   });
 
@@ -67,19 +59,5 @@ describe('useCatalogParams: изменение', () => {
     act(() => result.current.params.selectCategory());
 
     expect(getSearchParams(result)).toEqual({ menu: 'drinks' });
-  });
-
-  it('changeSorting записывает поле и порядок сортировки', () => {
-    const { result } = render('/?menu=drinks&category=cola');
-
-    act(() => result.current.params.changeSorting({ sort: 'popularity', order: 'desc' }));
-
-    expect(getSearchParams(result)).toEqual({
-      menu: 'drinks',
-      category: 'cola',
-      sort: 'popularity',
-      order: 'desc',
-    });
-    expect(result.current.params.sorting).toEqual({ sort: 'popularity', order: 'desc' });
   });
 });
