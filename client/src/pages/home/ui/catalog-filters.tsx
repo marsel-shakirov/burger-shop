@@ -1,36 +1,45 @@
-import { useQueryErrorResetBoundary } from '@tanstack/react-query';
-import { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-
 import { CategoryFilterSkeleton, MenuTabsSkeleton } from '@/entities/menu';
-import { Container } from '@/shared/ui/container';
-import { StickyBar } from '@/shared/ui/sticky-bar';
 
+import type { CatalogSection } from '../model/catalog.types';
+import type { CatalogData } from '../model/use-catalog';
 import { CatalogFiltersContent } from './catalog-filters-content';
 import { CatalogFiltersError } from './catalog-filters-error';
 import { CatalogFiltersLayout } from './catalog-filters-layout';
 
-export const CatalogFilters = () => {
-  const { reset } = useQueryErrorResetBoundary();
+interface CatalogFiltersProps {
+  catalog: CatalogData;
+  activeSection?: CatalogSection;
+  onMenuSelect: (menuSlug: string) => void;
+  onCategorySelect: (section: CatalogSection) => void;
+}
+
+export const CatalogFilters = ({
+  catalog: { menus, products, groups },
+  activeSection,
+  onMenuSelect,
+  onCategorySelect,
+}: CatalogFiltersProps) => {
+  if (menus.isError) {
+    return <CatalogFiltersError error={menus.error} onRetry={() => void menus.refetch()} />;
+  }
+
+  if (menus.isPending || products.isPending) {
+    return (
+      <CatalogFiltersLayout
+        menuTabs={<MenuTabsSkeleton />}
+        categoryFilter={<CategoryFilterSkeleton />}
+      />
+    );
+  }
+
+  if (!groups || !activeSection) return null;
 
   return (
-    <StickyBar className="pt-4 pb-3 sm:pb-4">
-      {({ scrollToStart }) => (
-        <Container>
-          <ErrorBoundary onReset={reset} FallbackComponent={CatalogFiltersError}>
-            <Suspense
-              fallback={
-                <CatalogFiltersLayout
-                  menuTabs={<MenuTabsSkeleton />}
-                  categoryFilter={<CategoryFilterSkeleton />}
-                />
-              }
-            >
-              <CatalogFiltersContent onSelectionChange={scrollToStart} />
-            </Suspense>
-          </ErrorBoundary>
-        </Container>
-      )}
-    </StickyBar>
+    <CatalogFiltersContent
+      groups={groups}
+      activeSection={activeSection}
+      onMenuSelect={onMenuSelect}
+      onCategorySelect={onCategorySelect}
+    />
   );
 };

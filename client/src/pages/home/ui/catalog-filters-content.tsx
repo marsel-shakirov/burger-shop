@@ -1,40 +1,38 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { CategoryFilter, MenuTabs } from '@/entities/menu';
 
-import { CategoryFilter, menusQueryOptions, MenuTabs } from '@/entities/menu';
-
-import { useCatalogSelection } from '../model/use-catalog-selection';
+import type { CatalogMenuGroup, CatalogSection } from '../model/catalog.types';
 import { CatalogFiltersLayout } from './catalog-filters-layout';
 
 interface CatalogFiltersContentProps {
-  onSelectionChange: () => void;
+  groups: CatalogMenuGroup[];
+  activeSection: CatalogSection;
+  onMenuSelect: (menuSlug: string) => void;
+  onCategorySelect: (section: CatalogSection) => void;
 }
 
-export const CatalogFiltersContent = ({ onSelectionChange }: CatalogFiltersContentProps) => {
-  const { data: menus } = useSuspenseQuery(menusQueryOptions());
-  const { menu, menuSlug, categorySlug, selectMenu, selectCategory } = useCatalogSelection();
-
-  const withSelectionChange =
-    <T,>(select: (slug: T) => void) =>
-    (slug: T) => {
-      select(slug);
-      onSelectionChange();
-    };
+export const CatalogFiltersContent = ({
+  groups,
+  activeSection: { menuSlug, categorySlug },
+  onMenuSelect,
+  onCategorySelect,
+}: CatalogFiltersContentProps) => {
+  const activeGroup = groups.find(({ menu }) => menu.slug === menuSlug);
 
   return (
     <CatalogFiltersLayout
       menuTabs={
         <MenuTabs
-          menus={menus}
+          menus={groups.map(({ menu }) => menu)}
           selectedMenuSlug={menuSlug}
-          onChange={withSelectionChange(selectMenu)}
+          onChange={onMenuSelect}
         />
       }
       categoryFilter={
         <CategoryFilter
           key={menuSlug}
-          categories={menu?.categories ?? []}
+          categories={activeGroup?.categories.map(({ category }) => category) ?? []}
           selectedCategorySlug={categorySlug}
-          onChange={withSelectionChange(selectCategory)}
+          onChange={(slug) => onCategorySelect({ menuSlug, categorySlug: slug })}
         />
       }
     />

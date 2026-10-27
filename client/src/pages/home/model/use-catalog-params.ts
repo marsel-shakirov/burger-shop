@@ -1,17 +1,20 @@
 import { parseCatalogParams, setCatalogCategoryParam, setCatalogMenuParam } from '@/entities/menu';
 import { useUpdateSearchParams } from '@/shared/lib';
 
-import { DEFAULT_MENU_SLUG } from '../config/catalog.constants';
+import type { CatalogSection } from './catalog.types';
 
 export const useCatalogParams = () => {
   const [searchParams, updateParams] = useUpdateSearchParams();
 
-  const { menuSlug = DEFAULT_MENU_SLUG, categorySlug } = parseCatalogParams(searchParams);
+  const { menuSlug, categorySlug } = parseCatalogParams(searchParams);
 
   const selectMenu = (slug: string) => updateParams((next) => setCatalogMenuParam(next, slug));
 
-  const selectCategory = (slug?: string) =>
-    updateParams((next) => setCatalogCategoryParam(next, slug));
+  const selectCategory = (section: CatalogSection) =>
+    updateParams((next) => {
+      setCatalogMenuParam(next, section.menuSlug);
+      setCatalogCategoryParam(next, section.categorySlug);
+    });
 
   return { menuSlug, categorySlug, selectMenu, selectCategory };
 };

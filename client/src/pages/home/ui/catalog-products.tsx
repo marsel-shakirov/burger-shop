@@ -1,25 +1,45 @@
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
-import { useCatalogProducts } from '../api/use-catalog-products';
-import { getCatalogTitle } from '../lib/get-catalog-title';
-import type { CatalogSelection } from '../model/use-catalog-selection';
+import type { CatalogData } from '../model/use-catalog';
+import { CatalogCategorySection } from './catalog-category-section';
 import { CatalogProductsError } from './catalog-products-error';
 
 interface CatalogProductsProps {
-  selection: CatalogSelection;
+  catalog: CatalogData;
 }
 
-export const CatalogProducts = ({ selection }: CatalogProductsProps) => {
-  const { data: products, error, isPending, isError, refetch } = useCatalogProducts(selection);
+export const CatalogProducts = ({ catalog: { menus, products, groups } }: CatalogProductsProps) => {
+  if (products.isError) {
+    return <CatalogProductsError error={products.error} onRetry={() => void products.refetch()} />;
+  }
 
-  if (isPending) return <ProductGridSkeleton />;
+  if (products.isPending) return <ProductGridSkeleton />;
 
-  if (isError) return <CatalogProductsError error={error} onRetry={() => void refetch()} />;
+  if (menus.isError) {
+    return (
+      <div className="py-5 sm:py-8">
+        <ProductGrid products={products.data} />
+      </div>
+    );
+  }
+
+  if (!groups) return <ProductGridSkeleton />;
+
+  const sections = groups.flatMap(({ menu, categories }) =>
+    categories.map(({ category, products }) => ({ menu, category, products })),
+  );
 
   return (
-    <section className="py-5 sm:py-8">
-      <h2 className="text-base font-bold lg:text-lg">{getCatalogTitle(selection)}</h2>
-      <ProductGrid products={products} />
-    </section>
+    <div className="pb-5 sm:pb-8">
+      {sections.map(({ menu, category, products }, index) => (
+        <CatalogCategorySection
+          key={category.id}
+          section={{ menuSlug: menu.slug, categorySlug: category.slug }}
+          title={category.name}
+          products={products}
+          isFirst={index === 0}
+        />
+      ))}
+    </div>
   );
 };

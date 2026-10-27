@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { type Menu, menusQueryOptions } from '@/entities/menu';
@@ -21,12 +21,16 @@ const menus: Menu[] = [
     id: 1,
     slug: 'burgers',
     name: 'Бургеры',
-    categories: [{ id: 11, slug: 'beef', name: 'Говядина' }],
+    categories: [
+      { id: 11, slug: 'beef', name: 'Говядина' },
+      { id: 12, slug: 'chicken', name: 'Курица' },
+      { id: 13, slug: 'fish', name: 'Рыба' },
+    ],
   },
-  { id: 2, slug: 'drinks', name: 'Напитки', categories: [] },
+  { id: 2, slug: 'drinks', name: 'Напитки', categories: [{ id: 21, slug: 'cola', name: 'Кола' }] },
 ];
 
-const createProduct = (id: number, name: string, menuId: number): Product => ({
+const createProduct = (id: number, name: string, categoryId: number): Product => ({
   id,
   name,
   description: '',
@@ -34,16 +38,18 @@ const createProduct = (id: number, name: string, menuId: number): Product => ({
   amount: 200,
   rating: 4.5,
   popularity: id,
-  categoryId: menuId,
+  categoryId,
   imageUrl: '',
   imageSrcSet: '',
   unit: 'g',
 });
 
-const productsByMenu: Record<string, Product[]> = {
-  burgers: [createProduct(1, 'Чизбургер', 1), createProduct(2, 'Гамбургер', 1)],
-  drinks: [createProduct(3, 'Кола', 2)],
-};
+const products: Product[] = [
+  createProduct(1, 'Чизбургер', 11),
+  createProduct(2, 'Гамбургер', 11),
+  createProduct(3, 'Кола', 21),
+  createProduct(4, 'Чикенбургер', 12),
+];
 
 const promos: Promo[] = [
   {
@@ -62,8 +68,7 @@ const promos: Promo[] = [
 const api: ApiHandlers = {
   'GET /api/menu': json(menus),
   'GET /api/promos': json(promos),
-  'GET /api/products': (url) =>
-    Response.json(productsByMenu[url.searchParams.get('menu') ?? ''] ?? []),
+  'GET /api/products': json(products),
 };
 
 type Preloaded = 'promos' | 'menus';
@@ -79,18 +84,20 @@ const renderPage = (initialEntry = '/', preloaded: Preloaded = 'promos') => {
   });
 };
 
-const getProductNames = () => {
-  const catalog = screen.queryByRole('heading', { level: 2 })?.parentElement;
+const getSectionTitles = () =>
+  screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent);
 
-  return catalog
-    ? within(catalog)
-        .getAllByRole('heading', { level: 3 })
-        .map((heading) => heading.textContent)
-    : [];
-};
+const getProductNames = (sectionName: string) =>
+  within(screen.getByRole('region', { name: sectionName }))
+    .getAllByRole('heading', { level: 3 })
+    .map((heading) => heading.textContent);
+
+let scrollTo: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
   setSessionUser(null);
+  scrollTo = vi.fn();
+  vi.stubGlobal('scrollTo', scrollTo);
 });
 
 afterEach(() => {
@@ -109,40 +116,74 @@ describe('HomePage: загрузка', () => {
 });
 
 describe('HomePage: каталог', () => {
-  it('показывает разделы меню, заголовок подборки и товары раздела по умолчанию', async () => {
+  it('показывает все товары по категориям в порядке меню', async () => {
     stubApi(api);
 
     renderPage();
 
-    expect(await screen.findByRole('heading', { name: 'Все бургеры' })).toBeDefined();
-    expect(await screen.findByRole('radio', { name: 'Бургеры' })).toHaveProperty('checked', true);
-    expect(getProductNames()).toEqual(['Чизбургер', 'Гамбургер']);
-    expect(screen.queryByRole('button', { name: /^Сортировка:/ })).toBeNull();
+    expect(await screen.findByRole('heading', { level: 2, name: 'Говядина' })).toBeDefined();
+    expect(getSectionTitles()).toEqual(['Говядина', 'Курица', 'Кола']);
+    expect(getProductNames('Говядина')).toEqual(['Чизбургер', 'Гамбургер']);
+    expect(getProductNames('Курица')).toEqual(['Чикенбургер']);
+    expect(getProductNames('Кола')).toEqual(['Кола']);
   });
 
-  it('смена раздела загружает его товары', async () => {
+  it('загружает все товары одним запросом', async () => {
     const fetchMock = stubApi(api);
+
     renderPage();
-    await screen.findByRole('heading', { name: 'Все бургеры' });
+    await screen.findByRole('heading', { level: 2, name: 'Говядина' });
+
+    const productRequests = fetchMock.mock.calls
+      .map(([input]) => input as string)
+      .filter((url) => url.startsWith('/api/products'));
+    expect(productRequests).toHaveLength(1);
+    expect(productRequests[0]).not.toMatch(/menu=|category=/);
+  });
+
+  it('в панели отмечены первое меню и его первая категория, без «Все» и пустых категорий', async () => {
+    stubApi(api);
+
+    renderPage();
+
+    expect(await screen.findByRole('radio', { name: 'Бургеры' })).toHaveProperty('checked', true);
+    expect(screen.getByRole('radio', { name: 'Говядина' })).toHaveProperty('checked', true);
+    expect(screen.queryByRole('radio', { name: 'Все' })).toBeNull();
+    expect(screen.queryByRole('radio', { name: 'Рыба' })).toBeNull();
+  });
+
+  it('клик по меню прокручивает к его первой категории', async () => {
+    stubApi(api);
+    renderPage();
 
     fireEvent.click(await screen.findByRole('radio', { name: 'Напитки' }));
 
-    expect(await screen.findByRole('heading', { name: 'Все напитки' })).toBeDefined();
-    await waitFor(() => expect(getProductNames()).toEqual(['Кола']));
-    expect(fetchMock.mock.calls.some(([input]) => (input as string).includes('menu=drinks'))).toBe(
-      true,
+    expect(screen.getByRole('radio', { name: 'Напитки' })).toHaveProperty('checked', true);
+    expect(screen.getByRole('radio', { name: 'Кола' })).toHaveProperty('checked', true);
+    expect(scrollTo).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ behavior: 'smooth' }),
     );
   });
 
-  it('категория из адреса попадает в заголовок и запрос', async () => {
-    const fetchMock = stubApi(api);
+  it('клик по категории прокручивает к ней', async () => {
+    stubApi(api);
+    renderPage();
 
-    renderPage('/?menu=burgers&category=beef');
+    fireEvent.click(await screen.findByRole('radio', { name: 'Курица' }));
 
-    expect(await screen.findByRole('heading', { name: 'Говядина' })).toBeDefined();
-    expect(
-      fetchMock.mock.calls.some(([input]) => (input as string).includes('category=beef')),
-    ).toBe(true);
+    expect(screen.getByRole('radio', { name: 'Курица' })).toHaveProperty('checked', true);
+    expect(scrollTo).toHaveBeenCalledOnce();
+  });
+
+  it('раздел из адреса отмечен в панели, страница прокручена к нему', async () => {
+    stubApi(api);
+
+    renderPage('/?menu=burgers&category=chicken');
+
+    expect(await screen.findByRole('radio', { name: 'Курица' })).toHaveProperty('checked', true);
+    expect(scrollTo).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ behavior: 'instant' }),
+    );
   });
 
   it('товар можно добавить в корзину прямо из каталога', async () => {
@@ -161,20 +202,35 @@ describe('HomePage: ошибки', () => {
     renderPage();
 
     expect((await screen.findByRole('alert')).textContent).toMatch(/Товары не загрузились/);
+    expect(screen.queryByRole('radio', { name: 'Бургеры' })).toBeNull();
 
     stubApi(api);
     fireEvent.click(screen.getByRole('button', { name: 'Повторить' }));
 
-    expect(await screen.findByRole('heading', { name: 'Все бургеры' })).toBeDefined();
+    expect(await screen.findByRole('heading', { level: 2, name: 'Говядина' })).toBeDefined();
   });
 
-  it('если меню не загрузилось, показывает ошибку, а товары раздела по умолчанию', async () => {
+  it('если меню не загрузилось, показывает ошибку и все товары без разделов', async () => {
     stubApi({ ...api, 'GET /api/menu': json(null, 500) });
 
     renderPage();
 
     expect((await screen.findByRole('alert')).textContent).toMatch(/Меню не загрузилось/);
-    await waitFor(() => expect(getProductNames()).toEqual(['Чизбургер', 'Гамбургер']));
+    expect(
+      (await screen.findAllByRole('heading', { level: 3 })).map((heading) => heading.textContent),
+    ).toEqual(expect.arrayContaining(['Чизбургер', 'Гамбургер', 'Кола', 'Чикенбургер']));
+    expect(screen.queryByRole('heading', { level: 2 })).toBeNull();
+  });
+
+  it('«Повторить» в панели загружает меню снова', async () => {
+    stubApi({ ...api, 'GET /api/menu': json(null, 500) });
+    renderPage();
+    await screen.findByRole('alert');
+
+    stubApi(api);
+    fireEvent.click(screen.getByRole('button', { name: 'Повторить' }));
+
+    expect(await screen.findByRole('heading', { level: 2, name: 'Говядина' })).toBeDefined();
   });
 });
 
@@ -194,7 +250,7 @@ describe('HomePage: акции', () => {
 
     renderPage('/', 'menus');
 
-    expect(await screen.findByRole('heading', { name: 'Все бургеры' })).toBeDefined();
+    expect(await screen.findByRole('heading', { level: 2, name: 'Говядина' })).toBeDefined();
     expect(screen.queryByRole('region', { name: 'Акции и бонусы' })).toBeNull();
   });
 });

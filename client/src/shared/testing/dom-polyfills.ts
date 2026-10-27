@@ -54,6 +54,8 @@ export const installDomPolyfills = () => {
 
   Element.prototype.scrollTo = function scrollTo() {};
 
+  window.scrollTo = function scrollTo() {};
+
   window.matchMedia = (query: string) =>
     ({
       matches: false,
