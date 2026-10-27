@@ -1,10 +1,8 @@
-export { cn } from './cn';
-export { formatPrice } from './format-price';
-export { getFormString } from './get-form-string';
-export { getImagePriorityProps } from './get-image-priority-props';
-export { getWeakPasswordMessage } from './get-weak-password-message';
-export { isOneOf } from './is-one-of';
-export { pluralize } from './pluralize';
+export { getPrefersReducedMotion, useIsStuck, usePrefersReducedMotion } from './dom';
+export { getFormString, getWeakPasswordMessage } from './form';
+export { formatPrice, pluralize } from './format';
+export { isOneOf } from './guards';
+export { getImagePriorityProps } from './image';
 export {
   selectSearchByPath,
   useLastSearch,
@@ -12,5 +10,5 @@ export {
   useRememberSearch,
   useUpdateSearchParams,
 } from './router';
-export { useIsStuck } from './use-is-stuck';
-export { useLastDefined } from './use-last-defined';
+export { useLastDefined } from './state';
+export { cn } from './styles';

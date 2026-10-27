@@ -5,19 +5,11 @@ import {
   useEffectEvent,
   useRef,
   useState,
-  useSyncExternalStore,
 } from 'react';
 
-const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+import { getPrefersReducedMotion, usePrefersReducedMotion } from '@/shared/lib';
+
 const ACTIVE_SLIDE_THRESHOLD = 0.6;
-
-const subscribeToReducedMotion = (onChange: () => void) => {
-  const query = window.matchMedia(REDUCED_MOTION_QUERY);
-  query.addEventListener('change', onChange);
-  return () => query.removeEventListener('change', onChange);
-};
-
-const getPrefersReducedMotion = () => window.matchMedia(REDUCED_MOTION_QUERY).matches;
 
 interface UseCarouselOptions {
   slidesCount: number;
@@ -30,10 +22,7 @@ export const useCarousel = ({ slidesCount, autoplayDelay }: UseCarouselOptions) 
   const [isPlaying, setIsPlaying] = useState(() => !getPrefersReducedMotion());
   const [isPointerOver, setIsPointerOver] = useState(false);
   const [isFocusWithin, setIsFocusWithin] = useState(false);
-  const prefersReducedMotion = useSyncExternalStore(
-    subscribeToReducedMotion,
-    getPrefersReducedMotion,
-  );
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const isAutoplayActive = isPlaying && !isPointerOver && !isFocusWithin && slidesCount > 1;
 
