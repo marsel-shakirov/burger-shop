@@ -1,11 +1,17 @@
 import { useFavoriteIds } from '@/entities/favorite';
-import { useProductsById } from '@/entities/product';
+import { formatItemsCount, useProductsById } from '@/entities/product';
 import { LoadError } from '@/shared/ui/load-error';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
+
+import { getSortHighlights } from '../lib/get-sort-highlights';
+import { sortProducts } from '../lib/sort-products';
+import { useFavoriteSorting } from '../model/use-favorite-sorting';
+import { ProductSortMenu } from './product-sort-menu';
 
 export const FavoriteList = () => {
   const favorites = useFavoriteIds();
   const products = useProductsById();
+  const { sorting, changeSorting } = useFavoriteSorting();
 
   const isPending = favorites.isPending || products.isPending;
   const isError = favorites.isError || products.isError;
@@ -29,7 +35,15 @@ export const FavoriteList = () => {
         <LoadError message="Товары не загрузились" onRetry={retry} className="py-4 sm:py-7" />
       ) : (
         <div className="py-4 sm:py-7">
-          <ProductGrid products={favoriteProducts} />
+          <div className="text-base font-bold [anchor-name:--sort] lg:text-lg">
+            {formatItemsCount(favoriteProducts.length)},{' '}
+            <ProductSortMenu
+              sorting={sorting}
+              highlights={getSortHighlights(favoriteProducts)}
+              onChange={changeSorting}
+            />
+          </div>
+          <ProductGrid products={sortProducts(favoriteProducts, sorting)} />
         </div>
       )}
     </section>

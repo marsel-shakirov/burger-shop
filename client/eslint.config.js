@@ -81,7 +81,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/shared/ui/modal/modal.tsx', 'src/pages/home/ui/product-sort-menu.tsx'],
+    files: ['src/shared/ui/modal/modal.tsx', 'src/pages/favorite/ui/product-sort-menu.tsx'],
     rules: {
       'jsx-a11y-x/click-events-have-key-events': 'off',
       'jsx-a11y-x/no-noninteractive-element-interactions': 'off',

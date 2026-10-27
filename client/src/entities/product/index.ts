@@ -9,6 +9,7 @@ export {
   PRODUCT_SORT_BY,
   PRODUCT_SORT_ORDER,
   type ProductSorting,
+  type ProductSortOrder,
   type ProductsQueryParams,
 } from './model/product.types';
 export { useProductDetailsParam } from './model/use-product-details-param';

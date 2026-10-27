@@ -10,11 +10,11 @@ import { createWrapper, json, pending, stubApi } from '@/shared/testing';
 
 import { FavoritePage } from './favorite-page';
 
-const createProduct = (id: number, name: string): Product => ({
+const createProduct = (id: number, name: string, price = 250): Product => ({
   id,
   name,
   description: '',
-  price: 250,
+  price,
   amount: 200,
   rating: 4.8,
   popularity: 10,
@@ -24,9 +24,14 @@ const createProduct = (id: number, name: string): Product => ({
   unit: 'g',
 });
 
-const products = [createProduct(1, 'Чизбургер'), createProduct(2, 'Кола'), createProduct(3, 'Фри')];
+const products = [
+  createProduct(1, 'Чизбургер', 250),
+  createProduct(2, 'Кола', 90),
+  createProduct(3, 'Фри', 120),
+];
 
-const renderPage = () => render(<FavoritePage />, { wrapper: createWrapper() });
+const renderPage = (initialEntry = '/favorite') =>
+  render(<FavoritePage />, { wrapper: createWrapper({ initialEntries: [initialEntry] }) });
 
 const setGuestFavorites = (...productIds: number[]) => {
   const wrapper = createWrapper();
@@ -121,5 +126,58 @@ describe('FavoritePage: есть товары', () => {
     await screen.findByRole('heading', { name: 'Фри' });
     expect(getCardTitles()).toEqual(['Фри', 'Чизбургер']);
     expect(screen.queryByRole('alert')).toBeNull();
+  });
+});
+
+describe('FavoritePage: сортировка', () => {
+  beforeEach(() => {
+    setGuestFavorites(3, 1, 2);
+  });
+
+  it('по умолчанию показывает количество и сортировку по дате добавления', async () => {
+    stubApi({ 'GET /api/products': json(products) });
+
+    renderPage();
+
+    const trigger = await screen.findByRole('button', { name: /^Сортировка:/ });
+    expect(trigger.textContent).toBe('Сортировка: сначала недавно добавленные');
+    expect(screen.getByText(/^3 товара,/)).toBeDefined();
+    expect(getCardTitles()).toEqual(['Фри', 'Чизбургер', 'Кола']);
+  });
+
+  it('берёт сортировку из адреса', async () => {
+    stubApi({ 'GET /api/products': json(products) });
+
+    renderPage('/favorite?sort=price&order=asc');
+
+    await screen.findByRole('heading', { name: 'Фри' });
+    expect(getCardTitles()).toEqual(['Кола', 'Фри', 'Чизбургер']);
+  });
+
+  it('для неизвестной сортировки в адресе показывает порядок добавления', async () => {
+    stubApi({ 'GET /api/products': json(products) });
+
+    renderPage('/favorite?sort=name&order=asc');
+
+    await screen.findByRole('heading', { name: 'Фри' });
+    expect(getCardTitles()).toEqual(['Фри', 'Чизбургер', 'Кола']);
+  });
+
+  it('выбор варианта в меню меняет порядок товаров', async () => {
+    stubApi({ 'GET /api/products': json(products) });
+    renderPage();
+    await screen.findByRole('heading', { name: 'Фри' });
+
+    fireEvent.click(screen.getByRole('radio', { name: /^Сначала дорогие/, hidden: true }));
+
+    expect(getCardTitles()).toEqual(['Чизбургер', 'Фри', 'Кола']);
+  });
+
+  it('пока товары загружаются, меню сортировки не показывает', () => {
+    stubApi({ 'GET /api/products': pending });
+
+    renderPage();
+
+    expect(screen.queryByRole('button', { name: /^Сортировка:/ })).toBeNull();
   });
 });
