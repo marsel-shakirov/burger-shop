@@ -35,7 +35,7 @@ export async function findProducts({
        JOIN categories ON products.category_id = categories.id
        JOIN menus ON categories.menu_id = menus.id
        ${whereClause}
-       ORDER BY products.${orderColumn} ${order}`,
+       ORDER BY products.${orderColumn} ${order}, products.id`,
     values,
   );
 
