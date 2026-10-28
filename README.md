@@ -15,6 +15,7 @@
 `server/.env`:
 
 ```bash
+PORT=                  # необязательно: порт сервера, по умолчанию 3000
 DATABASE_URL=          # PostgreSQL (Supabase)
 SUPABASE_URL=          # https://<project>.supabase.co
 SUPABASE_SECRET_KEY=   # секретный ключ Supabase, только на сервере
