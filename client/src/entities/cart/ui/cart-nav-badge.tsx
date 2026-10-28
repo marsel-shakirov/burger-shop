@@ -1,7 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
 
-import { formatItemsCount } from '@/shared/lib';
-import { cn } from '@/shared/lib';
+import { cn, formatItemsCount } from '@/shared/lib';
 import { QuantityBadge } from '@/shared/ui/quantity-badge';
 
 import { useCartTotalQuantity } from '../model/use-cart';

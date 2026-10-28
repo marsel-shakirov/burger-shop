@@ -2,8 +2,7 @@ import { Link } from 'react-router';
 
 import { useFavoritesCount } from '@/entities/favorite';
 import { routes } from '@/shared/config';
-import { formatItemsCount } from '@/shared/lib';
-import { cn } from '@/shared/lib';
+import { cn, formatItemsCount } from '@/shared/lib';
 import { BagIcon, HeartIcon } from '@/shared/ui/icon';
 
 const tileClassName = 'flex h-full flex-col gap-y-1 rounded-2xl bg-stone-100 p-3';
