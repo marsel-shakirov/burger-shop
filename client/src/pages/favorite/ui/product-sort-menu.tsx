@@ -88,7 +88,7 @@ export const ProductSortMenu = ({ sorting, highlights, onChange }: ProductSortMe
         id={popoverId}
         popover="auto"
         onToggle={handleTogglePopover}
-        className="inset-auto top-[anchor(bottom)] left-[anchor(left)] mt-2 max-w-[anchor-size(width)] rounded-xl shadow-(--shadow-base) [position-anchor:--sort]"
+        className="inset-auto top-[anchor(bottom)] left-[anchor(left)] mt-2 max-w-[anchor-size(width)] rounded-xl shadow-(--shadow-base) [position-anchor:--sort] not-supports-[anchor-name:--sort]:inset-0 not-supports-[anchor-name:--sort]:m-auto"
       >
         <fieldset>
           <legend className="sr-only">Сортировка</legend>
