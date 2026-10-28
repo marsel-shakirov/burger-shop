@@ -1,37 +1,35 @@
 import { rateLimit } from 'express-rate-limit';
 
-const tooManyRequests = { message: 'Too many requests', code: 'over_request_rate_limit' };
+const MINUTE_MS = 60 * 1000;
 
-export const signInLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 10,
-  skipSuccessfulRequests: true,
+const baseOptions = {
   standardHeaders: 'draft-8',
   legacyHeaders: false,
-  message: tooManyRequests,
+  message: { message: 'Too many requests', code: 'over_request_rate_limit' },
+} as const;
+
+export const signInLimiter = rateLimit({
+  ...baseOptions,
+  windowMs: 15 * MINUTE_MS,
+  limit: 10,
+  skipSuccessfulRequests: true,
 });
 
 export const signUpLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
+  ...baseOptions,
+  windowMs: 60 * MINUTE_MS,
   limit: 5,
-  standardHeaders: 'draft-8',
-  legacyHeaders: false,
-  message: tooManyRequests,
 });
 
 export const changePasswordLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  ...baseOptions,
+  windowMs: 15 * MINUTE_MS,
   limit: 5,
   skipSuccessfulRequests: true,
-  standardHeaders: 'draft-8',
-  legacyHeaders: false,
-  message: tooManyRequests,
 });
 
 export const changeEmailLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
+  ...baseOptions,
+  windowMs: 60 * MINUTE_MS,
   limit: 5,
-  standardHeaders: 'draft-8',
-  legacyHeaders: false,
-  message: tooManyRequests,
 });
