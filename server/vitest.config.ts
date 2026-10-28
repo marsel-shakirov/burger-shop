@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],
+    mockReset: true,
     env: {
       DATABASE_URL: 'postgres://test:test@127.0.0.1:1/test',
       SUPABASE_URL: 'http://supabase.test',
