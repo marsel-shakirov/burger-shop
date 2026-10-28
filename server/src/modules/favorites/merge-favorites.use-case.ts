@@ -1,4 +1,5 @@
-import { toFavoriteError } from './favorites.errors.ts';
+import { toProductReferenceError } from '../../lib/foreign-key-error.ts';
+import { FAVORITES_PRODUCT_FK } from './favorites.constants.ts';
 import { insertFavorites } from './favorites.repository.ts';
 import { getFavoritesUseCase } from './get-favorites.use-case.ts';
 
@@ -7,7 +8,7 @@ export async function mergeFavoritesUseCase(userId: string, productIds: number[]
     try {
       await insertFavorites(userId, productIds);
     } catch (error) {
-      throw toFavoriteError(error);
+      throw toProductReferenceError(error, FAVORITES_PRODUCT_FK);
     }
   }
 

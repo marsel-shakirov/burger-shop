@@ -1,6 +1,5 @@
-import { DatabaseError } from 'pg';
-
 import { pool } from '../../db.ts';
+import { isForeignKeyViolation } from '../../lib/foreign-key-error.ts';
 import type { ProfileInput, ProfileRow } from './profile.types.ts';
 
 const PROFILE_COLUMNS = 'id, name, phone, birth_date, gender';
@@ -39,7 +38,7 @@ export async function upsertProfile(userId: string, input: ProfileInput) {
     );
     return result.rows[0];
   } catch (error) {
-    if (error instanceof DatabaseError && error.code === '23503') return undefined;
+    if (isForeignKeyViolation(error)) return undefined;
     throw error;
   }
 }
