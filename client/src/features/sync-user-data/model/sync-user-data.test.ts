@@ -1,14 +1,10 @@
 import { QueryClient } from '@tanstack/react-query';
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
 
-import { BONUS_QUERY_KEY } from '@/entities/bonus';
-import { CART_QUERY_KEY, cartQueryOptions, type mergeGuestCart } from '@/entities/cart';
-import {
-  FAVORITES_QUERY_KEY,
-  favoritesQueryOptions,
-  type mergeGuestFavorites,
-} from '@/entities/favorite';
-import { PROFILE_QUERY_KEY } from '@/entities/profile';
+import { bonusQueryOptions } from '@/entities/bonus';
+import { cartQueryOptions, type mergeGuestCart } from '@/entities/cart';
+import { favoritesQueryOptions, type mergeGuestFavorites } from '@/entities/favorite';
+import { profileQueryOptions } from '@/entities/profile';
 import type { SessionUser } from '@/entities/session';
 
 import { syncUserData } from './sync-user-data';
@@ -45,7 +41,15 @@ const user: SessionUser = { id: 'user-1', email: 'user@example.com' };
 
 const otherUser: SessionUser = { id: 'user-2', email: 'other@example.com' };
 
-const USER_QUERY_KEYS = [PROFILE_QUERY_KEY, FAVORITES_QUERY_KEY, CART_QUERY_KEY, BONUS_QUERY_KEY];
+const USER_QUERY_OPTIONS = [
+  profileQueryOptions,
+  favoritesQueryOptions,
+  cartQueryOptions,
+  bonusQueryOptions,
+];
+
+const getUserQueryKeys = (userId: string) =>
+  USER_QUERY_OPTIONS.map((options) => options(userId).queryKey);
 
 const PRODUCTS_QUERY_KEY = ['products'];
 
@@ -58,7 +62,7 @@ let queryClient: QueryClient;
 let queryMock: MockInstance<QueryClient['query']>;
 
 const seedQueries = (userId: string) => {
-  USER_QUERY_KEYS.forEach((key) => queryClient.setQueryData([...key, userId], []));
+  getUserQueryKeys(userId).forEach((queryKey) => queryClient.setQueryData(queryKey, []));
   queryClient.setQueryData(PRODUCTS_QUERY_KEY, []);
 };
 
@@ -100,7 +104,7 @@ describe('syncUserData: вход', () => {
 
     syncUserData(queryClient, user, null);
 
-    USER_QUERY_KEYS.forEach((key) => expect(hasQuery([...key, user.id])).toBe(true));
+    getUserQueryKeys(user.id).forEach((queryKey) => expect(hasQuery(queryKey)).toBe(true));
   });
 });
 
@@ -110,7 +114,7 @@ describe('syncUserData: выход', () => {
 
     syncUserData(queryClient, null, user);
 
-    USER_QUERY_KEYS.forEach((key) => expect(hasQuery([...key, user.id])).toBe(false));
+    getUserQueryKeys(user.id).forEach((queryKey) => expect(hasQuery(queryKey)).toBe(false));
   });
 
   it('не трогает кэш, не связанный с пользователем', () => {
@@ -136,7 +140,7 @@ describe('syncUserData: смена пользователя', () => {
 
     syncUserData(queryClient, otherUser, user);
 
-    USER_QUERY_KEYS.forEach((key) => expect(hasQuery([...key, user.id])).toBe(false));
+    getUserQueryKeys(user.id).forEach((queryKey) => expect(hasQuery(queryKey)).toBe(false));
   });
 
   it('загружает и сливает данные нового пользователя', () => {
@@ -157,7 +161,7 @@ describe('syncUserData: пользователь не сменился', () => {
 
     syncUserData(queryClient, { ...user, email: 'new@example.com' }, user);
 
-    USER_QUERY_KEYS.forEach((key) => expect(hasQuery([...key, user.id])).toBe(true));
+    getUserQueryKeys(user.id).forEach((queryKey) => expect(hasQuery(queryKey)).toBe(true));
     expect(queryMock).not.toHaveBeenCalled();
     expect(mergeGuestCartMock).not.toHaveBeenCalled();
   });
@@ -167,7 +171,7 @@ describe('syncUserData: пользователь не сменился', () => {
 
     syncUserData(queryClient, null, null);
 
-    expect(hasQuery([...CART_QUERY_KEY, user.id])).toBe(true);
+    expect(hasQuery(cartQueryOptions(user.id).queryKey)).toBe(true);
     expect(queryMock).not.toHaveBeenCalled();
     expect(mergeGuestCartMock).not.toHaveBeenCalled();
   });

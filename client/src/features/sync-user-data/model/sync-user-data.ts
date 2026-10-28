@@ -1,13 +1,13 @@
 import type { QueryClient } from '@tanstack/react-query';
 
-import { BONUS_QUERY_KEY } from '@/entities/bonus';
-import { CART_QUERY_KEY, cartQueryOptions, mergeGuestCart } from '@/entities/cart';
+import { removeBonusQueries } from '@/entities/bonus';
+import { cartQueryOptions, mergeGuestCart, removeCartQueries } from '@/entities/cart';
 import {
-  FAVORITES_QUERY_KEY,
   favoritesQueryOptions,
   mergeGuestFavorites,
+  removeFavoritesQueries,
 } from '@/entities/favorite';
-import { PROFILE_QUERY_KEY } from '@/entities/profile';
+import { removeProfileQueries } from '@/entities/profile';
 import type { SessionUser } from '@/entities/session';
 
 export const syncUserData = (
@@ -16,10 +16,10 @@ export const syncUserData = (
   prevUser: SessionUser | null,
 ) => {
   if (prevUser && user?.id !== prevUser.id) {
-    queryClient.removeQueries({ queryKey: PROFILE_QUERY_KEY });
-    queryClient.removeQueries({ queryKey: FAVORITES_QUERY_KEY });
-    queryClient.removeQueries({ queryKey: CART_QUERY_KEY });
-    queryClient.removeQueries({ queryKey: BONUS_QUERY_KEY });
+    removeProfileQueries(queryClient);
+    removeFavoritesQueries(queryClient);
+    removeCartQueries(queryClient);
+    removeBonusQueries(queryClient);
   }
 
   if (user && user.id !== prevUser?.id) {

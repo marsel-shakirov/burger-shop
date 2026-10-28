@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { type QueryClient, queryOptions } from '@tanstack/react-query';
 
 import { getCart } from './get-cart';
 
@@ -10,3 +10,6 @@ export const cartQueryOptions = (userId: string) =>
     queryFn: ({ signal }) => getCart({ signal }),
     staleTime: 1000 * 30,
   });
+
+export const removeCartQueries = (queryClient: QueryClient) =>
+  queryClient.removeQueries({ queryKey: CART_QUERY_KEY });

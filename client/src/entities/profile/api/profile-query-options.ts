@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { type QueryClient, queryOptions } from '@tanstack/react-query';
 
 import { getProfile } from './get-profile';
 
@@ -10,3 +10,6 @@ export const profileQueryOptions = (userId: string) =>
     queryFn: ({ signal }) => getProfile({ signal }),
     staleTime: 1000 * 60 * 5,
   });
+
+export const removeProfileQueries = (queryClient: QueryClient) =>
+  queryClient.removeQueries({ queryKey: PROFILE_QUERY_KEY });

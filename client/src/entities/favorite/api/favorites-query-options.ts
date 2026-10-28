@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { type QueryClient, queryOptions } from '@tanstack/react-query';
 
 import { getFavorites } from './get-favorites';
 
@@ -10,3 +10,6 @@ export const favoritesQueryOptions = (userId: string) =>
     queryFn: ({ signal }) => getFavorites({ signal }),
     staleTime: 1000 * 30,
   });
+
+export const removeFavoritesQueries = (queryClient: QueryClient) =>
+  queryClient.removeQueries({ queryKey: FAVORITES_QUERY_KEY });

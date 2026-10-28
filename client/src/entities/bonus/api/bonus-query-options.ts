@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { type QueryClient, queryOptions } from '@tanstack/react-query';
 
 import { getBonus } from './get-bonus';
 
@@ -10,3 +10,6 @@ export const bonusQueryOptions = (userId: string) =>
     queryFn: ({ signal }) => getBonus({ signal }),
     staleTime: 1000 * 60,
   });
+
+export const removeBonusQueries = (queryClient: QueryClient) =>
+  queryClient.removeQueries({ queryKey: BONUS_QUERY_KEY });
