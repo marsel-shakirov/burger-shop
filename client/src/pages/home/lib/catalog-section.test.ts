@@ -3,9 +3,10 @@ import { describe, expect, it } from 'vitest';
 import type { CatalogMenuGroup, CatalogSection } from '../model/catalog.types';
 import {
   findActiveSection,
-  getActiveSection,
   getCatalogSectionId,
   getCatalogSections,
+  getSavedSection,
+  isFirstSection,
   isSameSection,
   resolveCatalogSection,
 } from './catalog-section';
@@ -72,22 +73,33 @@ describe('resolveCatalogSection', () => {
   });
 });
 
-describe('getActiveSection', () => {
-  it('сначала берёт текущий раздел', () => {
-    expect(getActiveSection(sections, cola, 'burgers', 'chicken')).toBe(cola);
+describe('getSavedSection', () => {
+  it('берёт раздел из адреса', () => {
+    expect(getSavedSection(sections, 'burgers', 'chicken')).toBe(chicken);
   });
 
-  it('без текущего раздела берёт раздел из адреса', () => {
-    expect(getActiveSection(sections, undefined, 'burgers', 'chicken')).toBe(chicken);
-  });
-
-  it('без текущего раздела и адреса берёт первый раздел', () => {
-    expect(getActiveSection(sections)).toBe(beef);
-    expect(getActiveSection(sections, undefined, 'desserts')).toBe(beef);
+  it('без адреса или с неизвестным меню берёт первый раздел', () => {
+    expect(getSavedSection(sections)).toBe(beef);
+    expect(getSavedSection(sections, 'desserts')).toBe(beef);
   });
 
   it('без разделов ничего не выбирает', () => {
-    expect(getActiveSection([])).toBeUndefined();
+    expect(getSavedSection([])).toBeUndefined();
+  });
+});
+
+describe('isFirstSection', () => {
+  it('узнаёт первый раздел по значению', () => {
+    expect(isFirstSection(sections, { ...beef })).toBe(true);
+  });
+
+  it('остальные разделы не первые', () => {
+    expect(isFirstSection(sections, chicken)).toBe(false);
+    expect(isFirstSection(sections, cola)).toBe(false);
+  });
+
+  it('без разделов первого нет', () => {
+    expect(isFirstSection([], beef)).toBe(false);
   });
 });
 

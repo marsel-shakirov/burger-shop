@@ -163,6 +163,26 @@ describe('useCatalogScroll: выбор в панели', () => {
     expect(scrollTo).toHaveBeenLastCalledWith({ top: 1500 - BAR_HEIGHT, behavior: 'smooth' });
   });
 
+  it('выбор первого меню очищает адрес', () => {
+    const { result } = render('/?menu=drinks&category=cola');
+
+    act(() => result.current.scroll.selectMenu('burgers'));
+
+    expect(result.current.location.search).toBe('');
+    expect(result.current.scroll.activeSection).toEqual({
+      menuSlug: 'burgers',
+      categorySlug: 'beef',
+    });
+  });
+
+  it('выбор первой категории очищает адрес', () => {
+    const { result } = render('/?menu=drinks&category=cola');
+
+    act(() => result.current.scroll.selectCategory({ menuSlug: 'burgers', categorySlug: 'beef' }));
+
+    expect(result.current.location.search).toBe('');
+  });
+
   it('неизвестное меню ничего не меняет', () => {
     const { result } = render();
 
@@ -267,6 +287,70 @@ describe('useCatalogScroll: прокрутка страницы', () => {
       menuSlug: 'burgers',
       categorySlug: 'chicken',
     });
+  });
+});
+
+describe('useCatalogScroll: адрес после прокрутки', () => {
+  it('когда прокрутка закончилась, записывает раздел в адрес', () => {
+    const { result } = render();
+
+    setTop(sections.beef!, -500);
+    setTop(sections.chicken!, BAR_HEIGHT);
+    scroll();
+
+    expect(result.current.location.search).toBe('');
+
+    scrollEnd();
+
+    expect(result.current.location.search).toBe('?menu=burgers&category=chicken');
+  });
+
+  it('при возврате к первому разделу очищает адрес', () => {
+    const { result } = render('/?menu=drinks&category=cola');
+    scrollEnd();
+
+    setTop(sections.beef!, 500);
+    scroll();
+    scrollEnd();
+
+    expect(result.current.location.search).toBe('');
+  });
+
+  it('если раздел в адресе тот же, адрес не перезаписывает', () => {
+    const { result } = render('/?menu=burgers&category=chicken');
+    const { key } = result.current.location;
+
+    setTop(sections.beef!, -500);
+    setTop(sections.chicken!, BAR_HEIGHT);
+    scroll();
+    scrollEnd();
+
+    expect(result.current.location.key).toBe(key);
+  });
+
+  it('раздел без категории в адресе считает тем же, что первая категория меню', () => {
+    const { result } = render('/?menu=drinks');
+    const { key } = result.current.location;
+
+    setTop(sections.chicken!, -500);
+    setTop(sections.cola!, BAR_HEIGHT);
+    scroll();
+    scrollEnd();
+
+    expect(result.current.location.key).toBe(key);
+  });
+
+  it('после прокрутки к выбранному разделу адрес не меняет', () => {
+    const { result } = render();
+    const cola = { menuSlug: 'drinks', categorySlug: 'cola' };
+
+    act(() => result.current.scroll.selectCategory(cola));
+    setTop(sections.chicken!, 0);
+    setTop(sections.cola!, 600);
+    scroll();
+    scrollEnd();
+
+    expect(result.current.location.search).toBe('?menu=drinks&category=cola');
   });
 });
 

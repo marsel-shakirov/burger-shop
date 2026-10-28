@@ -1,4 +1,9 @@
-import { parseCatalogParams, setCatalogCategoryParam, setCatalogMenuParam } from '@/entities/menu';
+import {
+  clearCatalogParams,
+  parseCatalogParams,
+  setCatalogCategoryParam,
+  setCatalogMenuParam,
+} from '@/entities/menu';
 import { useUpdateSearchParams } from '@/shared/lib';
 
 import type { CatalogSection } from './catalog.types';
@@ -16,5 +21,7 @@ export const useCatalogParams = () => {
       setCatalogCategoryParam(next, section.categorySlug);
     });
 
-  return { menuSlug, categorySlug, selectMenu, selectCategory };
+  const clearSelection = () => updateParams(clearCatalogParams);
+
+  return { menuSlug, categorySlug, selectMenu, selectCategory, clearSelection };
 };

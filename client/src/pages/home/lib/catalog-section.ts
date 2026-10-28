@@ -27,12 +27,14 @@ export const resolveCatalogSection = (
   return menuSections.find((section) => section.categorySlug === categorySlug) ?? menuSections[0];
 };
 
-export const getActiveSection = (
+export const getSavedSection = (
   sections: CatalogSection[],
-  currentSection?: CatalogSection,
   menuSlug?: string,
   categorySlug?: string,
-) => currentSection ?? resolveCatalogSection(sections, menuSlug, categorySlug) ?? sections[0];
+) => resolveCatalogSection(sections, menuSlug, categorySlug) ?? sections[0];
+
+export const isFirstSection = (sections: CatalogSection[], section: CatalogSection) =>
+  sections[0] !== undefined && isSameSection(sections[0], section);
 
 export const findActiveSection = (
   positions: CatalogSectionPosition[],

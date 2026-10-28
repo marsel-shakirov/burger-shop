@@ -45,6 +45,14 @@ describe('useCatalogParams: изменение', () => {
     expect(getSearchParams(result)).toEqual({ menu: 'drinks', category: 'cola' });
   });
 
+  it('clearSelection удаляет меню и категорию', () => {
+    const { result } = render('/?menu=drinks&category=cola&product=7');
+
+    act(() => result.current.params.clearSelection());
+
+    expect(getSearchParams(result)).toEqual({ product: '7' });
+  });
+
   it('сохраняет посторонние параметры', () => {
     const { result } = render('/?product=7');
 
