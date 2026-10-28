@@ -70,7 +70,13 @@ const holdMutations = () => {
 
 const waitForCache = (items: CartEntry[]) => waitFor(() => expect(getCachedItems()).toEqual(items));
 
-const waitForIdle = () => waitFor(() => expect(queryClient.isMutating()).toBe(0));
+const waitForIdle = () =>
+  waitFor(() => {
+    expect(queryClient.getMutationCache().getAll()).not.toHaveLength(0);
+    expect(queryClient.isMutating()).toBe(0);
+  });
+
+const settle = () => act(() => new Promise<void>((resolve) => setTimeout(resolve)));
 
 beforeEach(() => {
   queryClient = createTestQueryClient();
@@ -173,34 +179,27 @@ describe('useCartActions: изменение позиции', () => {
 });
 
 describe('useCartActions: изменение не нужно', () => {
-  it('не отправляет запрос на лимите количества', () => {
+  it('не отправляет запрос на лимите количества', async () => {
     queryClient.setQueryData(QUERY_KEY, [{ productId: 1, quantity: MAX_ITEM_QUANTITY }]);
     const { result } = render();
 
     act(() => result.current.addItem(1));
+    await settle();
 
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('не отправляет запрос при incrementItem для товара не из корзины', () => {
+  it('не отправляет запрос при incrementItem для товара не из корзины', async () => {
     const { result } = render();
 
     act(() => result.current.incrementItem(9));
+    await settle();
 
     expect(fetchMock).not.toHaveBeenCalled();
     expect(getCachedItems()).toEqual(serverItems);
   });
 
-  it('не отправляет запрос, пока корзина пользователя не загружена', () => {
-    queryClient.removeQueries({ queryKey: QUERY_KEY });
-    const { result } = render();
-
-    act(() => result.current.addItem(1));
-
-    expect(fetchMock).not.toHaveBeenCalled();
-  });
-
-  it('ничего не делает, пока сессия загружается', () => {
+  it('ничего не делает, пока сессия загружается', async () => {
     session.current = { status: 'loading', user: null };
     const { result } = render();
 
@@ -208,9 +207,41 @@ describe('useCartActions: изменение не нужно', () => {
       result.current.addItem(1);
       result.current.clearCart();
     });
+    await settle();
 
     expect(fetchMock).not.toHaveBeenCalled();
     expect(useCartStore.getState().items).toEqual([]);
+  });
+});
+
+describe('useCartActions: корзина ещё не загружена', () => {
+  beforeEach(() => {
+    queryClient.removeQueries({ queryKey: QUERY_KEY });
+  });
+
+  it('загружает корзину и применяет изменение к ней', async () => {
+    const { result } = render();
+
+    act(() => result.current.addItem(1));
+    await waitForIdle();
+
+    expect(getRequests()).toEqual(['GET /api/cart', 'PUT /api/cart/1']);
+    expect(fetchMock).toHaveBeenLastCalledWith('/api/cart/1', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ quantity: 3 }),
+    });
+  });
+
+  it('не отправляет изменение, если корзина не загрузилась', async () => {
+    fetchMock.mockResolvedValue(new Response(null, { status: 500 }));
+    const { result } = render();
+
+    act(() => result.current.addItem(1));
+    await waitFor(() => expect(getRequests()).toEqual(['GET /api/cart']));
+    await settle();
+
+    expect(getMutationRequests()).toEqual([]);
   });
 });
 

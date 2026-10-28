@@ -71,7 +71,10 @@ export const useCartActions = () => {
     },
   });
 
-  const changeItem = (productId: CartItemPayload, action: CartItemAction) => {
+  const loadItems = (userId: string) =>
+    queryClient.query({ ...cartQueryOptions(userId), staleTime: 'static' }).catch(() => undefined);
+
+  const changeItem = async (productId: CartItemPayload, action: CartItemAction) => {
     const { status, user } = getSessionState();
 
     if (status === 'guest') {
@@ -79,9 +82,13 @@ export const useCartActions = () => {
       return;
     }
 
-    const items = user && queryClient.getQueryData(getQueryKey(user.id));
+    if (!user) {
+      return;
+    }
 
-    if (!user || !items) {
+    const items = await loadItems(user.id);
+
+    if (!items) {
       return;
     }
 
@@ -107,10 +114,10 @@ export const useCartActions = () => {
   };
 
   return {
-    addItem: (productId: CartItemPayload) => changeItem(productId, 'add'),
-    incrementItem: (productId: CartItemPayload) => changeItem(productId, 'increment'),
-    decrementItem: (productId: CartItemPayload) => changeItem(productId, 'decrement'),
-    removeItem: (productId: CartItemPayload) => changeItem(productId, 'remove'),
+    addItem: (productId: CartItemPayload) => void changeItem(productId, 'add'),
+    incrementItem: (productId: CartItemPayload) => void changeItem(productId, 'increment'),
+    decrementItem: (productId: CartItemPayload) => void changeItem(productId, 'decrement'),
+    removeItem: (productId: CartItemPayload) => void changeItem(productId, 'remove'),
     clearCart,
   };
 };
