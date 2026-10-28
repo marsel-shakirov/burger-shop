@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { ApiError } from '@/shared/api/api-error';
+import { ApiError } from '@/shared/api';
 
 import { SAME_EMAIL_MESSAGE } from '../config/change-email.constants';
 import { getChangeEmailError } from './get-change-email-error';

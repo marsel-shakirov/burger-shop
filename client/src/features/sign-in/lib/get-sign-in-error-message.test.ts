@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { ApiError } from '@/shared/api/api-error';
+import { ApiError } from '@/shared/api';
 
 import { getSignInErrorMessage } from './get-sign-in-error-message';
 
