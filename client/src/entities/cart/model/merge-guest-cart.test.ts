@@ -3,14 +3,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { cartQueryOptions } from '../api/cart-query-options';
 import { mergeCart } from '../api/merge-cart';
+import { CART_STORAGE_KEY, GUEST_CART_MERGE_LOCK } from '../config/cart.constants';
 import { useCartStore } from './cart.store';
 import type { CartEntry } from './cart.types';
 import { mergeGuestCart } from './merge-guest-cart';
 
 vi.mock('../api/merge-cart', () => ({ mergeCart: vi.fn() }));
 
-vi.hoisted(() => {
+const locks = vi.hoisted(() => {
   const data = new Map<string, string>();
+  let queue: Promise<unknown> = Promise.resolve();
 
   vi.stubGlobal('window', {
     localStorage: {
@@ -23,6 +25,16 @@ vi.hoisted(() => {
       },
     },
   });
+
+  const request = vi.fn((_name: string, callback: () => Promise<unknown>) => {
+    const result = queue.then(callback);
+    queue = result.catch(() => {});
+    return result;
+  });
+
+  vi.stubGlobal('navigator', { locks: { request } });
+
+  return { request };
 });
 
 const USER_ID = 'user-1';
@@ -116,6 +128,40 @@ describe('mergeGuestCart', () => {
     resolveStale([{ productId: 9, quantity: 1 }]);
     await loading;
 
+    expect(getCachedItems()).toEqual(mergedItems);
+  });
+});
+
+describe('mergeGuestCart: несколько вкладок', () => {
+  const writeStoredItems = (items: CartEntry[]) =>
+    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify({ state: { items }, version: 1 }));
+
+  it('сливает корзину под общей для вкладок блокировкой', async () => {
+    mergeCartMock.mockResolvedValue(mergedItems);
+
+    await mergeGuestCart(queryClient, USER_ID);
+
+    expect(locks.request).toHaveBeenCalledExactlyOnceWith(
+      GUEST_CART_MERGE_LOCK,
+      expect.any(Function),
+    );
+  });
+
+  it('берёт гостевую корзину из хранилища, а не из памяти вкладки', async () => {
+    writeStoredItems([]);
+
+    await mergeGuestCart(queryClient, USER_ID);
+
+    expect(mergeCartMock).not.toHaveBeenCalled();
+    expect(getGuestItems()).toEqual([]);
+  });
+
+  it('отправляет корзину один раз, если слияние запущено дважды', async () => {
+    mergeCartMock.mockResolvedValue(mergedItems);
+
+    await Promise.all([mergeGuestCart(queryClient, USER_ID), mergeGuestCart(queryClient, USER_ID)]);
+
+    expect(mergeCartMock).toHaveBeenCalledExactlyOnceWith(guestItems);
     expect(getCachedItems()).toEqual(mergedItems);
   });
 });
