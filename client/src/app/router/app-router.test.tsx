@@ -2,10 +2,12 @@ import { render, screen } from '@testing-library/react';
 import { Outlet } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { SessionStatus } from '@/entities/session';
+import type { useSessionStatus } from '@/entities/session';
 import { routes } from '@/shared/config';
 
 import { AppRouter } from './app-router';
+
+type SessionStatus = ReturnType<typeof useSessionStatus>;
 
 const session = vi.hoisted(() => {
   const state: { status: SessionStatus } = { status: 'guest' };

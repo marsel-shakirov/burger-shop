@@ -2,10 +2,12 @@ import { render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { type Promo, promosQueryOptions } from '@/entities/promo';
-import type { SessionStatus } from '@/entities/session';
+import type { useSessionStatus } from '@/entities/session';
 import { createTestQueryClient, createWrapper, json, stubApi } from '@/shared/testing';
 
 import { PromoCarousel } from './promo-carousel';
+
+type SessionStatus = ReturnType<typeof useSessionStatus>;
 
 const session = vi.hoisted(() => {
   const state: { status: SessionStatus } = { status: 'guest' };

@@ -6,12 +6,7 @@ export {
   PRODUCT_UNIT_LABEL,
 } from './config/product.constants';
 export { setProductDetailsParam } from './lib/product-details-link';
-export type {
-  Product,
-  ProductSorting,
-  ProductSortOrder,
-  ProductsQueryParams,
-} from './model/product.types';
+export type { Product, ProductSortOrder } from './model/product.types';
 export { useProduct } from './model/use-product';
 export { useProductDetailsParam } from './model/use-product-details-param';
 export { useProductsById } from './model/use-products-by-id';
