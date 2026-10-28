@@ -8,9 +8,9 @@ import type { Product } from '@/entities/product';
 import { cn } from '@/shared/lib';
 import { QuantityControls } from '@/shared/ui/quantity-controls';
 
+import type { AddToCartVariant } from '../model/add-to-cart.types';
 import { useSwapFocus } from '../model/use-swap-focus';
 import { AddButton } from './add-button';
-import type { AddToCartVariant } from './add-to-cart.types';
 import { AddToCartFrame } from './add-to-cart-frame';
 import { CartLineTotal } from './cart-line-total';
 

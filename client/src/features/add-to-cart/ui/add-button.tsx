@@ -4,7 +4,7 @@ import type { Product } from '@/entities/product';
 import { cn, formatPrice } from '@/shared/lib';
 import { PlusIcon } from '@/shared/ui/icon';
 
-import type { AddToCartVariant } from './add-to-cart.types';
+import type { AddToCartVariant } from '../model/add-to-cart.types';
 
 interface AddButtonProps {
   ref?: Ref<HTMLButtonElement>;
