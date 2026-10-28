@@ -2,11 +2,8 @@ import type { Request, Response } from 'express';
 
 import { BadRequest } from '../../errors/bad-request.error.ts';
 import { getUserId } from '../../lib/get-user-id.ts';
-import {
-  cartItemParamsSchema,
-  mergeCartBodySchema,
-  updateCartItemBodySchema,
-} from './cart.schema.ts';
+import { productIdParamsSchema } from '../../lib/product-id.schema.ts';
+import { mergeCartBodySchema, updateCartItemBodySchema } from './cart.schema.ts';
 import { clearCartUseCase } from './clear-cart.use-case.ts';
 import { getCartUseCase } from './get-cart.use-case.ts';
 import { mergeCartUseCase } from './merge-cart.use-case.ts';
@@ -19,7 +16,7 @@ export async function getCart(req: Request, res: Response) {
 
 export async function updateCartItem(req: Request, res: Response) {
   const userId = getUserId(req);
-  const params = cartItemParamsSchema.safeParse(req.params);
+  const params = productIdParamsSchema.safeParse(req.params);
   const body = updateCartItemBodySchema.safeParse(req.body);
 
   if (!params.success || !body.success) {
@@ -33,7 +30,7 @@ export async function updateCartItem(req: Request, res: Response) {
 
 export async function removeCartItem(req: Request, res: Response) {
   const userId = getUserId(req);
-  const result = cartItemParamsSchema.safeParse(req.params);
+  const result = productIdParamsSchema.safeParse(req.params);
 
   if (!result.success) {
     throw new BadRequest();

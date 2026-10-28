@@ -2,8 +2,9 @@ import type { Request, Response } from 'express';
 
 import { BadRequest } from '../../errors/bad-request.error.ts';
 import { getUserId } from '../../lib/get-user-id.ts';
+import { productIdParamsSchema } from '../../lib/product-id.schema.ts';
 import { addFavoriteUseCase } from './add-favorite.use-case.ts';
-import { favoriteParamsSchema, mergeFavoritesBodySchema } from './favorites.schema.ts';
+import { mergeFavoritesBodySchema } from './favorites.schema.ts';
 import { getFavoritesUseCase } from './get-favorites.use-case.ts';
 import { mergeFavoritesUseCase } from './merge-favorites.use-case.ts';
 import { removeFavoriteUseCase } from './remove-favorite.use-case.ts';
@@ -14,7 +15,7 @@ export async function getFavorites(req: Request, res: Response) {
 
 export async function addFavorite(req: Request, res: Response) {
   const userId = getUserId(req);
-  const result = favoriteParamsSchema.safeParse(req.params);
+  const result = productIdParamsSchema.safeParse(req.params);
 
   if (!result.success) {
     throw new BadRequest();
@@ -27,7 +28,7 @@ export async function addFavorite(req: Request, res: Response) {
 
 export async function removeFavorite(req: Request, res: Response) {
   const userId = getUserId(req);
-  const result = favoriteParamsSchema.safeParse(req.params);
+  const result = productIdParamsSchema.safeParse(req.params);
 
   if (!result.success) {
     throw new BadRequest();
