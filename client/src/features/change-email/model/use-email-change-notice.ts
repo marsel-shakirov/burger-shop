@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useUpdateSearchParams } from '@/shared/lib';
 
-import { EMAIL_CHANGE_PARAM } from '../config/profile.constants';
+import { EMAIL_CHANGE_PARAM } from '../config/change-email.constants';
 import { getEmailNotice } from '../lib/get-email-notice';
 import { parseEmailChangeStatus } from '../lib/parse-email-change-status';
 

@@ -1,9 +1,9 @@
 import { useId } from 'react';
 
+import type { EmailNotice } from '@/features/change-email';
 import { cn } from '@/shared/lib';
 import { CheckCircleIcon } from '@/shared/ui/icon';
 
-import type { EmailNotice } from '../model/email-change.types';
 import { EditActionButton } from './edit-action-button';
 
 interface AccountSectionProps {

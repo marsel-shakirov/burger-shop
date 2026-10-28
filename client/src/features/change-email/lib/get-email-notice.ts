@@ -1,4 +1,4 @@
-import type { EmailChangeStatus, EmailNotice } from '../model/email-change.types';
+import type { EmailChangeStatus, EmailNotice } from '../model/change-email.types';
 
 interface EmailNoticeSource {
   pendingEmail: string | null;

@@ -2,11 +2,10 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { profileQueryOptions } from '@/entities/profile';
-import { ChangeEmailModal } from '@/features/change-email';
+import { ChangeEmailModal, useEmailChangeNotice } from '@/features/change-email';
 import { ChangePasswordModal } from '@/features/change-password';
 import { EditProfileModal, type ProfileSection } from '@/features/edit-profile';
 
-import { useEmailChangeNotice } from '../model/use-email-change-notice';
 import { useRemountableModal } from '../model/use-remountable-modal';
 import { AccountSection } from './account-section';
 import { BirthdayPromo } from './birthday-promo';
