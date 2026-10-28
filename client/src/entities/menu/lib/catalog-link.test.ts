@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { parseCatalogParams, setCatalogCategoryParam, setCatalogMenuParam } from './catalog-link';
+import {
+  clearCatalogParams,
+  parseCatalogParams,
+  setCatalogCategoryParam,
+  setCatalogMenuParam,
+} from './catalog-link';
 
 describe('parseCatalogParams', () => {
   it('возвращает меню и категорию', () => {
@@ -127,6 +132,24 @@ describe('setCatalogCategoryParam', () => {
     setCatalogCategoryParam(params, 'chicken');
 
     expect(params.toString()).toBe('menu=burgers&category=chicken&sort=price');
+  });
+});
+
+describe('clearCatalogParams', () => {
+  it('удаляет меню и категорию', () => {
+    const params = new URLSearchParams('menu=burgers&category=beef');
+
+    clearCatalogParams(params);
+
+    expect(params.toString()).toBe('');
+  });
+
+  it('оставляет остальные параметры и их порядок', () => {
+    const params = new URLSearchParams('sort=price&menu=burgers&product=7&category=beef');
+
+    clearCatalogParams(params);
+
+    expect(params.toString()).toBe('sort=price&product=7');
   });
 });
 

@@ -11,6 +11,11 @@ export const setCatalogMenuParam = (params: URLSearchParams, menuSlug: string) =
   params.delete(CATEGORY_PARAM);
 };
 
+export const clearCatalogParams = (params: URLSearchParams) => {
+  params.delete(MENU_PARAM);
+  params.delete(CATEGORY_PARAM);
+};
+
 export const setCatalogCategoryParam = (params: URLSearchParams, categorySlug?: string) => {
   if (categorySlug) params.set(CATEGORY_PARAM, categorySlug);
   else params.delete(CATEGORY_PARAM);

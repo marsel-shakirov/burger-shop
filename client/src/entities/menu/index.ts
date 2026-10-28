@@ -1,5 +1,6 @@
 export { menusQueryOptions } from './api/menus-query-options';
 export {
+  clearCatalogParams,
   parseCatalogParams,
   setCatalogCategoryParam,
   setCatalogMenuParam,
