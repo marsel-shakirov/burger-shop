@@ -5,7 +5,6 @@ export {
   PRODUCT_SORT_ORDER,
   PRODUCT_UNIT_LABEL,
 } from './config/product.constants';
-export { formatItemsCount } from './lib/format-items-count';
 export { setProductDetailsParam } from './lib/product-details-link';
 export type {
   Product,

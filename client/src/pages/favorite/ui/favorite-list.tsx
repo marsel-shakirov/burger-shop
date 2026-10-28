@@ -1,4 +1,4 @@
-import { formatItemsCount } from '@/entities/product';
+import { formatItemsCount } from '@/shared/lib';
 import { LoadError } from '@/shared/ui/load-error';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 

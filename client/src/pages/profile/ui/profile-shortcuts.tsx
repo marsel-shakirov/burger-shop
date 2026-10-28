@@ -1,8 +1,8 @@
 import { Link } from 'react-router';
 
 import { useFavoritesCount } from '@/entities/favorite';
-import { formatItemsCount } from '@/entities/product';
 import { routes } from '@/shared/config';
+import { formatItemsCount } from '@/shared/lib';
 import { cn } from '@/shared/lib';
 import { BagIcon, HeartIcon } from '@/shared/ui/icon';
 

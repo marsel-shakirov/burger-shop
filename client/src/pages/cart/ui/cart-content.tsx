@@ -1,5 +1,5 @@
 import { useCartTotalQuantity } from '@/entities/cart';
-import { formatItemsCount } from '@/entities/product';
+import { formatItemsCount } from '@/shared/lib';
 
 import { CartBody } from './cart-body';
 import { CartHeader } from './cart-header';

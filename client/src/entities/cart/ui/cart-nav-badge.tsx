@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
 
-import { formatItemsCount } from '@/entities/product/@x/cart';
+import { formatItemsCount } from '@/shared/lib';
 import { cn } from '@/shared/lib';
 import { QuantityBadge } from '@/shared/ui/quantity-badge';
 
