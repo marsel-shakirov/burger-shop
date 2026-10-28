@@ -1,4 +1,4 @@
-import { toProductImage } from '../products/products.mapper.ts';
+import { toProductImage } from '../../lib/product-image.ts';
 import type { PromoRow } from './promos.types.ts';
 
 function toPromoLink(promo: PromoRow) {
