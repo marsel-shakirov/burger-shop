@@ -69,6 +69,16 @@ describe('FavoritePage: пусто', () => {
       '/?menu=drinks',
     );
   });
+
+  it('показывает пустое состояние, если товаров из избранного больше нет в меню', async () => {
+    setGuestFavorites(99);
+    stubApi({ 'GET /api/products': json(products) });
+
+    renderPage();
+
+    expect(await screen.findByRole('heading', { name: 'В избранном пока пусто' })).toBeDefined();
+    expect(screen.queryByText(/^0 товаров/)).toBeNull();
+  });
 });
 
 describe('FavoritePage: есть товары', () => {

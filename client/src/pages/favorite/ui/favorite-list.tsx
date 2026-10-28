@@ -1,29 +1,21 @@
-import { useFavoriteIds } from '@/entities/favorite';
-import { formatItemsCount, useProductsById } from '@/entities/product';
+import { formatItemsCount } from '@/entities/product';
 import { LoadError } from '@/shared/ui/load-error';
 import { ProductGrid, ProductGridSkeleton } from '@/widgets/product-grid';
 
 import { getSortHighlights } from '../lib/get-sort-highlights';
 import { sortProducts } from '../lib/sort-products';
+import type { FavoriteProducts } from '../model/use-favorite-products';
 import { useFavoriteSorting } from '../model/use-favorite-sorting';
 import { ProductSortMenu } from './product-sort-menu';
 
-export const FavoriteList = () => {
-  const favorites = useFavoriteIds();
-  const products = useProductsById();
+interface FavoriteListProps {
+  favorites: FavoriteProducts;
+}
+
+export const FavoriteList = ({
+  favorites: { products: favoriteProducts, isPending, isError, retry },
+}: FavoriteListProps) => {
   const { sorting, changeSorting } = useFavoriteSorting();
-
-  const isPending = favorites.isPending || products.isPending;
-  const isError = favorites.isError || products.isError;
-
-  const favoriteProducts = favorites.productIds
-    .map((id) => products.data?.get(id))
-    .filter((product) => product !== undefined);
-
-  const retry = () => {
-    if (favorites.isError) favorites.refetch();
-    if (products.isError) void products.refetch();
-  };
 
   return (
     <section className="flex flex-1 flex-col">
