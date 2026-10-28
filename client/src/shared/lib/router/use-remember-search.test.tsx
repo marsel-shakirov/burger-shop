@@ -42,9 +42,9 @@ describe('useRememberSearch', () => {
   it('хранит search каждого пути и не теряет предыдущий при переходе', async () => {
     const { result } = render('/?menu=drinks');
 
-    await act(() => result.current.navigate('/favorite?sort=price'));
+    await act(() => result.current.navigate('/favorites?sort=price'));
 
-    expect(getSearchByPath()).toEqual({ '/': '?menu=drinks', '/favorite': '?sort=price' });
+    expect(getSearchByPath()).toEqual({ '/': '?menu=drinks', '/favorites': '?sort=price' });
   });
 
   it('запоминает пустой search', async () => {
@@ -68,7 +68,7 @@ describe('useLastSearch', () => {
   });
 
   it('возвращает пустую строку для пути, где пользователь ещё не был', () => {
-    const { result } = render('/favorite');
+    const { result } = render('/favorites');
 
     expect(result.current.lastHomeSearch).toBe('');
   });

@@ -30,7 +30,7 @@ const products = [
   createProduct(3, 'Фри', 120),
 ];
 
-const renderPage = (initialEntry = '/favorite') =>
+const renderPage = (initialEntry: string = routes.favorites) =>
   render(<FavoritePage />, { wrapper: createWrapper({ initialEntries: [initialEntry] }) });
 
 const setGuestFavorites = (...productIds: number[]) => {
@@ -158,7 +158,7 @@ describe('FavoritePage: сортировка', () => {
   it('берёт сортировку из адреса', async () => {
     stubApi({ 'GET /api/products': json(products) });
 
-    renderPage('/favorite?sort=price&order=asc');
+    renderPage(`${routes.favorites}?sort=price&order=asc`);
 
     await screen.findByRole('heading', { name: 'Фри' });
     expect(getCardTitles()).toEqual(['Кола', 'Фри', 'Чизбургер']);
@@ -167,7 +167,7 @@ describe('FavoritePage: сортировка', () => {
   it('для неизвестной сортировки в адресе показывает порядок добавления', async () => {
     stubApi({ 'GET /api/products': json(products) });
 
-    renderPage('/favorite?sort=name&order=asc');
+    renderPage(`${routes.favorites}?sort=name&order=asc`);
 
     await screen.findByRole('heading', { name: 'Фри' });
     expect(getCardTitles()).toEqual(['Фри', 'Чизбургер', 'Кола']);

@@ -49,11 +49,11 @@ describe('useUpdateSearchParams', () => {
   });
 
   it('сохраняет путь', () => {
-    const { result } = render('/favorite?sort=price');
+    const { result } = render('/favorites?sort=price');
 
     act(() => result.current.update((params) => params.set('sort', 'rating')));
 
-    expect(result.current.location.pathname).toBe('/favorite');
+    expect(result.current.location.pathname).toBe('/favorites');
   });
 
   it('передаёт в мутатор копию, а не текущие параметры', () => {

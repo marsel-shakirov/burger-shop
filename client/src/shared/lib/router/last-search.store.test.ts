@@ -22,11 +22,11 @@ describe('saveSearch', () => {
 
   it('хранит search разных путей независимо', () => {
     useLastSearchStore.getState().saveSearch('/', '?menu=burgers');
-    useLastSearchStore.getState().saveSearch('/favorite', '?sort=price');
+    useLastSearchStore.getState().saveSearch('/favorites', '?sort=price');
 
     expect(selectSearchByPath(useLastSearchStore.getState())).toEqual({
       '/': '?menu=burgers',
-      '/favorite': '?sort=price',
+      '/favorites': '?sort=price',
     });
   });
 
