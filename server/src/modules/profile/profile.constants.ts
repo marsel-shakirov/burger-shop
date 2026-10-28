@@ -1,4 +1,13 @@
+import type { ProfileResponse } from './profile.mapper.ts';
+
 export const GENDERS = ['female', 'male'] as const;
+
+export const EMPTY_PROFILE: ProfileResponse = {
+  name: null,
+  phone: null,
+  birthDate: null,
+  gender: null,
+};
 
 export const MIN_BIRTH_DATE = '1900-01-01';
 
