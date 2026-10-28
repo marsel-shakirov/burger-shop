@@ -60,7 +60,13 @@ const holdMutations = () => {
 const waitForCache = (productIds: FavoriteProductId[]) =>
   waitFor(() => expect(getCachedIds()).toEqual(productIds));
 
-const waitForIdle = () => waitFor(() => expect(queryClient.isMutating()).toBe(0));
+const waitForIdle = () =>
+  waitFor(() => {
+    expect(queryClient.getMutationCache().getAll()).not.toHaveLength(0);
+    expect(queryClient.isMutating()).toBe(0);
+  });
+
+const settle = () => act(() => new Promise<void>((resolve) => setTimeout(resolve)));
 
 beforeEach(() => {
   queryClient = createTestQueryClient();
@@ -118,25 +124,57 @@ describe('useFavoriteActions: авторизованный пользовате�
     expect(getRequests()).toEqual(['DELETE /api/favorites/3']);
   });
 
-  it('добавляет товар, если избранное пользователя ещё не загружено', async () => {
+  it('ничего не делает, пока сессия загружается', async () => {
+    session.current = { status: 'loading', user: null };
+    const { result } = render();
+
+    act(() => result.current.toggleFavorite(7));
+    await settle();
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(useFavoriteStore.getState().productIds).toEqual([]);
+  });
+});
+
+describe('useFavoriteActions: избранное ещё не загружено', () => {
+  beforeEach(() => {
     queryClient.removeQueries({ queryKey: QUERY_KEY });
+    fetchMock.mockImplementation((_input, init) =>
+      Promise.resolve(
+        init?.method
+          ? new Response(null, { status: 204 })
+          : Response.json({ productIds: serverIds }),
+      ),
+    );
+  });
+
+  it('загружает избранное и убирает товар, который уже в нём', async () => {
+    const { result } = render();
+
+    act(() => result.current.toggleFavorite(3));
+    await waitForIdle();
+
+    expect(getRequests()).toEqual(['GET /api/favorites', 'DELETE /api/favorites/3']);
+  });
+
+  it('загружает избранное и добавляет товар, которого в нём нет', async () => {
     const { result } = render();
 
     act(() => result.current.toggleFavorite(7));
     await waitForIdle();
 
-    expect(getRequests()).toEqual(['PUT /api/favorites/7']);
-    expect(getCachedIds()).toBeUndefined();
+    expect(getRequests()).toEqual(['GET /api/favorites', 'PUT /api/favorites/7']);
   });
 
-  it('ничего не делает, пока сессия загружается', () => {
-    session.current = { status: 'loading', user: null };
+  it('ничего не отправляет, если избранное не загрузилось', async () => {
+    respondWith(500);
     const { result } = render();
 
     act(() => result.current.toggleFavorite(7));
+    await waitFor(() => expect(getRequests()).toEqual(['GET /api/favorites']));
+    await settle();
 
-    expect(fetchMock).not.toHaveBeenCalled();
-    expect(useFavoriteStore.getState().productIds).toEqual([]);
+    expect(getRequests()).toEqual(['GET /api/favorites']);
   });
 });
 

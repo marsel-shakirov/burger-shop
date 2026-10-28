@@ -47,7 +47,12 @@ export const useFavoriteActions = () => {
     },
   });
 
-  const toggleFavorite = (productId: FavoriteProductId) => {
+  const loadProductIds = (userId: string) =>
+    queryClient
+      .query({ ...favoritesQueryOptions(userId), staleTime: 'static' })
+      .catch(() => undefined);
+
+  const toggleFavorite = async (productId: FavoriteProductId) => {
     const { status, user } = getSessionState();
 
     if (status === 'guest') {
@@ -59,10 +64,16 @@ export const useFavoriteActions = () => {
       return;
     }
 
-    const isFavorite = queryClient.getQueryData(getQueryKey(user.id))?.includes(productId) ?? false;
+    const productIds = await loadProductIds(user.id);
+
+    if (!productIds) {
+      return;
+    }
+
+    const isFavorite = productIds.includes(productId);
 
     mutate({ userId: user.id, productId, action: isFavorite ? 'remove' : 'add' });
   };
 
-  return { toggleFavorite };
+  return { toggleFavorite: (productId: FavoriteProductId) => void toggleFavorite(productId) };
 };
