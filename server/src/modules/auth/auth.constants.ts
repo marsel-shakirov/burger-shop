@@ -1,6 +1,8 @@
-export const AUTH_CALLBACK_URL = `${process.env.CLIENT_ORIGIN}/api/auth/callback`;
+import { env } from '../../config/env.ts';
 
-export const EMAIL_CHANGE_CALLBACK_URL = `${process.env.CLIENT_ORIGIN}/api/auth/email-callback`;
+export const AUTH_CALLBACK_URL = `${env.CLIENT_ORIGIN}/api/auth/callback`;
+
+export const EMAIL_CHANGE_CALLBACK_URL = `${env.CLIENT_ORIGIN}/api/auth/email-callback`;
 
 export const LOGIN_PATH = '/profile/login';
 

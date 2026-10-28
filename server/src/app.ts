@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 
+import { env } from './config/env.ts';
 import { BadRequest } from './errors/bad-request.error.ts';
 import { CustomError } from './errors/custom.error.ts';
 import { verifyOrigin } from './middlewares/verify-origin.ts';
@@ -8,10 +9,8 @@ import router from './modules/index.ts';
 
 const app = express();
 
-const { TRUST_PROXY } = process.env;
-
-if (TRUST_PROXY) {
-  app.set('trust proxy', /^\d+$/.test(TRUST_PROXY) ? Number(TRUST_PROXY) : TRUST_PROXY);
+if (env.TRUST_PROXY !== undefined) {
+  app.set('trust proxy', env.TRUST_PROXY);
 }
 
 app.use(express.json());

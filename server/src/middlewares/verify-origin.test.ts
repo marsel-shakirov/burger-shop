@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 const CLIENT_ORIGIN = 'http://localhost:5173';
 
 async function loadVerifyOrigin(env: { CLIENT_ORIGIN?: string; ALLOWED_ORIGINS?: string } = {}) {
-  vi.stubEnv('CLIENT_ORIGIN', 'CLIENT_ORIGIN' in env ? env.CLIENT_ORIGIN : CLIENT_ORIGIN);
+  vi.stubEnv('CLIENT_ORIGIN', env.CLIENT_ORIGIN ?? CLIENT_ORIGIN);
   vi.stubEnv('ALLOWED_ORIGINS', 'ALLOWED_ORIGINS' in env ? env.ALLOWED_ORIGINS : '');
   vi.resetModules();
 
@@ -78,19 +78,13 @@ describe('verifyOrigin', () => {
     expect(() => verifyOrigin(createRequest('POST'), {} as Response, vi.fn())).toThrow(Forbidden);
   });
 
-  it('работает только по ALLOWED_ORIGINS, если CLIENT_ORIGIN не задан', async () => {
-    const { verifyOrigin, Forbidden } = await loadVerifyOrigin({
-      CLIENT_ORIGIN: undefined,
-      ALLOWED_ORIGINS: 'https://a.test',
-    });
+  it('пропускает Origin клиента, если CLIENT_ORIGIN задан со слешем на конце', async () => {
+    const { verifyOrigin } = await loadVerifyOrigin({ CLIENT_ORIGIN: `${CLIENT_ORIGIN}/` });
     const next = vi.fn();
 
-    verifyOrigin(createRequest('POST', 'https://a.test'), {} as Response, next);
+    verifyOrigin(createRequest('POST', CLIENT_ORIGIN), {} as Response, next);
 
     expect(next).toHaveBeenCalledOnce();
-    expect(() =>
-      verifyOrigin(createRequest('POST', CLIENT_ORIGIN), {} as Response, vi.fn()),
-    ).toThrow(Forbidden);
   });
 
   it('работает только по CLIENT_ORIGIN, если ALLOWED_ORIGINS не задан', async () => {

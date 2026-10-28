@@ -1,6 +1,8 @@
+import { env } from '../config/env.ts';
+
 const STORAGE_BUCKET = 'product-images';
 
-const STORAGE_URL = `${process.env.SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}`;
+const STORAGE_URL = `${env.SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}`;
 
 const IMAGE_WIDTHS = [256, 384, 512, 768] as const;
 

@@ -1,8 +1,9 @@
 import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import type { Request, Response } from 'express';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
+import { env } from './config/env.ts';
 import { createStatelessSupabase, createSupabase } from './supabase.ts';
 
 vi.mock('@supabase/ssr', async (importOriginal) => ({
@@ -36,10 +37,6 @@ function getServerClientOptions() {
   return { url, key, options, cookies: options.cookies as CookieMethods };
 }
 
-afterEach(() => {
-  vi.unstubAllEnvs();
-});
-
 describe('createSupabase', () => {
   it('создаёт серверный клиент по URL и секретному ключу', () => {
     createSupabase(createRequest(), createResponse());
@@ -64,18 +61,12 @@ describe('createSupabase', () => {
     expect(getServerClientOptions().options.global).toEqual({ headers: {} });
   });
 
-  it.each([
-    ['не задан', '', true],
-    ['true', 'true', true],
-    ['false', 'false', false],
-  ])('ставит httpOnly-cookie на /api, secure при COOKIE_SECURE %s', (_case, value, secure) => {
-    vi.stubEnv('COOKIE_SECURE', value);
-
+  it('ставит httpOnly-cookie на /api с secure из конфигурации', () => {
     createSupabase(createRequest(), createResponse());
 
     expect(getServerClientOptions().options.cookieOptions).toEqual({
       httpOnly: true,
-      secure,
+      secure: env.COOKIE_SECURE,
       sameSite: 'lax',
       path: '/api',
     });
@@ -122,16 +113,5 @@ describe('createStatelessSupabase', () => {
       global: { headers: { 'sb-forwarded-for': '203.0.113.5' } },
       auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     });
-  });
-});
-
-describe('supabase.ts: переменные окружения', () => {
-  it.each(['SUPABASE_URL', 'SUPABASE_SECRET_KEY'])('падает при импорте без %s', async (name) => {
-    vi.stubEnv(name, '');
-    vi.resetModules();
-
-    await expect(import('./supabase.ts')).rejects.toThrow(
-      'SUPABASE_URL and SUPABASE_SECRET_KEY must be set',
-    );
   });
 });

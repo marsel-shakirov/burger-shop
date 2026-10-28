@@ -2,11 +2,9 @@ import { createServerClient, parseCookieHeader, serializeCookieHeader } from '@s
 import { createClient } from '@supabase/supabase-js';
 import type { Request, Response } from 'express';
 
-const { SUPABASE_URL, SUPABASE_SECRET_KEY } = process.env;
+import { env } from './config/env.ts';
 
-if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) {
-  throw new Error('SUPABASE_URL and SUPABASE_SECRET_KEY must be set');
-}
+const { SUPABASE_URL, SUPABASE_SECRET_KEY } = env;
 
 const getForwardedHeaders = (req: Request): Record<string, string> =>
   req.ip ? { 'sb-forwarded-for': req.ip } : {};
@@ -18,7 +16,7 @@ export const createSupabase = (req: Request, res: Response) =>
     },
     cookieOptions: {
       httpOnly: true,
-      secure: process.env.COOKIE_SECURE !== 'false',
+      secure: env.COOKIE_SECURE,
       sameSite: 'lax',
       path: '/api',
     },

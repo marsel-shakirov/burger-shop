@@ -1,9 +1,10 @@
 import 'dotenv/config';
 
 import app from './app.ts';
+import { env } from './config/env.ts';
 
-const PORT: number = 3000;
+app.listen(env.PORT, (error) => {
+  if (error) throw error;
 
-app.listen(PORT, () => {
-  console.log('Server is started');
+  console.log(`Server is listening on port ${env.PORT}`);
 });
