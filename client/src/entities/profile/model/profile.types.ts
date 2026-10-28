@@ -1,4 +1,4 @@
-export const GENDERS = ['female', 'male'] as const;
+import type { GENDERS } from '../config/profile.constants';
 
 export type Gender = (typeof GENDERS)[number];
 
