@@ -11,6 +11,8 @@ export const EMPTY_PROFILE: ProfileResponse = {
 
 export const MIN_BIRTH_DATE = '1900-01-01';
 
+export const MAX_UTC_OFFSET_MS = 14 * 60 * 60 * 1000;
+
 export const NAME_MAX_LENGTH = 50;
 
 export const INVALID_FIELD_CODES = new Map<string, string>([

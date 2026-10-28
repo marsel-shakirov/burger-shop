@@ -1,13 +1,18 @@
 import { z } from 'zod';
 
-import { GENDERS, MIN_BIRTH_DATE, NAME_MAX_LENGTH } from './profile.constants.ts';
+import {
+  GENDERS,
+  MAX_UTC_OFFSET_MS,
+  MIN_BIRTH_DATE,
+  NAME_MAX_LENGTH,
+} from './profile.constants.ts';
 
 const optionalText = z
   .string()
   .trim()
   .transform((value) => value || null);
 
-const today = () => new Date().toISOString().slice(0, 10);
+const latestToday = () => new Date(Date.now() + MAX_UTC_OFFSET_MS).toISOString().slice(0, 10);
 
 export const updateProfileBodySchema = z
   .strictObject({
@@ -23,7 +28,7 @@ export const updateProfileBodySchema = z
       .optional(),
     birthDate: z.iso
       .date()
-      .refine((value) => value >= MIN_BIRTH_DATE && value <= today())
+      .refine((value) => value >= MIN_BIRTH_DATE && value <= latestToday())
       .nullish(),
     gender: z.enum(GENDERS).nullish(),
   })
