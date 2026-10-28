@@ -3,9 +3,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { createTestQueryClient, createWrapper, json, pending, stubApi } from '@/shared/testing';
 
+import { productsQueryOptions } from '../api/products-query-options';
 import { ALL_PRODUCTS_PARAMS } from '../config/product.constants';
-import type { Product } from '../model/product.types';
-import { productsQueryOptions } from './products-query-options';
+import type { Product } from './product.types';
 import { useProduct } from './use-product';
 
 const createProduct = (id: number, name: string): Product => ({

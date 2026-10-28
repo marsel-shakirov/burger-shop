@@ -1,8 +1,8 @@
 import { type QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { PRODUCTS_QUERY_KEY, productsQueryOptions } from '../api/products-query-options';
 import { ALL_PRODUCTS_PARAMS } from '../config/product.constants';
-import type { Product } from '../model/product.types';
-import { PRODUCTS_QUERY_KEY, productsQueryOptions } from './products-query-options';
+import type { Product } from './product.types';
 
 const getProductsFromLoadedCatalogs = (queryClient: QueryClient) =>
   queryClient

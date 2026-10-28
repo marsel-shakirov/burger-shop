@@ -1,6 +1,4 @@
 export { productsQueryOptions } from './api/products-query-options';
-export { useProduct } from './api/use-product';
-export { useProductsById } from './api/use-products-by-id';
 export {
   ALL_PRODUCTS_PARAMS,
   PRODUCT_SORT_BY,
@@ -15,6 +13,8 @@ export type {
   ProductSortOrder,
   ProductsQueryParams,
 } from './model/product.types';
+export { useProduct } from './model/use-product';
 export { useProductDetailsParam } from './model/use-product-details-param';
+export { useProductsById } from './model/use-products-by-id';
 export { ProductCard } from './ui/product-card';
 export { ProductDetails } from './ui/product-details';
