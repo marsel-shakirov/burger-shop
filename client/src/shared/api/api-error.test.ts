@@ -109,6 +109,9 @@ describe('createApiError', () => {
     ['пустое тело', ''],
     ['HTML вместо JSON', '<html><body>Bad Gateway</body></html>'],
     ['обрезанный JSON', '{"message": "Bad'],
+    ['JSON null', 'null'],
+    ['JSON-строка', '"Bad Gateway"'],
+    ['JSON-число', '502'],
   ])('не падает, если в ответе %s', async (_case, body) => {
     const error = await createApiError(new Response(body, { status: 502 }));
 

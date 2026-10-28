@@ -24,8 +24,11 @@ export const isApiError = (error: unknown): error is ApiError => error instanceo
 
 export const isNetworkError = (error: unknown): error is TypeError => error instanceof TypeError;
 
-export const createApiError = async (response: Response): Promise<ApiError> => {
-  const body = await readJson<ApiErrorBody>(response).catch(() => ({}));
+const isApiErrorBody = (body: unknown): body is ApiErrorBody =>
+  typeof body === 'object' && body !== null;
 
-  return new ApiError(response.status, body);
+export const createApiError = async (response: Response): Promise<ApiError> => {
+  const body = await readJson<unknown>(response).catch(() => undefined);
+
+  return new ApiError(response.status, isApiErrorBody(body) ? body : {});
 };
