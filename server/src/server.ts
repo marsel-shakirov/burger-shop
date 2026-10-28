@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import app from './app.ts';
 
 const PORT: number = 3000;
