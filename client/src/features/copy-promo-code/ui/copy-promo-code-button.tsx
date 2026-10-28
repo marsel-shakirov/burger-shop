@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { copyText } from '../lib/copy-text';
+import { copyText } from '@/shared/lib';
 
 type CopyStatus = 'idle' | 'copied' | 'failed';
 

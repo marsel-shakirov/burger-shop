@@ -1,10 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { copyText } from '../lib/copy-text';
+import { copyText } from '@/shared/lib';
+
 import { CopyPromoCodeButton } from './copy-promo-code-button';
 
-vi.mock('../lib/copy-text', () => ({ copyText: vi.fn() }));
+vi.mock('@/shared/lib', async (importOriginal) => ({
+  ...(await importOriginal<object>()),
+  copyText: vi.fn(),
+}));
 
 const copyTextMock = vi.mocked(copyText);
 
