@@ -11,7 +11,7 @@ const INPUT_COLUMNS: Record<keyof ProfileInput, string> = {
   gender: 'gender',
 };
 
-export async function findProfile(userId: string) {
+export async function findProfile(userId: string): Promise<ProfileRow | undefined> {
   const result = await pool.query<ProfileRow>(
     `SELECT ${PROFILE_COLUMNS} FROM profiles WHERE id = $1`,
     [userId],
