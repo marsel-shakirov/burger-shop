@@ -1,4 +1,4 @@
-import { readJson, type RequestOptions } from '@/shared/api';
+import { createApiError, readJson, type RequestOptions } from '@/shared/api';
 
 import type { Product, ProductsQueryParams } from '../model/product.types';
 
@@ -19,7 +19,7 @@ export const getProducts = async (
   const response = await fetch(`/api/products?${params}`, { signal });
 
   if (!response.ok) {
-    throw new Error('Failed to load products');
+    throw await createApiError(response);
   }
 
   return readJson<Product[]>(response);
