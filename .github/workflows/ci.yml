@@ -33,10 +33,10 @@ jobs:
         run: npm run format
 
       - name: Test
-        run: npm run test:run -w client
+        run: npm run test:run -ws
 
       - name: Coverage
-        run: npm run test:coverage -w client
+        run: npm run test:coverage -ws
 
       - name: Build
         run: npm run build -ws
