@@ -29,11 +29,17 @@ TRUST_PROXY=           # необязательно: настройка trust pr
 
 ## Запуск
 
-Установите зависимости из корня проекта:
+Проект использует Node.js 26. Точная версия закреплена в `.nvmrc`; CI и workflow релиза читают её из этого же файла.
+
+Из корня проекта выберите версию через nvm и установите зависимости из lock-файла:
 
 ```bash
-npm install
+nvm install
+nvm use
+npm ci
 ```
+
+В новом терминале перед работой с проектом выполняйте `nvm use`.
 
 Запустите client и server одновременно:
 
@@ -46,14 +52,16 @@ Client запускается через Vite, server — на `http://localhost
 ## Команды
 
 ```bash
-npm run dev                 # client и server
-npm run dev:client          # только client
-npm run dev:server          # только server
-npm run build -w client     # сборка client
-npm run build -w server     # сборка server
-npm run lint -w client      # проверка client
-npm run format              # проверка форматирования
-npm run format:fix          # форматирование проекта
+npm run dev                          # client и server
+npm run dev:client                   # только client
+npm run dev:server                   # только server
+npm run build -w client              # сборка client
+npm run build -w server              # сборка server
+npm run lint -w client               # проверка client
+npm run test:run --workspaces        # тесты client и server
+npm run test:coverage --workspaces   # тесты с покрытием client и server
+npm run format                       # проверка форматирования
+npm run format:fix                   # форматирование проекта
 ```
 
 ## API
@@ -129,4 +137,5 @@ server/  Express API (PostgreSQL на Supabase, изображения — в Su
 ```
 
 Для деплоя на Vercel используются два проекта из одного репозитория: `client` и `server` задаются как отдельные Root Directory. Запросы `/api/*` с клиента перенаправляются на backend через `client/vercel.json`.
+В обоих проектах используется Node.js `26.x`, указанный в `engines.node` соответствующего `package.json`. На Vercel minor- и patch-версии обновляются платформой автоматически.
 Проект на Vercel https://burger-shop-indol.vercel.app/
