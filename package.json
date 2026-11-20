@@ -6,6 +6,9 @@
     "client",
     "server"
   ],
+  "engines": {
+    "node": "26.x"
+  },
   "scripts": {
     "dev": "concurrently -n SERVER,CLIENT \"npm run dev -w server\" \"npm run dev -w client\"",
     "dev:server": "npm run dev -w server",
