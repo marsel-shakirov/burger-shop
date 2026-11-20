@@ -26,6 +26,7 @@ pnpm-debug.log*
 .DS_Store
 *.sw?
 
-# Claude
+# ChatGPT
+.chatgpt/
+.agents/
 .playwright-mcp/ 
-.claude/
