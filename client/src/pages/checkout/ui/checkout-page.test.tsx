@@ -7,12 +7,20 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { cartQueryOptions, mergeGuestCart, useCartActions } from '@/entities/cart';
 import { setSessionUser } from '@/entities/session';
-import { createTestQueryClient, createWrapper, json, pending, stubApi } from '@/shared/testing';
+import {
+  type ApiHandlers,
+  createTestQueryClient,
+  createWrapper,
+  json,
+  pending,
+  stubApi,
+} from '@/shared/testing';
 
+import type { CreateOrderRequest } from '../api/create-order';
 import { CheckoutPage } from './checkout-page';
 
 const user = { id: 'user-1', email: 'user@example.com' };
@@ -320,6 +328,7 @@ describe('CheckoutPage: проверка контактов', () => {
 
   it('показывает ошибки обязательных полей после проверки формы', async () => {
     const { form, name, phone, comment } = await renderContacts();
+    const fetch = vi.mocked(globalThis.fetch);
     fireEvent.change(name, { target: { value: '   ' } });
     fireEvent.change(phone, { target: { value: ' ( ) - ' } });
     expect(screen.queryByRole('alert')).toBeNull();
@@ -329,6 +338,7 @@ describe('CheckoutPage: проверка контактов', () => {
     expectFieldError(name, 'Введите имя');
     expectFieldError(phone, 'Введите телефон');
     expect(comment.getAttribute('aria-invalid')).toBeNull();
+    expect(fetch).not.toHaveBeenCalledWith('/api/orders', expect.anything());
   });
 
   it('проверяет длину и телефон после ухода с поля и убирает ошибки при исправлении', async () => {
@@ -352,5 +362,187 @@ describe('CheckoutPage: проверка контактов', () => {
 
     expect(screen.queryByRole('alert')).toBeNull();
     expect(phone.getAttribute('aria-describedby')).toBeNull();
+  });
+});
+
+const order = { id: 'order-1', orderNumber: '42', status: 'new', totalPrice: 600 };
+
+const renderOrder = async (sendOrder: ApiHandlers[string], handlers: ApiHandlers = {}) => {
+  stubApi({
+    'POST /api/cart/merge': json({ items }),
+    'GET /api/products': json(products),
+    'GET /api/profile': json({ name: null, phone: null, birthDate: null, gender: null }),
+    'POST /api/orders': sendOrder,
+    ...handlers,
+  });
+
+  render(<CheckoutPage />, { wrapper: createWrapper() });
+  const form = await screen.findByRole('form', { name: 'Контакты для заказа' });
+  fireEvent.change(within(form).getByRole('textbox', { name: 'Имя' }), {
+    target: { value: ' Анна ' },
+  });
+  fireEvent.change(within(form).getByRole('textbox', { name: 'Телефон' }), {
+    target: { value: '+7 (900) 123-45-67' },
+  });
+
+  return form;
+};
+
+const readOrderBody = (init?: RequestInit) => {
+  assert(typeof init?.body === 'string');
+  return JSON.parse(init.body) as CreateOrderRequest;
+};
+
+describe('CheckoutPage: отправка заказа', () => {
+  it('отправляет показанные позиции и нормализованные контакты один раз', async () => {
+    let resolveOrder: (response: Response) => void = () => {};
+    const sendOrder = vi.fn(
+      (_url: URL, _init?: RequestInit) =>
+        new Promise<Response>((resolve) => {
+          resolveOrder = resolve;
+        }),
+    );
+    const form = await renderOrder(sendOrder);
+    fireEvent.change(within(form).getByRole('textbox', { name: /Комментарий/ }), {
+      target: { value: ' Позвонить по готовности ' },
+    });
+
+    act(() => {
+      fireEvent.click(within(form).getByRole('button', { name: 'Подтвердить заказ' }));
+      fireEvent.submit(form);
+    });
+
+    const pendingButton = await screen.findByRole<HTMLButtonElement>('button', {
+      name: 'Оформляем…',
+    });
+    expect(pendingButton.disabled).toBe(true);
+    await waitFor(() => expect(sendOrder).toHaveBeenCalledTimes(1));
+    const { idempotencyKey, ...details } = readOrderBody(sendOrder.mock.calls[0]?.[1]);
+    expect(idempotencyKey).toMatch(
+      /^[\da-f]{8}-[\da-f]{4}-4[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i,
+    );
+    expect(details).toEqual({
+      customerName: 'Анна',
+      customerPhone: '+79001234567',
+      customerComment: 'Позвонить по готовности',
+      items: [{ productId: 1, quantity: 2, unitPrice: 300 }],
+    });
+
+    act(() => resolveOrder(Response.json({ ...order, totalPrice: 610 }, { status: 201 })));
+
+    expect(await screen.findByText('Заказ №42 оформлен')).toBeDefined();
+    expect(screen.getByText('Итого').nextElementSibling?.getAttribute('value')).toBe('610');
+    expect(screen.getByText('Самовывоз')).toBeDefined();
+    expect(screen.getByText('При получении')).toBeDefined();
+    expect(screen.queryByRole('button', { name: 'Подтвердить заказ' })).toBeNull();
+  });
+
+  it.each([
+    ['при потере ответа', () => Promise.reject(new TypeError('Network error'))],
+    ['при ошибке сервера', () => Promise.resolve(Response.json({}, { status: 500 }))],
+  ])('%s повторяет отправку с тем же телом и ключом', async (_scenario, fail) => {
+    const sendOrder = vi
+      .fn<(_url: URL, init?: RequestInit) => Promise<Response>>()
+      .mockImplementationOnce(fail)
+      .mockResolvedValueOnce(Response.json(order));
+    const form = await renderOrder(sendOrder);
+
+    fireEvent.submit(form);
+    fireEvent.click(await screen.findByRole('button', { name: 'Повторить отправку' }));
+
+    expect(await screen.findByText('Заказ №42 оформлен')).toBeDefined();
+    expect(sendOrder).toHaveBeenCalledTimes(2);
+    expect(sendOrder.mock.calls[1]?.[1]?.body).toBe(sendOrder.mock.calls[0]?.[1]?.body);
+  });
+});
+
+describe('CheckoutPage: сервер отклонил заказ', () => {
+  const changedProducts = [{ id: 1, name: 'Бургер', price: 350 }];
+
+  it('обновляет корзину и цены, сохраняет контакты и ждёт нового подтверждения', async () => {
+    const sendOrder = vi
+      .fn<ApiHandlers[string]>()
+      .mockImplementationOnce(json({ code: 'cart_changed' }, 409))
+      .mockImplementationOnce(json(order, 201));
+    const fetchCart = vi.fn(json({ items: [{ productId: 1, quantity: 3 }] }));
+    const fetchProducts = vi
+      .fn()
+      .mockImplementationOnce(json(products))
+      .mockImplementationOnce(json(changedProducts));
+    const form = await renderOrder(sendOrder, {
+      'GET /api/cart': fetchCart,
+      'GET /api/products': fetchProducts,
+    });
+    fireEvent.change(within(form).getByRole('textbox', { name: /Комментарий/ }), {
+      target: { value: 'Позвонить' },
+    });
+    fireEvent.submit(form);
+
+    expect((await screen.findByRole('alert')).textContent).toContain('Состав или цены изменились');
+    expect(screen.getByText('Итого').nextElementSibling?.getAttribute('value')).toBe('1050');
+    expect(fetchCart).toHaveBeenCalledTimes(1);
+    expect(fetchProducts).toHaveBeenCalledTimes(2);
+    expect(sendOrder).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'Имя' }).value).toBe(' Анна ');
+    expect(screen.getByRole<HTMLInputElement>('textbox', { name: 'Телефон' }).value).toBe(
+      '+7 (900) 123-45-67',
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Подтвердить заказ' }));
+
+    expect(await screen.findByText('Заказ №42 оформлен')).toBeDefined();
+    const first = readOrderBody(sendOrder.mock.calls[0]?.[1]);
+    const second = readOrderBody(sendOrder.mock.calls[1]?.[1]);
+    expect(second.idempotencyKey).not.toBe(first.idempotencyKey);
+    expect(second.items).toEqual([{ productId: 1, quantity: 3, unitPrice: 350 }]);
+    expect(second.customerComment).toBe('Позвонить');
+  });
+
+  it('предлагает повторить обновление, если оно не удалось, и не отправляет заказ', async () => {
+    const sendOrder = vi.fn(json({ code: 'cart_changed' }, 409));
+    const fetchProducts = vi
+      .fn()
+      .mockImplementationOnce(json(products))
+      .mockImplementationOnce(json(null, 500))
+      .mockImplementationOnce(json(changedProducts));
+    const form = await renderOrder(sendOrder, {
+      'GET /api/cart': json({ items }),
+      'GET /api/products': fetchProducts,
+    });
+    fireEvent.submit(form);
+
+    expect((await screen.findByRole('alert')).textContent).toContain('Не удалось обновить');
+    expect(screen.queryByRole('button', { name: 'Подтвердить заказ' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Обновить корзину и цены' }));
+
+    expect(await screen.findByRole('button', { name: 'Подтвердить заказ' })).toBeDefined();
+    expect(fetchProducts).toHaveBeenCalledTimes(3);
+    expect(sendOrder).toHaveBeenCalledTimes(1);
+  });
+
+  it('при пустой корзине убирает форму и даёт перейти в меню', async () => {
+    const form = await renderOrder(json({ code: 'cart_empty' }, 409));
+
+    fireEvent.submit(form);
+
+    expect(await screen.findByText('В корзине пока пусто')).toBeDefined();
+    expect(screen.queryByRole('form', { name: 'Контакты для заказа' })).toBeNull();
+    expect(screen.getByRole('link', { name: 'Открыть меню' }).getAttribute('href')).toBe('/');
+  });
+
+  it('предлагает уменьшить заказ, если итог превышает предел', async () => {
+    const form = await renderOrder(json({ code: 'order_total_too_large' }, 409));
+
+    fireEvent.submit(form);
+
+    expect((await screen.findByRole('alert')).textContent).toContain(
+      'Сумма заказа слишком большая',
+    );
+    expect(
+      screen.getByRole<HTMLButtonElement>('button', { name: 'Подтвердить заказ' }).disabled,
+    ).toBe(true);
+    expect(screen.getByRole('link', { name: 'Вернуться в корзину' }).getAttribute('href')).toBe(
+      '/cart',
+    );
   });
 });

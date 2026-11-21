@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useId, useState } from 'react';
 
 import { profileQueryOptions } from '@/entities/profile';
+import { Button } from '@/shared/ui/button';
 import { FormAlert } from '@/shared/ui/form-alert';
 import { FormField } from '@/shared/ui/form-field';
 import { TextInput } from '@/shared/ui/text-input';
@@ -13,7 +14,21 @@ import {
 
 type ContactField = keyof CheckoutContactValues;
 
-const PickupDetails = () => (
+export interface CheckoutDraft {
+  values: Partial<CheckoutContactValues>;
+  updateField: (field: ContactField, value: string) => void;
+}
+
+interface CheckoutContactsProps {
+  userId: string;
+  isPending: boolean;
+  needsRetry: boolean;
+  isBlocked: boolean;
+  draft: CheckoutDraft;
+  onConfirm: (contacts: CheckoutContactValues) => void;
+}
+
+export const PickupDetails = () => (
   <dl className="grid grid-cols-2 gap-4 border-t border-dashed border-stone-300 pt-4 text-sm">
     <div>
       <dt className="text-stone-600">Получение</dt>
@@ -26,17 +41,16 @@ const PickupDetails = () => (
   </dl>
 );
 
-export const CheckoutContacts = ({ userId }: { userId: string }) => {
+const useContactFields = (userId: string, draft: CheckoutDraft['values']) => {
   const titleId = useId();
   const { data: profile } = useQuery(profileQueryOptions(userId));
-  const [draft, setDraft] = useState<Partial<CheckoutContactValues>>({});
   const [touched, setTouched] = useState<Partial<Record<ContactField, true>>>({});
   const values = {
     customerName: draft.customerName ?? profile?.name ?? '',
     customerPhone: draft.customerPhone ?? profile?.phone ?? '',
     customerComment: draft.customerComment ?? '',
   };
-  const errors = validateCheckoutContacts(values);
+  const { contacts, errors } = validateCheckoutContacts(values);
   const nameError = touched.customerName && errors.customerName;
   const phoneError = touched.customerPhone && errors.customerPhone;
   const commentError = touched.customerComment && errors.customerComment;
@@ -44,13 +58,42 @@ export const CheckoutContacts = ({ userId }: { userId: string }) => {
   const phoneErrorId = `${titleId}-phone-error`;
   const commentErrorId = `${titleId}-comment-error`;
 
-  const updateField = (field: ContactField, value: string) => {
-    setDraft((previous) => ({ ...previous, [field]: value }));
-  };
-
   const touchField = (field: ContactField) => {
     setTouched((previous) => ({ ...previous, [field]: true }));
   };
+
+  const confirm = (onConfirm: CheckoutContactsProps['onConfirm']) => {
+    setTouched({ customerName: true, customerPhone: true, customerComment: true });
+    if (Object.keys(errors).length === 0) onConfirm(contacts);
+  };
+
+  return {
+    titleId,
+    values,
+    nameError,
+    phoneError,
+    commentError,
+    nameErrorId,
+    phoneErrorId,
+    commentErrorId,
+    touchField,
+    confirm,
+  };
+};
+
+export const CheckoutContacts = ({
+  userId,
+  isPending,
+  needsRetry,
+  isBlocked,
+  draft,
+  onConfirm,
+}: CheckoutContactsProps) => {
+  const fields = useContactFields(userId, draft.values);
+  const { titleId, values, nameError, phoneError, commentError, touchField } = fields;
+  const { updateField } = draft;
+  const { nameErrorId, phoneErrorId, commentErrorId } = fields;
+  const disabled = isPending || needsRetry;
 
   return (
     <form
@@ -59,7 +102,7 @@ export const CheckoutContacts = ({ userId }: { userId: string }) => {
       noValidate
       onSubmit={(event) => {
         event.preventDefault();
-        setTouched({ customerName: true, customerPhone: true, customerComment: true });
+        if (!disabled && !isBlocked) fields.confirm(onConfirm);
       }}
     >
       <h2 id={titleId} className="text-lg font-bold">
@@ -74,6 +117,7 @@ export const CheckoutContacts = ({ userId }: { userId: string }) => {
               name="customerName"
               autoComplete="name"
               required
+              disabled={disabled}
               value={values.customerName}
               onChange={(event) => updateField('customerName', event.target.value)}
               onBlur={() => touchField('customerName')}
@@ -92,6 +136,7 @@ export const CheckoutContacts = ({ userId }: { userId: string }) => {
               type="tel"
               autoComplete="tel"
               required
+              disabled={disabled}
               value={values.customerPhone}
               onChange={(event) => updateField('customerPhone', event.target.value)}
               onBlur={() => touchField('customerPhone')}
@@ -115,6 +160,7 @@ export const CheckoutContacts = ({ userId }: { userId: string }) => {
             <textarea
               {...controlProps}
               name="customerComment"
+              disabled={disabled}
               rows={3}
               className="w-full resize-y rounded-md border border-stone-400 bg-white px-4 py-3 text-base text-stone-900 focus-ring aria-invalid:border-red-600"
               value={values.customerComment}
@@ -127,6 +173,9 @@ export const CheckoutContacts = ({ userId }: { userId: string }) => {
       </FormField>
 
       <PickupDetails />
+      <Button type="submit" pending={isPending} disabled={needsRetry || isBlocked}>
+        {isPending ? 'Оформляем…' : 'Подтвердить заказ'}
+      </Button>
     </form>
   );
 };

@@ -26,5 +26,8 @@ export const validateCheckoutContacts = (values: CheckoutContactValues) => {
     errors.customerComment = 'Комментарий должен быть не длиннее 500 символов';
   }
 
-  return errors;
+  return {
+    errors,
+    contacts: { customerName: name, customerPhone: phone, customerComment: comment },
+  };
 };
