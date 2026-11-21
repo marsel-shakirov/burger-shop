@@ -1,5 +1,5 @@
 const TEST_USERS = [
-  { label: 'User Dinar', email: 'webapi.user.test@gmail.com', password: 'Webapi753!' },
+  { label: 'User Maxim', email: 'webapi.user.test@gmail.com', password: 'Webapi753!' },
   { label: 'User Mars', email: 'webapi.user.test@yandex.ru', password: 'Webapi357!' },
 ];
 

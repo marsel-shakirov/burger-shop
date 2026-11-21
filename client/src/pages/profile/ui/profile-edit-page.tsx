@@ -8,7 +8,6 @@ import { routes } from '@/shared/config';
 import { Container } from '@/shared/ui/container';
 import { ArrowIcon } from '@/shared/ui/icon';
 import { PageMeta } from '@/shared/ui/page-meta';
-import { ReceiptCard } from '@/shared/ui/receipt-card';
 
 import { ProfileEditContent } from './profile-edit-content';
 import { ProfileEditSkeleton } from './profile-edit-skeleton';
@@ -23,23 +22,28 @@ export const ProfileEditPage = () => {
   }
 
   return (
-    <main className="flex flex-1">
+    <main className="flex flex-1 bg-paper text-stone-900">
       <PageMeta title="Личные данные" noindex />
-      <Container className="flex flex-1 flex-col items-center gap-y-5 pt-14 pb-8 sm:pt-20 sm:pb-12">
-        <ReceiptCard className="w-full max-w-sm">
-          <Link
-            to={routes.profile}
-            className="flex items-center gap-x-2 self-start rounded-md px-2 py-1 text-sm font-bold text-stone-500 focus-ring transition-colors duration-150 hover:text-stone-900"
-          >
-            <ArrowIcon className="size-3" />
-            Вернуться
-          </Link>
-          <ErrorBoundary onReset={reset} resetKeys={[user.id]} FallbackComponent={ProfileError}>
-            <Suspense fallback={<ProfileEditSkeleton />}>
-              <ProfileEditContent userId={user.id} email={user.email} />
-            </Suspense>
-          </ErrorBoundary>
-        </ReceiptCard>
+      <Container className="max-w-260 px-4 pt-5 pb-10 sm:px-8 md:pt-9 md:pb-20">
+        <Link
+          to={routes.profile}
+          className="mb-3 inline-flex min-h-10 items-center gap-x-2 rounded-sm text-sm font-bold text-stone-600 focus-ring transition-colors duration-150 hover:text-stone-900 md:mb-3.5"
+        >
+          <ArrowIcon className="size-3" />К профилю
+        </Link>
+        <ErrorBoundary
+          onReset={reset}
+          resetKeys={[user.id]}
+          fallbackRender={(props) => (
+            <div className="max-w-md rounded-3xl border border-stone-200 bg-white p-5 sm:p-6">
+              <ProfileError {...props} />
+            </div>
+          )}
+        >
+          <Suspense fallback={<ProfileEditSkeleton />}>
+            <ProfileEditContent userId={user.id} email={user.email} />
+          </Suspense>
+        </ErrorBoundary>
       </Container>
     </main>
   );

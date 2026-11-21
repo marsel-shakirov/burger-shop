@@ -47,24 +47,24 @@ export const ProfileEditContent = ({ userId, email }: ProfileEditContentProps) =
 
   return (
     <>
-      <PersonalSummary profile={profile} onEdit={() => openProfileEditor('personal')} />
-
-      <BirthdayPromo
-        birthDate={profile.birthDate}
-        onAddBirthDate={() => openProfileEditor('personal')}
-      />
-
-      <hr className="border-dashed border-stone-300" />
-
-      <AccountSection
-        phone={profile.phone}
-        email={email}
-        emailNotice={emailNotice}
-        isPasswordChanged={isPasswordChanged}
-        onEditPhone={() => openProfileEditor('phone')}
-        onEditEmail={emailModal.openModal}
-        onEditPassword={openPasswordEditor}
-      />
+      <div className="grid items-start gap-4 md:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] md:gap-9">
+        <div className="grid min-w-0 gap-4">
+          <PersonalSummary profile={profile} onEdit={() => openProfileEditor('personal')} />
+          <BirthdayPromo
+            birthDate={profile.birthDate}
+            onAddBirthDate={() => openProfileEditor('personal')}
+          />
+        </div>
+        <AccountSection
+          phone={profile.phone}
+          email={email}
+          emailNotice={emailNotice}
+          isPasswordChanged={isPasswordChanged}
+          onEditPhone={() => openProfileEditor('phone')}
+          onEditEmail={emailModal.openModal}
+          onEditPassword={openPasswordEditor}
+        />
+      </div>
 
       <EditProfileModal
         key={profileModal.key}

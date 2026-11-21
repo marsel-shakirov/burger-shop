@@ -38,7 +38,7 @@ describe('ProfileEditPage: просмотр', () => {
 
     renderPage();
 
-    expect(screen.getByRole('link', { name: 'Вернуться' }).getAttribute('href')).toBe(
+    expect(screen.getByRole('link', { name: 'К профилю' }).getAttribute('href')).toBe(
       routes.profile,
     );
     expect(screen.queryByRole('heading', { level: 1 })).toBeNull();

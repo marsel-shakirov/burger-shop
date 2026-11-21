@@ -10,7 +10,7 @@ export const EditActionButton = ({ className, ...props }: EditActionButtonProps)
       type="button"
       {...props}
       className={cn(
-        'cursor-pointer rounded-md font-bold text-orange-700 focus-ring transition-colors duration-150 hover:text-orange-900',
+        'inline-flex min-h-9 cursor-pointer items-center rounded-sm text-sm font-bold text-red-900 underline underline-offset-4 focus-ring transition-colors duration-150 hover:text-red-700',
         className,
       )}
     />
