@@ -75,7 +75,7 @@ describe('App', () => {
     fireEvent.change(screen.getByLabelText('Пароль'), { target: { value: 'secret' } });
     fireEvent.submit(screen.getByRole('button', { name: 'Войти' }));
 
-    expect(await screen.findByRole('link', { name: 'Анна' })).toBeDefined();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Анна' })).toBeDefined();
     expect(window.location.pathname).toBe(routes.profile);
   });
 });

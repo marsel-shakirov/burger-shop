@@ -3,9 +3,10 @@ import { Link } from 'react-router';
 import { useFavoritesCount } from '@/entities/favorite';
 import { routes } from '@/shared/config';
 import { cn, formatItemsCount } from '@/shared/lib';
-import { BagIcon, HeartIcon } from '@/shared/ui/icon';
+import { ArrowIcon, BagIcon, HeartIcon } from '@/shared/ui/icon';
 
-const tileClassName = 'flex h-full flex-col gap-y-1 rounded-2xl bg-stone-100 p-3';
+const rowClassName =
+  'grid min-h-14 grid-cols-[2.25rem_minmax(0,1fr)_auto_0.5rem] items-center gap-x-2 px-1 py-2 md:min-h-16 md:gap-x-3';
 
 const getFavoritesLabel = ({ count, isPending, isError }: ReturnType<typeof useFavoritesCount>) => {
   if (isPending) return 'Загружаем…';
@@ -18,32 +19,33 @@ export const ProfileShortcuts = () => {
   const favoritesCount = useFavoritesCount();
 
   return (
-    <ul role="list" className="grid grid-cols-2 gap-2">
+    <ul role="list" className="min-w-0 divide-y divide-stone-200 border-b border-stone-200">
       <li>
         <Link
           to={routes.favorites}
           className={cn(
-            tileClassName,
-            'focus-ring transition-colors duration-150 hover:bg-stone-200/70',
+            rowClassName,
+            'rounded-lg focus-ring transition-colors duration-150 hover:bg-white',
           )}
         >
-          <HeartIcon className="size-6 text-stone-400" />
-          <span className="flex min-w-0 flex-col gap-y-0.5">
-            <span className="truncate text-sm font-bold">Избранное</span>
-            <span className="truncate text-xs text-stone-500">
-              {getFavoritesLabel(favoritesCount)}
-            </span>
+          <span className="grid size-9 place-items-center rounded-full bg-red-100 text-red-800">
+            <HeartIcon className="size-4" />
           </span>
+          <span className="text-sm font-bold wrap-anywhere md:text-base">Избранное</span>
+          <span className="max-w-24 text-right text-xs text-stone-600 md:max-w-none md:text-sm">
+            {getFavoritesLabel(favoritesCount)}
+          </span>
+          <ArrowIcon className="size-2.5 rotate-180 text-stone-600" />
         </Link>
       </li>
 
       <li>
-        <div className={tileClassName}>
-          <BagIcon className="size-6 text-stone-400" />
-          <span className="flex min-w-0 flex-col gap-y-0.5">
-            <span className="truncate text-sm font-bold">Покупки</span>
-            <span className="truncate text-xs text-stone-500">Скоро появятся</span>
+        <div className={rowClassName}>
+          <span className="grid size-9 place-items-center rounded-full bg-stone-200 text-stone-600">
+            <BagIcon className="size-4" />
           </span>
+          <span className="text-sm font-bold wrap-anywhere md:text-base">Покупки</span>
+          <span className="text-right text-xs text-stone-600 md:text-sm">Скоро появятся</span>
         </div>
       </li>
     </ul>

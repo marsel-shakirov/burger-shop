@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 import type { Profile } from '@/entities/profile';
 import { routes } from '@/shared/config';
 import { cn } from '@/shared/lib';
-import { ArrowIcon } from '@/shared/ui/icon';
 
 import { ProfileAvatar } from './profile-avatar';
 
@@ -13,22 +12,26 @@ interface ProfileHeaderProps {
 
 export const ProfileHeader = ({ name }: ProfileHeaderProps) => {
   return (
-    <div className="group relative flex max-w-full items-center gap-x-3 self-start">
-      <ProfileAvatar name={name} />
+    <div className="flex min-w-0 items-center gap-3.5 rounded-[1.375rem] border border-stone-200 bg-white p-4 md:gap-5 md:p-6">
+      <ProfileAvatar
+        name={name}
+        className={cn(
+          'size-13 rounded-xl md:size-18 md:rounded-[1.125rem] md:text-3xl',
+          name && 'bg-mustard',
+        )}
+      />
 
-      <h1 className="min-w-0 truncate text-xl">
+      <div className="min-w-0">
+        <h1 className="text-[1.5rem] leading-tight font-extrabold wrap-anywhere md:text-[2.125rem]">
+          {name || 'Как вас зовут?'}
+        </h1>
         <Link
           to={routes.edit}
-          className={cn(
-            'after:absolute after:-inset-2 after:rounded-2xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-amber-600 focus-visible:after:ring-offset-2',
-            !name && 'text-stone-400',
-          )}
+          className="inline-block rounded-sm py-1 text-sm font-bold text-red-900 underline underline-offset-4 focus-ring hover:text-red-700"
         >
-          {name || 'Как вас зовут?'}
+          {name ? 'Изменить личные данные' : 'Добавить личные данные'}
         </Link>
-      </h1>
-
-      <ArrowIcon className="size-3.5 shrink-0 rotate-180 text-stone-400 transition-colors duration-150 group-hover:text-stone-900" />
+      </div>
     </div>
   );
 };

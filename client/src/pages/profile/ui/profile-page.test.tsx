@@ -46,13 +46,14 @@ describe('ProfilePage', () => {
     expect(screen.getByRole('button', { name: 'Выйти из профиля' })).toBeDefined();
   });
 
-  it('показывает имя со ссылкой на редактирование', async () => {
+  it('показывает имя и отдельную ссылку на редактирование', async () => {
     stubApi(api);
 
     renderPage();
 
-    const nameLink = await screen.findByRole('link', { name: 'Анна' });
-    expect(nameLink.getAttribute('href')).toBe(routes.edit);
+    expect(await screen.findByRole('heading', { level: 1, name: 'Анна' })).toBeDefined();
+    const editLink = screen.getByRole('link', { name: 'Изменить личные данные' });
+    expect(editLink.getAttribute('href')).toBe(routes.edit);
   });
 
   it('без имени предлагает его указать', async () => {
@@ -60,7 +61,9 @@ describe('ProfilePage', () => {
 
     renderPage();
 
-    expect(await screen.findByRole('link', { name: 'Как вас зовут?' })).toBeDefined();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Как вас зовут?' })).toBeDefined();
+    const editLink = screen.getByRole('link', { name: 'Добавить личные данные' });
+    expect(editLink.getAttribute('href')).toBe(routes.edit);
   });
 
   it('показывает количество избранного', async () => {
@@ -100,7 +103,7 @@ describe('ProfilePage', () => {
     renderPage();
 
     expect(await screen.findByText('Не удалось загрузить')).toBeDefined();
-    expect(screen.getByRole('link', { name: 'Анна' })).toBeDefined();
+    expect(screen.getByRole('heading', { level: 1, name: 'Анна' })).toBeDefined();
   });
 
   it('если профиль не загрузился, показывает ошибку и загружает снова', async () => {
@@ -113,6 +116,6 @@ describe('ProfilePage', () => {
     stubApi(api);
     fireEvent.click(screen.getByRole('button', { name: 'Загрузить снова' }));
 
-    expect(await screen.findByRole('link', { name: 'Анна' })).toBeDefined();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Анна' })).toBeDefined();
   });
 });

@@ -14,10 +14,12 @@ export const ProfileContent = ({ userId }: ProfileContentProps) => {
   const { data: profile } = useSuspenseQuery(profileQueryOptions(userId));
 
   return (
-    <>
+    <div className="grid items-start gap-y-4 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-x-9 md:gap-y-6">
       <ProfileHeader name={profile.name} />
+      <div className="min-w-0 md:col-start-2 md:row-span-2 md:row-start-1">
+        <BonusCard />
+      </div>
       <ProfileShortcuts />
-      <BonusCard />
-    </>
+    </div>
   );
 };

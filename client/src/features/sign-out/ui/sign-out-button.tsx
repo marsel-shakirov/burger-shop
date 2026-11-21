@@ -21,7 +21,7 @@ export const SignOutButton = ({ className }: SignOutButtonProps) => {
         type="button"
         onClick={() => mutate()}
         disabled={isPending}
-        className="h-12 w-full cursor-pointer rounded-md border border-stone-400 bg-white font-bold text-stone-900 focus-ring transition-colors duration-150 hover:border-stone-900 disabled:cursor-wait disabled:opacity-60 disabled:hover:border-stone-400"
+        className="min-h-11 cursor-pointer rounded-lg border border-stone-300 bg-white px-4 text-sm font-bold text-stone-900 focus-ring transition-colors duration-150 hover:border-stone-600 disabled:cursor-wait disabled:opacity-60 disabled:hover:border-stone-300"
       >
         {isPending ? 'Выходим…' : 'Выйти из профиля'}
       </button>
