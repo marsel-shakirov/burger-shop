@@ -2,11 +2,12 @@ import { Link } from 'react-router';
 
 import { useCartItems, useGuestCartMerge } from '@/entities/cart';
 import { routes } from '@/shared/config';
-import { formatItemsCount } from '@/shared/lib';
 import { buttonClass } from '@/shared/ui/button';
 import { Container } from '@/shared/ui/container';
 import { LoadError } from '@/shared/ui/load-error';
 import { PageMeta } from '@/shared/ui/page-meta';
+
+import { CheckoutOrder } from './checkout-order';
 
 const CheckoutCart = () => {
   const cart = useCartItems();
@@ -28,11 +29,9 @@ const CheckoutCart = () => {
     );
   }
 
-  const quantity = cart.items.reduce((total, item) => total + item.quantity, 0);
-
   return (
     <>
-      <p className="text-stone-600">В корзине {formatItemsCount(quantity)}</p>
+      <CheckoutOrder items={cart.items} onRefreshCart={cart.refetch} />
       <Link className={buttonClass} to={routes.cart}>
         Вернуться в корзину
       </Link>
