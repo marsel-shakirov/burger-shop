@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useCartActions } from '@/entities/cart';
 import type { Product } from '@/entities/product';
 import { setSessionUser } from '@/entities/session';
+import { routes } from '@/shared/config';
 import { createWrapper, json, pending, stubApi } from '@/shared/testing';
 
 import { CartPage } from './cart-page';
@@ -135,15 +136,12 @@ describe('CartPage: гостевая корзина с товарами', () => 
     expect(screen.getByText('Пока пусто')).toBeDefined();
   });
 
-  it('кнопка оформления пока недоступна и объясняет почему', async () => {
+  it('показывает ссылку на оформление заказа', async () => {
     renderPage();
 
-    const checkout = await screen.findByRole('button', {
-      name: 'Оформить заказ',
-      description: 'Оформление заказа скоро появится',
-    });
+    const checkout = await screen.findByRole('link', { name: 'Оформить заказ' });
 
-    expect(checkout).toHaveProperty('disabled', true);
+    expect(checkout.getAttribute('href')).toBe(routes.checkout);
   });
 });
 

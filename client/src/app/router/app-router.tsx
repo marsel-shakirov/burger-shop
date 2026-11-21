@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 
 import { CartPage } from '@/pages/cart';
+import { CheckoutPage } from '@/pages/checkout';
 import { FavoritePage } from '@/pages/favorite';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
@@ -22,6 +23,7 @@ export const AppRouter = () => {
           <Route path={routes.cart} element={<CartPage />} />
           <Route path={routes.favorites} element={<FavoritePage />} />
           <Route element={<RequireAuth />}>
+            <Route path={routes.checkout} element={<CheckoutPage />} />
             <Route path={routes.profile} element={<ProfilePage />} />
             <Route path={routes.edit} element={<ProfileEditPage />} />
           </Route>

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { routes } from '@/shared/config';
 import { formatPrice, useLastSearch } from '@/shared/lib';
-import { Button } from '@/shared/ui/button';
+import { buttonClass } from '@/shared/ui/button';
 import { DotLeaderRow } from '@/shared/ui/dot-leader-row';
 import { ArrowIcon } from '@/shared/ui/icon';
 import { Receipt } from '@/shared/ui/receipt';
@@ -18,7 +18,6 @@ interface CartSummaryProps {
 export const CartSummary = ({ lines, totalPrice }: CartSummaryProps) => {
   const homeSearch = useLastSearch(routes.home);
   const titleId = useId();
-  const checkoutNoteId = useId();
 
   return (
     <aside aria-labelledby={titleId} className="flex flex-col gap-y-5 lg:sticky lg:top-6">
@@ -60,14 +59,11 @@ export const CartSummary = ({ lines, totalPrice }: CartSummaryProps) => {
             </data>
           </div>
 
-          <div className="flex flex-col gap-y-2">
-            <Button disabled aria-describedby={checkoutNoteId}>
+          {lines.length > 0 && (
+            <Link to={routes.checkout} className={buttonClass}>
               Оформить заказ
-            </Button>
-            <p id={checkoutNoteId} className="text-center text-xs text-stone-500">
-              Оформление заказа скоро появится
-            </p>
-          </div>
+            </Link>
+          )}
         </Receipt.Body>
       </Receipt.Root>
 

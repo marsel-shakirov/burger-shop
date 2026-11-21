@@ -1,17 +1,19 @@
-import { Navigate, Outlet } from 'react-router';
+import { Navigate, Outlet, useMatch } from 'react-router';
 
 import { useSessionStatus } from '@/entities/session';
 import { routes } from '@/shared/config';
 
 export const RequireAuth = () => {
   const status = useSessionStatus();
+  const isCheckout = useMatch(routes.checkout);
 
   if (status === 'loading') {
     return null;
   }
 
   if (status === 'guest') {
-    return <Navigate to={routes.login} replace />;
+    const search = isCheckout ? '?next=checkout' : '';
+    return <Navigate to={{ pathname: routes.login, search }} replace />;
   }
 
   return <Outlet />;

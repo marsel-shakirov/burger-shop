@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
+import { useSyncExternalStore } from 'react';
 import { Outlet } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -11,11 +12,24 @@ type SessionStatus = ReturnType<typeof useSessionStatus>;
 
 const session = vi.hoisted(() => {
   const state: { status: SessionStatus } = { status: 'guest' };
+  const listeners = new Set<() => void>();
 
-  return state;
+  return {
+    getStatus: () => state.status,
+    setStatus: (status: SessionStatus) => {
+      state.status = status;
+      listeners.forEach((listener) => listener());
+    },
+    subscribe: (listener: () => void) => {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+  };
 });
 
-vi.mock('@/entities/session', () => ({ useSessionStatus: () => session.status }));
+vi.mock('@/entities/session', () => ({
+  useSessionStatus: () => useSyncExternalStore(session.subscribe, session.getStatus),
+}));
 
 vi.mock('../layouts/app-layout', () => ({
   AppLayout: () => (
@@ -28,6 +42,7 @@ vi.mock('../layouts/app-layout', () => ({
 
 vi.mock('@/pages/home', () => ({ HomePage: () => <h1>home</h1> }));
 vi.mock('@/pages/cart', () => ({ CartPage: () => <h1>cart</h1> }));
+vi.mock('@/pages/checkout', () => ({ CheckoutPage: () => <h1>checkout</h1> }));
 vi.mock('@/pages/favorite', () => ({ FavoritePage: () => <h1>favorites</h1> }));
 vi.mock('@/pages/login', () => ({ LoginPage: () => <h1>login</h1> }));
 vi.mock('@/pages/register', () => ({ RegisterPage: () => <h1>register</h1> }));
@@ -38,7 +53,7 @@ vi.mock('@/pages/profile', () => ({
 }));
 
 const renderAt = (path: string, status: SessionStatus) => {
-  session.status = status;
+  session.setStatus(status);
   window.history.replaceState(null, '', path);
 
   return render(<AppRouter />);
@@ -129,6 +144,34 @@ describe('AppRouter: вход и регистрация', () => {
 
     expect(getPageTitle()).toBeNull();
     expect(window.location.pathname).toBe(path);
+  });
+});
+
+describe('AppRouter: оформление заказа', () => {
+  it('возвращает гостя к оформлению сразу после входа', () => {
+    renderAt(routes.checkout, 'guest');
+
+    expect(getPageTitle()).toBe('login');
+    expect(window.location.pathname).toBe(routes.login);
+    expect(window.location.search).toBe('?next=checkout');
+
+    act(() => session.setStatus('authenticated'));
+
+    expect(getPageTitle()).toBe('checkout');
+    expect(window.location.pathname).toBe(routes.checkout);
+    expect(window.location.search).toBe('');
+  });
+
+  it('авторизованный пользователь может открыть оформление напрямую', () => {
+    renderAt(routes.checkout, 'authenticated');
+
+    expect(getPageTitle()).toBe('checkout');
+  });
+
+  it('не использует произвольный адрес из параметра возврата', () => {
+    renderAt(`${routes.login}?next=https://example.test`, 'authenticated');
+
+    expect(getPageTitle()).toBe('profile');
   });
 });
 

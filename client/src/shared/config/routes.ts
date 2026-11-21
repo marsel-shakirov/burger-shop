@@ -1,6 +1,7 @@
 export const routes = {
   home: '/',
   cart: '/cart',
+  checkout: '/checkout',
   favorites: '/favorites',
   profile: '/profile',
   login: '/profile/login',

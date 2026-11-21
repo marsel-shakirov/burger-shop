@@ -112,7 +112,7 @@ describe('SignInForm: тестовые пользователи', () => {
   it('кнопка тестового пользователя заполняет email и пароль', () => {
     renderForm();
 
-    fireEvent.click(screen.getByRole('button', { name: 'User Dinar' }));
+    fireEvent.click(screen.getByRole('button', { name: 'User Maxim' }));
 
     expect(getEmail().value).toBe('webapi.user.test@gmail.com');
     expect(getPassword().value).not.toBe('');

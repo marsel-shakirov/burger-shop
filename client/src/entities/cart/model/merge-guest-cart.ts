@@ -1,8 +1,10 @@
-import type { QueryClient } from '@tanstack/react-query';
+import { type QueryClient, queryOptions, useQuery } from '@tanstack/react-query';
+
+import { useSessionUser } from '@/entities/session/@x/cart';
 
 import { cartQueryOptions } from '../api/cart-query-options';
 import { mergeCart } from '../api/merge-cart';
-import { GUEST_CART_MERGE_LOCK } from '../config/cart.constants';
+import { GUEST_CART_MERGE_LOCK, GUEST_CART_MERGE_QUERY_KEY } from '../config/cart.constants';
 import { useCartStore } from './cart.store';
 
 const mergeStoredCart = async (queryClient: QueryClient, userId: string) => {
@@ -22,6 +24,27 @@ const mergeStoredCart = async (queryClient: QueryClient, userId: string) => {
   clearCart();
 };
 
+const guestCartMergeOptions = (userId: string) =>
+  queryOptions({
+    queryKey: [...GUEST_CART_MERGE_QUERY_KEY, userId],
+    queryFn: async ({ client }) => {
+      await navigator.locks.request(GUEST_CART_MERGE_LOCK, () => mergeStoredCart(client, userId));
+      return true;
+    },
+    staleTime: Infinity,
+    gcTime: Infinity,
+    retry: false,
+    retryOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+
 export const mergeGuestCart = async (queryClient: QueryClient, userId: string) => {
-  await navigator.locks.request(GUEST_CART_MERGE_LOCK, () => mergeStoredCart(queryClient, userId));
+  await queryClient.query(guestCartMergeOptions(userId));
+};
+
+export const useGuestCartMerge = () => {
+  const user = useSessionUser();
+
+  return useQuery({ ...guestCartMergeOptions(user?.id ?? ''), enabled: Boolean(user) });
 };
