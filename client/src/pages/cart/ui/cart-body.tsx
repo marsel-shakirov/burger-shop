@@ -1,7 +1,7 @@
 import { LoadError } from '@/shared/ui/load-error';
 
 import { useCartLines } from '../model/use-cart-lines';
-import { CartList } from './cart-list';
+import { CartItem } from './cart-item';
 import { CartSkeleton } from './cart-skeleton';
 import { CartSummary } from './cart-summary';
 
@@ -22,7 +22,11 @@ export const CartBody = () => {
 
   return (
     <>
-      <CartList lines={lines} />
+      <ul role="list" className="rounded-xl bg-white shadow-(--shadow-base)">
+        {lines.map(({ product, entry }) => (
+          <CartItem key={entry.productId} product={product} entry={entry} />
+        ))}
+      </ul>
       <CartSummary lines={lines} totalPrice={totalPrice} />
     </>
   );

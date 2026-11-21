@@ -1,9 +1,33 @@
 import { useId } from 'react';
 
-import { useBonus } from '@/entities/bonus';
+import { formatBonusUnit, useBonus } from '@/entities/bonus';
+import { Skeleton } from '@/shared/ui/skeleton';
 
 import { BONUS_HISTORY_LIMIT } from '../config/profile.constants';
-import { BonusBalance } from './bonus-balance';
+
+interface BonusBalanceProps {
+  balance?: number;
+}
+
+const BonusBalance = ({ balance }: BonusBalanceProps) => {
+  return (
+    <div className="min-w-0 text-right">
+      {balance === undefined ? (
+        <div className="flex flex-col items-end gap-1">
+          <Skeleton className="h-7 w-14" />
+          <Skeleton className="h-3 w-10" />
+        </div>
+      ) : (
+        <data value={balance} className="block">
+          <span className="block font-display text-2xl leading-none font-extrabold wrap-anywhere tabular-nums sm:text-[1.75rem]">
+            {balance}
+          </span>{' '}
+          <span className="text-xs font-bold">{formatBonusUnit(balance)}</span>
+        </data>
+      )}
+    </div>
+  );
+};
 
 const getStatusText = ({ isPending, isError }: { isPending: boolean; isError: boolean }) => {
   if (isPending) return 'Загружаем…';

@@ -5,14 +5,18 @@ import {
   useProductQuantity,
 } from '@/entities/cart';
 import type { Product } from '@/entities/product';
-import { cn } from '@/shared/lib';
+import { cn, formatPrice } from '@/shared/lib';
 import { QuantityControls } from '@/shared/ui/quantity-controls';
 
 import type { AddToCartVariant } from '../model/add-to-cart.types';
 import { useSwapFocus } from '../model/use-swap-focus';
 import { AddButton } from './add-button';
 import { AddToCartFrame } from './add-to-cart-frame';
-import { CartLineTotal } from './cart-line-total';
+
+interface CartLineTotalProps {
+  price: number;
+  quantity: number;
+}
 
 interface AddToCartButtonProps {
   product: Product;
@@ -30,6 +34,13 @@ const controlsStyles: Record<
   card: { className: 'p-1', variant: 'solid' },
   details: { className: 'p-1.5', variant: 'solid-large' },
 };
+
+const CartLineTotal = ({ price, quantity }: CartLineTotalProps) => (
+  <span className="flex flex-col items-center gap-y-px">
+    <span className="font-display">{formatPrice(price * quantity)}</span>
+    <span className="text-[0.8125rem] font-medium">{`${quantity} шт в корзине`}</span>
+  </span>
+);
 
 export const AddToCartButton = ({ product, variant = 'card' }: AddToCartButtonProps) => {
   const { quantity } = useProductQuantity(product.id);
