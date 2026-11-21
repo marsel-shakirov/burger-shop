@@ -27,5 +27,5 @@ export const Stub = ({ children, className }: ReceiptPartProps) => (
 );
 
 export const Dish = () => (
-  <BurgerIcon className="absolute -top-9 left-5 size-18 animate-dish-drop drop-shadow-[0_8px_6px_rgb(0_0_0/0.18)] motion-reduce:animate-none sm:left-7" />
+  <BurgerIcon className="absolute -top-9 left-5 size-18 drop-shadow-[0_8px_6px_rgb(0_0_0/0.18)] sm:left-7" />
 );
