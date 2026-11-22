@@ -9,7 +9,7 @@ import {
 } from '@testing-library/react';
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { cartQueryOptions, mergeGuestCart, useCartActions } from '@/entities/cart';
+import { CartNavBadge, cartQueryOptions, mergeGuestCart, useCartActions } from '@/entities/cart';
 import { setSessionUser } from '@/entities/session';
 import {
   type ApiHandlers,
@@ -367,16 +367,21 @@ describe('CheckoutPage: проверка контактов', () => {
 
 const order = { id: 'order-1', orderNumber: '42', status: 'new', totalPrice: 600 };
 
-const renderOrder = async (sendOrder: ApiHandlers[string], handlers: ApiHandlers = {}) => {
+const renderOrder = async (
+  sendOrder: ApiHandlers[string],
+  handlers: ApiHandlers = {},
+  queryClient = createTestQueryClient(),
+) => {
   stubApi({
     'POST /api/cart/merge': json({ items }),
+    'GET /api/cart': json({ items: [] }),
     'GET /api/products': json(products),
     'GET /api/profile': json({ name: null, phone: null, birthDate: null, gender: null }),
     'POST /api/orders': sendOrder,
     ...handlers,
   });
 
-  render(<CheckoutPage />, { wrapper: createWrapper() });
+  render(<CheckoutPage />, { wrapper: createWrapper({ queryClient }) });
   const form = await screen.findByRole('form', { name: 'Контакты для заказа' });
   fireEvent.change(within(form).getByRole('textbox', { name: 'Имя' }), {
     target: { value: ' Анна ' },
@@ -394,6 +399,21 @@ const readOrderBody = (init?: RequestInit) => {
 };
 
 describe('CheckoutPage: отправка заказа', () => {
+  it('отправляет заказ из браузера без crypto.randomUUID', async () => {
+    vi.stubGlobal('crypto', { getRandomValues: crypto.getRandomValues.bind(crypto) });
+    const sendOrder = vi
+      .fn<(_url: URL, init?: RequestInit) => Promise<Response>>()
+      .mockResolvedValueOnce(Response.json(order, { status: 201 }));
+    const form = await renderOrder(sendOrder);
+
+    fireEvent.submit(form);
+
+    expect(await screen.findByText('Заказ №42 оформлен')).toBeDefined();
+    expect(readOrderBody(sendOrder.mock.calls[0]?.[1]).idempotencyKey).toMatch(
+      /^[\da-f]{8}-[\da-f]{4}-4[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i,
+    );
+  });
+
   it('отправляет показанные позиции и нормализованные контакты один раз', async () => {
     let resolveOrder: (response: Response) => void = () => {};
     const sendOrder = vi.fn(
@@ -544,5 +564,64 @@ describe('CheckoutPage: сервер отклонил заказ', () => {
     expect(screen.getByRole('link', { name: 'Вернуться в корзину' }).getAttribute('href')).toBe(
       '/cart',
     );
+  });
+});
+
+describe('CheckoutPage: корзина после успешного заказа', () => {
+  it.each([
+    { remainingItems: [], quantity: null },
+    { remainingItems: [{ productId: 2, quantity: 3 }], quantity: '3' },
+  ])('обновляет счётчик по ответу сервера, сохраняя подтверждение %#', async (scenario) => {
+    let resolveCart: (response: Response) => void = () => {};
+    const fetchCart = vi.fn(
+      () =>
+        new Promise<Response>((resolve) => {
+          resolveCart = resolve;
+        }),
+    );
+    const queryClient = createTestQueryClient();
+    const form = await renderOrder(json(order, 201), { 'GET /api/cart': fetchCart }, queryClient);
+    const badge = render(<CartNavBadge />, { wrapper: createWrapper({ queryClient }) });
+    expect(within(badge.container).getByText('2')).toBeDefined();
+
+    fireEvent.submit(form);
+
+    const confirmation = await screen.findByText('Заказ №42 оформлен');
+    expect(screen.getByText('Обновляем корзину…')).toBeDefined();
+    expect(within(badge.container).getByText('2')).toBeDefined();
+    await waitFor(() => expect(fetchCart).toHaveBeenCalledTimes(1));
+    act(() => resolveCart(Response.json({ items: scenario.remainingItems })));
+
+    await waitFor(() => expect(screen.queryByText('Обновляем корзину…')).toBeNull());
+    expect(within(badge.container).queryByText('2')).toBeNull();
+    if (scenario.quantity)
+      expect(within(badge.container).getByText(scenario.quantity)).toBeDefined();
+    expect(queryClient.getQueryData(cartQueryOptions(user.id).queryKey)).toEqual(
+      scenario.remainingItems,
+    );
+    expect(screen.getByText('Заказ №42 оформлен')).toBe(confirmation);
+    expect(screen.queryByText('В корзине пока пусто')).toBeNull();
+  });
+
+  it('после ошибки обновляет только корзину и оставляет номер заказа на экране', async () => {
+    const sendOrder = vi.fn(json(order, 201));
+    const fetchCart = vi
+      .fn()
+      .mockImplementationOnce(json(null, 500))
+      .mockImplementationOnce(json({ items: [] }));
+    const form = await renderOrder(sendOrder, { 'GET /api/cart': fetchCart });
+
+    fireEvent.submit(form);
+
+    const refreshButton = await screen.findByRole('button', { name: 'Обновить корзину' });
+    expect(screen.getByText('Заказ №42 оформлен')).toBeDefined();
+    expect(screen.getByRole('alert').textContent).toContain('Не удалось обновить корзину');
+    fireEvent.click(refreshButton);
+
+    await waitFor(() => expect(fetchCart).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(screen.queryByText('Обновляем корзину…')).toBeNull());
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.getByText('Заказ №42 оформлен')).toBeDefined();
+    expect(sendOrder).toHaveBeenCalledTimes(1);
   });
 });

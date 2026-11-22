@@ -71,7 +71,11 @@ const CheckoutSession = ({ userId }: { userId: string }) => {
         <h1 className="text-2xl font-bold sm:text-4xl">Оформление заказа</h1>
         <CheckoutIssue submission={submission} />
         {submission.order ? (
-          <CheckoutResult order={submission.order} />
+          <CheckoutResult
+            order={submission.order}
+            cartRefreshStatus={submission.cartRefreshStatus}
+            onRefreshCart={() => void submission.refreshConfirmedCart()}
+          />
         ) : submission.conflictCode === 'cart_empty' ? (
           <CheckoutEmptyCart />
         ) : submission.refreshStatus === 'pending' ||

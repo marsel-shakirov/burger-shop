@@ -30,3 +30,4 @@ pnpm-debug.log*
 .chatgpt/
 .agents/
 .playwright-mcp/ 
+AGENTS.md

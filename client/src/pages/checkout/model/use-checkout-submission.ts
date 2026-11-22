@@ -6,6 +6,7 @@ import { ALL_PRODUCTS_PARAMS, productsQueryOptions } from '@/entities/product';
 import { isApiError } from '@/shared/api';
 
 import { createOrder, type CreateOrderDetails, type CreateOrderRequest } from '../api/create-order';
+import { useConfirmedCartRefresh } from './use-confirmed-cart-refresh';
 
 export interface OrderConfirmation {
   isPending: boolean;
@@ -22,8 +23,27 @@ const getConflictCode = (error: unknown) =>
 
 type RefreshStatus = 'idle' | 'pending' | 'failed' | 'ready';
 
+const createIdempotencyKey = () => {
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  const view = new DataView(bytes.buffer);
+  view.setUint8(6, (view.getUint8(6) & 0x0f) | 0x40);
+  view.setUint8(8, (view.getUint8(8) & 0x3f) | 0x80);
+
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+  return [
+    hex.slice(0, 8),
+    hex.slice(8, 12),
+    hex.slice(12, 16),
+    hex.slice(16, 20),
+    hex.slice(20),
+  ].join('-');
+};
+
 export const useCheckoutSubmission = (userId: string) => {
   const queryClient = useQueryClient();
+  const cartRefresh = useConfirmedCartRefresh(userId);
   const locked = useRef(false);
   const refreshing = useRef(false);
   const [refreshStatus, setRefreshStatus] = useState<RefreshStatus>('idle');
@@ -52,6 +72,9 @@ export const useCheckoutSubmission = (userId: string) => {
     mutationFn: createOrder,
     retry: false,
     gcTime: 0,
+    onSuccess: () => {
+      void cartRefresh.refreshConfirmedCart();
+    },
     onError: async (error) => {
       if (getConflictCode(error) === 'cart_changed') await refreshOrder();
       locked.current = false;
@@ -79,13 +102,14 @@ export const useCheckoutSubmission = (userId: string) => {
     isBlocked,
     submit: (details) => {
       if (locked.current || retryRequest || isBlocked) return;
-      send({ ...details, idempotencyKey: crypto.randomUUID() });
+      send({ ...details, idempotencyKey: createIdempotencyKey() });
     },
   };
 
   return {
     confirmation,
     order: mutation.data,
+    ...cartRefresh,
     isError: mutation.isError,
     conflictCode,
     refreshStatus,

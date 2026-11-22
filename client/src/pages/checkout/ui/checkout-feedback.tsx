@@ -47,17 +47,38 @@ export const CheckoutIssue = ({ submission }: { submission: Submission }) => {
   );
 };
 
-export const CheckoutResult = ({ order }: { order: CreatedOrder }) => (
-  <section className="flex w-full max-w-lg flex-col gap-4 rounded-xl bg-white p-5 shadow-(--shadow-base)">
-    <h2 role="status" className="text-xl font-bold">
-      Заказ №{order.orderNumber} оформлен
-    </h2>
-    <p className="flex items-baseline justify-between gap-3">
-      <span>Итого</span>
-      <data value={order.totalPrice} className="font-display text-2xl font-bold tabular-nums">
-        {formatPrice(order.totalPrice)}
-      </data>
-    </p>
-    <PickupDetails />
-  </section>
-);
+interface CheckoutResultProps {
+  order: CreatedOrder;
+  cartRefreshStatus: Submission['cartRefreshStatus'];
+  onRefreshCart: () => void;
+}
+
+export const CheckoutResult = ({
+  order,
+  cartRefreshStatus,
+  onRefreshCart,
+}: CheckoutResultProps) => {
+  const cartErrorId = useId();
+
+  return (
+    <section className="flex w-full max-w-lg flex-col gap-4 rounded-xl bg-white p-5 shadow-(--shadow-base)">
+      <h2 role="status" className="text-xl font-bold">
+        Заказ №{order.orderNumber} оформлен
+      </h2>
+      <p className="flex items-baseline justify-between gap-3">
+        <span>Итого</span>
+        <data value={order.totalPrice} className="font-display text-2xl font-bold tabular-nums">
+          {formatPrice(order.totalPrice)}
+        </data>
+      </p>
+      <PickupDetails />
+      {cartRefreshStatus === 'pending' && <p role="status">Обновляем корзину…</p>}
+      {cartRefreshStatus === 'failed' && (
+        <>
+          <FormAlert id={cartErrorId}>Заказ оформлен. Не удалось обновить корзину.</FormAlert>
+          <Button onClick={onRefreshCart}>Обновить корзину</Button>
+        </>
+      )}
+    </section>
+  );
+};
