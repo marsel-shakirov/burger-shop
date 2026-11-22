@@ -47,6 +47,7 @@ vi.mock('@/pages/favorite', () => ({ FavoritePage: () => <h1>favorites</h1> }));
 vi.mock('@/pages/login', () => ({ LoginPage: () => <h1>login</h1> }));
 vi.mock('@/pages/register', () => ({ RegisterPage: () => <h1>register</h1> }));
 vi.mock('@/pages/not-found', () => ({ NotFoundPage: () => <h1>not found</h1> }));
+vi.mock('@/pages/order-history', () => ({ OrderHistoryPage: () => <h1>order history</h1> }));
 vi.mock('@/pages/profile', () => ({
   ProfilePage: () => <h1>profile</h1>,
   ProfileEditPage: () => <h1>profile edit</h1>,
@@ -98,6 +99,7 @@ describe('AppRouter: страницы профиля', () => {
   it.each([
     [routes.profile, 'profile'],
     [routes.edit, 'profile edit'],
+    [routes.orders, 'order history'],
   ])('%s доступна пользователю', (path, title) => {
     renderAt(path, 'authenticated');
 
@@ -105,20 +107,26 @@ describe('AppRouter: страницы профиля', () => {
     expect(hasLayout()).toBe(true);
   });
 
-  it.each([routes.profile, routes.edit])('%s перенаправляет гостя на вход', (path) => {
-    renderAt(path, 'guest');
+  it.each([routes.profile, routes.edit, routes.orders])(
+    '%s перенаправляет гостя на вход',
+    (path) => {
+      renderAt(path, 'guest');
 
-    expect(getPageTitle()).toBe('login');
-    expect(window.location.pathname).toBe(routes.login);
-  });
+      expect(getPageTitle()).toBe('login');
+      expect(window.location.pathname).toBe(routes.login);
+    },
+  );
 
-  it.each([routes.profile, routes.edit])('%s пустая, пока сессия загружается', (path) => {
-    renderAt(path, 'loading');
+  it.each([routes.profile, routes.edit, routes.orders])(
+    '%s пустая, пока сессия загружается',
+    (path) => {
+      renderAt(path, 'loading');
 
-    expect(getPageTitle()).toBeNull();
-    expect(hasLayout()).toBe(true);
-    expect(window.location.pathname).toBe(path);
-  });
+      expect(getPageTitle()).toBeNull();
+      expect(hasLayout()).toBe(true);
+      expect(window.location.pathname).toBe(path);
+    },
+  );
 });
 
 describe('AppRouter: вход и регистрация', () => {

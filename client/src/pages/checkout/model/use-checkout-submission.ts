@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 
 import { cartQueryOptions } from '@/entities/cart';
+import { orderHistoryQueryKey } from '@/entities/order';
 import { ALL_PRODUCTS_PARAMS, productsQueryOptions } from '@/entities/product';
 import { isApiError } from '@/shared/api';
 
@@ -73,6 +74,7 @@ export const useCheckoutSubmission = (userId: string) => {
     retry: false,
     gcTime: 0,
     onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: orderHistoryQueryKey(userId), exact: true });
       void cartRefresh.refreshConfirmedCart();
     },
     onError: async (error) => {

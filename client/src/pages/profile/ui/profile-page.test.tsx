@@ -74,6 +74,15 @@ describe('ProfilePage', () => {
     expect(await screen.findByRole('link', { name: /Избранное.*2 товара/ })).toBeDefined();
   });
 
+  it('ссылается на историю заказов', async () => {
+    stubApi(api);
+
+    renderPage();
+
+    const link = await screen.findByRole('link', { name: 'Покупки' });
+    expect(link.getAttribute('href')).toBe(routes.orders);
+  });
+
   it('показывает бонусы: начисления и баланс', async () => {
     stubApi(api);
 

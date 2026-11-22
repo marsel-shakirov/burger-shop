@@ -40,13 +40,19 @@ export const ProfileShortcuts = () => {
       </li>
 
       <li>
-        <div className={rowClassName}>
+        <Link
+          to={routes.orders}
+          className={cn(
+            rowClassName,
+            'rounded-lg focus-ring transition-colors duration-150 hover:bg-white',
+          )}
+        >
           <span className="grid size-9 place-items-center rounded-full bg-stone-200 text-stone-600">
             <BagIcon className="size-4" />
           </span>
           <span className="text-sm font-bold wrap-anywhere md:text-base">Покупки</span>
-          <span className="text-right text-xs text-stone-600 md:text-sm">Скоро появятся</span>
-        </div>
+          <ArrowIcon className="col-start-4 size-2.5 rotate-180 text-stone-600" />
+        </Link>
       </li>
     </ul>
   );

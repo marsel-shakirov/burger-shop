@@ -7,4 +7,5 @@ export const routes = {
   login: '/profile/login',
   register: '/profile/register',
   edit: '/profile/edit',
+  orders: '/profile/orders',
 } as const;

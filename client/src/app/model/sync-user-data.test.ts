@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } fr
 import { bonusQueryOptions } from '@/entities/bonus';
 import { cartQueryOptions, type mergeGuestCart } from '@/entities/cart';
 import { favoritesQueryOptions, type mergeGuestFavorites } from '@/entities/favorite';
+import { orderHistoryQueryOptions } from '@/entities/order';
 import { profileQueryOptions } from '@/entities/profile';
 import type { SessionUser } from '@/entities/session';
 
@@ -46,6 +47,7 @@ const USER_QUERY_OPTIONS = [
   favoritesQueryOptions,
   cartQueryOptions,
   bonusQueryOptions,
+  orderHistoryQueryOptions,
 ];
 
 const getUserQueryKeys = (userId: string) =>
@@ -109,7 +111,7 @@ describe('syncUserData: вход', () => {
 });
 
 describe('syncUserData: выход', () => {
-  it('удаляет кэш профиля, избранного, корзины и бонусов', () => {
+  it('удаляет кэш данных пользователя', () => {
     seedQueries(user.id);
 
     syncUserData(queryClient, null, user);

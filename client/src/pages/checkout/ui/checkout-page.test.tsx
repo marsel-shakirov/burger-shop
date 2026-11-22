@@ -10,6 +10,7 @@ import {
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { CartNavBadge, cartQueryOptions, mergeGuestCart, useCartActions } from '@/entities/cart';
+import { orderHistoryQueryKey } from '@/entities/order';
 import { setSessionUser } from '@/entities/session';
 import {
   type ApiHandlers,
@@ -399,6 +400,21 @@ const readOrderBody = (init?: RequestInit) => {
 };
 
 describe('CheckoutPage: отправка заказа', () => {
+  it('помечает историю покупок для обновления после оформления', async () => {
+    const queryClient = createTestQueryClient();
+    const key = orderHistoryQueryKey(user.id);
+    queryClient.setQueryData(key, {
+      pages: [{ items: [], nextCursor: null }],
+      pageParams: [null],
+    });
+    const form = await renderOrder(json(order, 201), {}, queryClient);
+
+    fireEvent.submit(form);
+
+    expect(await screen.findByText('Заказ №42 оформлен')).toBeDefined();
+    expect(queryClient.getQueryState(key)?.isInvalidated).toBe(true);
+  });
+
   it('отправляет заказ из браузера без crypto.randomUUID', async () => {
     vi.stubGlobal('crypto', { getRandomValues: crypto.getRandomValues.bind(crypto) });
     const sendOrder = vi
