@@ -24,3 +24,38 @@ export const createOrderBodySchema = z.strictObject({
 });
 
 export type CreateOrderInput = z.infer<typeof createOrderBodySchema>;
+
+const orderCursorSchema = z.strictObject({
+  createdAt: z.iso.datetime({ precision: 6 }).refine((value) => !value.startsWith('0000-')),
+  id: z.uuid(),
+});
+
+export type OrderCursor = z.infer<typeof orderCursorSchema>;
+
+export const listOrdersQuerySchema = z.strictObject({
+  limit: z
+    .string()
+    .regex(/^[1-9]\d?$/)
+    .transform(Number)
+    .pipe(z.int().max(50))
+    .default(20),
+  cursor: z
+    .string()
+    .min(1)
+    .max(256)
+    .pipe(z.base64url())
+    .transform((value, ctx): unknown => {
+      try {
+        return JSON.parse(Buffer.from(value, 'base64url').toString('utf8'));
+      } catch {
+        ctx.addIssue({ code: 'custom', message: 'Invalid order cursor' });
+        return z.NEVER;
+      }
+    })
+    .pipe(orderCursorSchema)
+    .optional(),
+});
+
+export const orderParamsSchema = z.strictObject({ id: z.uuid() });
+
+export type ListOrdersQuery = z.infer<typeof listOrdersQuerySchema>;

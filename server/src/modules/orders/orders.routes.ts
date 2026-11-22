@@ -1,9 +1,11 @@
 import { Router } from 'express';
 
-import { createOrder } from './orders.controller.ts';
+import { createOrder, getOrder, listOrders } from './orders.controller.ts';
 
 const router = Router();
 
+router.get('/', listOrders);
+router.get('/:id', getOrder);
 router.post('/', createOrder);
 
 export default router;

@@ -1,7 +1,7 @@
 import type { PoolClient } from 'pg';
 
 import { pool } from '../../db.ts';
-import type { CreateOrderInput } from './orders.schema.ts';
+import type { CreateOrderInput, OrderCursor } from './orders.schema.ts';
 
 export type OrderCartItem = {
   productId: number;
@@ -18,6 +18,60 @@ type Order = {
 };
 
 const orderColumns = 'id, order_number::text AS "orderNumber", status, total_price AS "totalPrice"';
+
+type OrderSummary = Order & { createdAt: string };
+
+type OrderDetails = OrderSummary & {
+  items: {
+    lineNumber: number;
+    productName: string;
+    unitPrice: number;
+    quantity: number;
+  }[];
+};
+
+const orderSummaryColumns = `${orderColumns},
+  to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "createdAt"`;
+
+export async function findOrders(userId: string, limit: number, cursor?: OrderCursor) {
+  const cursorCondition = cursor ? 'AND (created_at, id) < ($3::timestamptz, $4::uuid)' : '';
+  const parameters = cursor ? [userId, limit, cursor.createdAt, cursor.id] : [userId, limit];
+
+  const { rows } = await pool.query<OrderSummary>(
+    `SELECT ${orderSummaryColumns}
+       FROM public.orders
+      WHERE user_id = $1
+        ${cursorCondition}
+      ORDER BY created_at DESC, id DESC
+      LIMIT $2`,
+    parameters,
+  );
+
+  return rows;
+}
+
+export async function findOrderDetails(userId: string, orderId: string) {
+  const { rows } = await pool.query<OrderDetails>(
+    `SELECT ${orderSummaryColumns},
+            COALESCE((
+              SELECT jsonb_agg(
+                jsonb_build_object(
+                  'lineNumber', item.line_number,
+                  'productName', item.product_name,
+                  'unitPrice', item.unit_price,
+                  'quantity', item.quantity
+                ) ORDER BY item.line_number
+              )
+              FROM public.order_items AS item
+              WHERE item.order_id = orders.id
+            ), '[]'::jsonb) AS items
+       FROM public.orders
+      WHERE user_id = $1 AND id = $2`,
+    [userId, orderId],
+  );
+
+  return rows[0];
+}
 
 export async function withOrderTransaction<T>(
   userId: string,
