@@ -1,7 +1,9 @@
 import { useId } from 'react';
+import { Link } from 'react-router';
 
-import { formatPrice } from '@/shared/lib';
-import { Button } from '@/shared/ui/button';
+import { getOrderPath } from '@/shared/config';
+import { cn, formatPrice } from '@/shared/lib';
+import { Button, buttonClass } from '@/shared/ui/button';
 import { FormAlert } from '@/shared/ui/form-alert';
 
 import type { CreatedOrder } from '../api/create-order';
@@ -72,6 +74,9 @@ export const CheckoutResult = ({
         </data>
       </p>
       <PickupDetails />
+      <Link to={getOrderPath(order.id)} className={cn(buttonClass, 'self-start')}>
+        Посмотреть заказ
+      </Link>
       {cartRefreshStatus === 'pending' && <p role="status">Обновляем корзину…</p>}
       {cartRefreshStatus === 'failed' && (
         <>

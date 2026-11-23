@@ -4,6 +4,7 @@ import express from 'express';
 import { env } from './config/env.ts';
 import { BadRequest } from './errors/bad-request.error.ts';
 import { CustomError } from './errors/custom.error.ts';
+import { InternalServerError } from './errors/internal-server.error.ts';
 import { verifyOrigin } from './middlewares/verify-origin.ts';
 import router from './modules/index.ts';
 
@@ -27,7 +28,8 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   }
 
   console.error(err);
-  res.status(500).json({ message: 'Internal server error' });
+  const internalError = new InternalServerError();
+  return res.status(internalError.statusCode).json(internalError.serializeErrors());
 });
 
 export default app;

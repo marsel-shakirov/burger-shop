@@ -1,3 +1,5 @@
+import { generatePath } from 'react-router';
+
 export const routes = {
   home: '/',
   cart: '/cart',
@@ -8,4 +10,7 @@ export const routes = {
   register: '/profile/register',
   edit: '/profile/edit',
   orders: '/profile/orders',
+  orderDetails: '/profile/orders/:id',
 } as const;
+
+export const getOrderPath = (orderId: string) => generatePath(routes.orderDetails, { id: orderId });

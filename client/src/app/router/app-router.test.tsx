@@ -1,10 +1,12 @@
-import { act, render, screen } from '@testing-library/react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { useSyncExternalStore } from 'react';
 import { Outlet } from 'react-router';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { useSessionStatus } from '@/entities/session';
 import { routes } from '@/shared/config';
+import { createTestQueryClient, json, stubApi } from '@/shared/testing';
 
 import { AppRouter } from './app-router';
 
@@ -29,6 +31,10 @@ const session = vi.hoisted(() => {
 
 vi.mock('@/entities/session', () => ({
   useSessionStatus: () => useSyncExternalStore(session.subscribe, session.getStatus),
+  useSessionUser: () =>
+    useSyncExternalStore(session.subscribe, session.getStatus) === 'authenticated'
+      ? { id: 'user-1', email: 'user@example.com' }
+      : null,
 }));
 
 vi.mock('../layouts/app-layout', () => ({
@@ -57,16 +63,24 @@ const renderAt = (path: string, status: SessionStatus) => {
   session.setStatus(status);
   window.history.replaceState(null, '', path);
 
-  return render(<AppRouter />);
+  return render(
+    <QueryClientProvider client={createTestQueryClient()}>
+      <AppRouter />
+    </QueryClientProvider>,
+  );
 };
 
 const getPageTitle = () => screen.queryByRole('heading', { level: 1 })?.textContent ?? null;
 
 const hasLayout = () => screen.queryByText('layout') !== null;
 
+const orderPath = '/profile/orders/12340f03-6b80-45db-98ca-6797fbd7d424';
+
 beforeEach(() => {
   window.history.replaceState(null, '', '/');
 });
+
+afterEach(() => vi.unstubAllGlobals());
 
 describe('AppRouter: открытые страницы', () => {
   it.each([
@@ -107,7 +121,7 @@ describe('AppRouter: страницы профиля', () => {
     expect(hasLayout()).toBe(true);
   });
 
-  it.each([routes.profile, routes.edit, routes.orders])(
+  it.each([routes.profile, routes.edit, routes.orders, orderPath])(
     '%s перенаправляет гостя на вход',
     (path) => {
       renderAt(path, 'guest');
@@ -117,7 +131,7 @@ describe('AppRouter: страницы профиля', () => {
     },
   );
 
-  it.each([routes.profile, routes.edit, routes.orders])(
+  it.each([routes.profile, routes.edit, routes.orders, orderPath])(
     '%s пустая, пока сессия загружается',
     (path) => {
       renderAt(path, 'loading');
@@ -127,6 +141,27 @@ describe('AppRouter: страницы профиля', () => {
       expect(window.location.pathname).toBe(path);
     },
   );
+
+  it('загружает заказ по прямому адресу и возвращает в покупки', async () => {
+    stubApi({
+      'GET /api/orders/12340f03-6b80-45db-98ca-6797fbd7d424': json({
+        id: '12340f03-6b80-45db-98ca-6797fbd7d424',
+        orderNumber: '42',
+        status: 'new',
+        createdAt: '2026-11-22T12:00:00.123456Z',
+        totalPrice: 600,
+        items: [],
+      }),
+    });
+    renderAt(orderPath, 'authenticated');
+
+    expect(await screen.findByRole('heading', { name: 'Заказ №42' })).toBeDefined();
+    expect(hasLayout()).toBe(true);
+    fireEvent.click(screen.getByRole('link', { name: 'К покупкам' }));
+
+    expect(getPageTitle()).toBe('order history');
+    expect(window.location.pathname).toBe(routes.orders);
+  });
 });
 
 describe('AppRouter: вход и регистрация', () => {

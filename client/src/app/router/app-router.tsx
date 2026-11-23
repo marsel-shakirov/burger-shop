@@ -6,6 +6,7 @@ import { FavoritePage } from '@/pages/favorite';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import { NotFoundPage } from '@/pages/not-found';
+import { OrderDetailsPage } from '@/pages/order-details';
 import { OrderHistoryPage } from '@/pages/order-history';
 import { ProfileEditPage, ProfilePage } from '@/pages/profile';
 import { RegisterPage } from '@/pages/register';
@@ -28,6 +29,7 @@ export const AppRouter = () => {
             <Route path={routes.profile} element={<ProfilePage />} />
             <Route path={routes.edit} element={<ProfileEditPage />} />
             <Route path={routes.orders} element={<OrderHistoryPage />} />
+            <Route path={routes.orderDetails} element={<OrderDetailsPage />} />
           </Route>
           <Route element={<RequireGuest />}>
             <Route path={routes.login} element={<LoginPage />} />

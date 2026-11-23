@@ -1,11 +1,15 @@
 import { rateLimit } from 'express-rate-limit';
 
+import { TooManyRequests } from '../errors/too-many-requests.error.ts';
+
 const MINUTE_MS = 60 * 1000;
+const tooManyRequests = new TooManyRequests();
 
 const baseOptions = {
   standardHeaders: 'draft-8',
   legacyHeaders: false,
-  message: { message: 'Too many requests', code: 'over_request_rate_limit' },
+  statusCode: tooManyRequests.statusCode,
+  message: tooManyRequests.serializeErrors(),
 } as const;
 
 export const signInLimiter = rateLimit({

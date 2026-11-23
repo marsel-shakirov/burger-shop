@@ -94,6 +94,12 @@ describe('OrderHistoryPage', () => {
       'Заказ №42',
       'Заказ №41',
     ]);
+    expect(screen.getByRole('link', { name: /^Заказ №42/ }).getAttribute('href')).toBe(
+      `${routes.orders}/${order.id}`,
+    );
+    expect(screen.getByRole('link', { name: /^Заказ №41/ }).getAttribute('href')).toBe(
+      `${routes.orders}/${nextOrder.id}`,
+    );
     expect(getOrders.mock.calls.map(([url]) => url.searchParams.get('cursor'))).toEqual([
       null,
       cursor,

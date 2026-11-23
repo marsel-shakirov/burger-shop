@@ -1,4 +1,4 @@
-type OrderStatus = 'new' | 'accepted' | 'ready' | 'completed' | 'cancelled';
+export type OrderStatus = 'new' | 'accepted' | 'ready' | 'completed' | 'cancelled';
 
 interface OrderSummary {
   id: string;

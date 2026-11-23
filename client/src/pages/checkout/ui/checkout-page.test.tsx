@@ -604,6 +604,9 @@ describe('CheckoutPage: корзина после успешного заказ�
 
     const confirmation = await screen.findByText('Заказ №42 оформлен');
     expect(screen.getByText('Обновляем корзину…')).toBeDefined();
+    expect(screen.getByRole('link', { name: 'Посмотреть заказ' }).getAttribute('href')).toBe(
+      `/profile/orders/${order.id}`,
+    );
     expect(within(badge.container).getByText('2')).toBeDefined();
     await waitFor(() => expect(fetchCart).toHaveBeenCalledTimes(1));
     act(() => resolveCart(Response.json({ items: scenario.remainingItems })));
@@ -632,6 +635,9 @@ describe('CheckoutPage: корзина после успешного заказ�
     const refreshButton = await screen.findByRole('button', { name: 'Обновить корзину' });
     expect(screen.getByText('Заказ №42 оформлен')).toBeDefined();
     expect(screen.getByRole('alert').textContent).toContain('Не удалось обновить корзину');
+    expect(screen.getByRole('link', { name: 'Посмотреть заказ' }).getAttribute('href')).toBe(
+      `/profile/orders/${order.id}`,
+    );
     fireEvent.click(refreshButton);
 
     await waitFor(() => expect(fetchCart).toHaveBeenCalledTimes(2));
