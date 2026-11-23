@@ -33,7 +33,11 @@ const ProfileEditPage = lazy(() =>
   import('@/pages/profile').then(({ ProfileEditPage }) => ({ default: ProfileEditPage })),
 );
 
-const pageFallback = <p role="status">Загружаем страницу…</p>;
+const pageFallback = (
+  <p className="p-5" role="status">
+    Загружаем страницу…
+  </p>
+);
 
 export const AppRouter = () => {
   return (
