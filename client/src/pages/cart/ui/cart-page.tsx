@@ -3,6 +3,7 @@ import { Container } from '@/shared/ui/container';
 import { PageMeta } from '@/shared/ui/page-meta';
 
 import { CartContent } from './cart-content';
+import { CartSuggestions } from './cart-suggestions';
 import { EmptyCart } from './empty-cart';
 
 export const CartPage = () => {
@@ -14,6 +15,7 @@ export const CartPage = () => {
       <PageMeta title="Корзина" noindex />
       <Container className="flex flex-1 flex-col">
         {isEmpty ? <EmptyCart /> : <CartContent />}
+        <CartSuggestions />
       </Container>
     </main>
   );

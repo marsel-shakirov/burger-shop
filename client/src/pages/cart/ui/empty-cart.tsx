@@ -6,7 +6,6 @@ import { buttonClass } from '@/shared/ui/button';
 import { EmptyPlate } from '@/shared/ui/icon';
 
 import { CartHeader } from './cart-header';
-import { CartSuggestions } from './cart-suggestions';
 
 export const EmptyCart = () => {
   const homeSearch = useLastSearch(routes.home);
@@ -30,8 +29,6 @@ export const EmptyCart = () => {
           Открыть меню
         </Link>
       </div>
-
-      <CartSuggestions />
     </section>
   );
 };
