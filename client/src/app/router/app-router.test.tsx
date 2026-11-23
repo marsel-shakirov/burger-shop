@@ -114,10 +114,10 @@ describe('AppRouter: страницы профиля', () => {
     [routes.profile, 'profile'],
     [routes.edit, 'profile edit'],
     [routes.orders, 'order history'],
-  ])('%s доступна пользователю', (path, title) => {
+  ])('%s доступна пользователю', async (path, title) => {
     renderAt(path, 'authenticated');
 
-    expect(getPageTitle()).toBe(title);
+    expect(await screen.findByRole('heading', { level: 1, name: title })).toBeDefined();
     expect(hasLayout()).toBe(true);
   });
 
@@ -159,7 +159,7 @@ describe('AppRouter: страницы профиля', () => {
     expect(hasLayout()).toBe(true);
     fireEvent.click(screen.getByRole('link', { name: 'К покупкам' }));
 
-    expect(getPageTitle()).toBe('order history');
+    expect(await screen.findByRole('heading', { level: 1, name: 'order history' })).toBeDefined();
     expect(window.location.pathname).toBe(routes.orders);
   });
 });
@@ -175,12 +175,15 @@ describe('AppRouter: вход и регистрация', () => {
     expect(hasLayout()).toBe(true);
   });
 
-  it.each([routes.login, routes.register])('%s перенаправляет пользователя в профиль', (path) => {
-    renderAt(path, 'authenticated');
+  it.each([routes.login, routes.register])(
+    '%s перенаправляет пользователя в профиль',
+    async (path) => {
+      renderAt(path, 'authenticated');
 
-    expect(getPageTitle()).toBe('profile');
-    expect(window.location.pathname).toBe(routes.profile);
-  });
+      expect(await screen.findByRole('heading', { level: 1, name: 'profile' })).toBeDefined();
+      expect(window.location.pathname).toBe(routes.profile);
+    },
+  );
 
   it.each([routes.login, routes.register])('%s пустая, пока сессия загружается', (path) => {
     renderAt(path, 'loading');
@@ -191,7 +194,7 @@ describe('AppRouter: вход и регистрация', () => {
 });
 
 describe('AppRouter: оформление заказа', () => {
-  it('возвращает гостя к оформлению сразу после входа', () => {
+  it('возвращает гостя к оформлению сразу после входа', async () => {
     renderAt(routes.checkout, 'guest');
 
     expect(getPageTitle()).toBe('login');
@@ -200,21 +203,21 @@ describe('AppRouter: оформление заказа', () => {
 
     act(() => session.setStatus('authenticated'));
 
-    expect(getPageTitle()).toBe('checkout');
+    expect(await screen.findByRole('heading', { level: 1, name: 'checkout' })).toBeDefined();
     expect(window.location.pathname).toBe(routes.checkout);
     expect(window.location.search).toBe('');
   });
 
-  it('авторизованный пользователь может открыть оформление напрямую', () => {
+  it('авторизованный пользователь может открыть оформление напрямую', async () => {
     renderAt(routes.checkout, 'authenticated');
 
-    expect(getPageTitle()).toBe('checkout');
+    expect(await screen.findByRole('heading', { level: 1, name: 'checkout' })).toBeDefined();
   });
 
-  it('не использует произвольный адрес из параметра возврата', () => {
+  it('не использует произвольный адрес из параметра возврата', async () => {
     renderAt(`${routes.login}?next=https://example.test`, 'authenticated');
 
-    expect(getPageTitle()).toBe('profile');
+    expect(await screen.findByRole('heading', { level: 1, name: 'profile' })).toBeDefined();
   });
 });
 

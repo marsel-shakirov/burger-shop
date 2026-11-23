@@ -13,6 +13,7 @@ import { routes } from '@/shared/config';
 import { formatPrice } from '@/shared/lib';
 import { Button } from '@/shared/ui/button';
 import { Container } from '@/shared/ui/container';
+import { ArrowIcon } from '@/shared/ui/icon';
 import { PageMeta } from '@/shared/ui/page-meta';
 import { Receipt } from '@/shared/ui/receipt';
 
@@ -109,9 +110,9 @@ export const OrderDetailsPage = () => {
       <Container className="max-w-260 space-y-3 px-4 pt-7 pb-10 sm:px-8 md:pt-16 md:pb-20">
         <Link
           to={routes.orders}
-          className="inline-block rounded-sm text-sm font-semibold underline focus-ring"
+          className="inline-flex min-h-10 items-center gap-x-2 rounded-sm text-sm font-bold text-stone-600 focus-ring transition-colors duration-150 hover:text-stone-900"
         >
-          К покупкам
+          <ArrowIcon className="size-3" />К покупкам
         </Link>
         {id?.length === 36 && orderIdPattern.test(id) ? (
           <OrderDetailsContent userId={user.id} orderId={id} />
