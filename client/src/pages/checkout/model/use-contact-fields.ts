@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { profileQueryOptions } from '@/entities/profile';
+import { normalizeLocalPhone } from '@/shared/lib';
 
 import {
   type CheckoutContactValues,
@@ -20,7 +21,7 @@ export const useContactFields = (userId: string, draft: CheckoutDraft['values'])
   const [touched, setTouched] = useState<Partial<Record<ContactField, true>>>({});
   const values = {
     customerName: draft.customerName ?? profile?.name ?? '',
-    customerPhone: draft.customerPhone ?? profile?.phone ?? '',
+    customerPhone: draft.customerPhone ?? normalizeLocalPhone(profile?.phone ?? '') ?? '',
     customerComment: draft.customerComment ?? '',
   };
   const { contacts, errors } = validateCheckoutContacts(values);

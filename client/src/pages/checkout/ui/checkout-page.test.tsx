@@ -241,7 +241,7 @@ describe('CheckoutPage: контакты и получение', () => {
 
     const form = await screen.findByRole('form', { name: 'Контакты для заказа' });
     await waitFor(() => expect(getName().value).toBe(profile.name));
-    expect(getPhone().value).toBe(profile.phone);
+    expect(getPhone().value).toBe('+7 (900) 123-45-67');
     expect(getName().required).toBe(true);
     expect(getPhone().required).toBe(true);
     expect(
@@ -270,7 +270,7 @@ describe('CheckoutPage: контакты и получение', () => {
 
     act(() => resolveProfile(Response.json(profile)));
 
-    await waitFor(() => expect(getPhone().value).toBe(profile.phone));
+    await waitFor(() => expect(getPhone().value).toBe('+7 (900) 123-45-67'));
     expect(getName().value).toBe('');
   });
 
@@ -288,9 +288,9 @@ describe('CheckoutPage: контакты и получение', () => {
     await screen.findByRole('form', { name: 'Контакты для заказа' });
     await waitFor(() => expect(fetchProfile).toHaveBeenCalledTimes(1));
     fireEvent.change(getName(), { target: { value: 'Мария' } });
-    fireEvent.change(getPhone(), { target: { value: '+79005551234' } });
+    fireEvent.input(getPhone(), { target: { value: '+79005551234' } });
     expect(getName().value).toBe('Мария');
-    expect(getPhone().value).toBe('+79005551234');
+    expect(getPhone().value).toBe('+7 (900) 555-12-34');
 
     act(() => {
       queryClient.setQueryData(cartQueryOptions(user.id).queryKey, []);
@@ -331,7 +331,6 @@ describe('CheckoutPage: проверка контактов', () => {
     const { form, name, phone, comment } = await renderContacts();
     const fetch = vi.mocked(globalThis.fetch);
     fireEvent.change(name, { target: { value: '   ' } });
-    fireEvent.change(phone, { target: { value: ' ( ) - ' } });
     expect(screen.queryByRole('alert')).toBeNull();
 
     fireEvent.submit(form);
@@ -345,21 +344,20 @@ describe('CheckoutPage: проверка контактов', () => {
   it('проверяет длину и телефон после ухода с поля и убирает ошибки при исправлении', async () => {
     const { name, phone, comment } = await renderContacts();
     fireEvent.change(name, { target: { value: 'А'.repeat(101) } });
-    fireEvent.change(phone, { target: { value: '+123456789' } });
+    fireEvent.input(phone, { target: { value: '+7 (900) 123' } });
     fireEvent.change(comment, { target: { value: 'А'.repeat(501) } });
     fireEvent.blur(name);
     fireEvent.blur(phone);
     fireEvent.blur(comment);
 
     expectFieldError(name, 'Имя должно быть не длиннее 100 символов');
-    expectFieldError(phone, 'Введите телефон из 10–15 цифр. В начале можно указать «+».');
+    expectFieldError(phone, 'Введите номер в формате +7 (900) 123-45-67');
     expectFieldError(comment, 'Комментарий должен быть не длиннее 500 символов');
 
     fireEvent.change(name, { target: { value: ` ${'А'.repeat(100)} ` } });
     fireEvent.change(comment, { target: { value: ` ${'А'.repeat(500)} ` } });
-    fireEvent.change(phone, { target: { value: '1234567890123456' } });
     expect(phone.getAttribute('aria-invalid')).toBe('true');
-    fireEvent.change(phone, { target: { value: '+7 (900) 123-45-67' } });
+    fireEvent.input(phone, { target: { value: '+7 (900) 123-45-67' } });
 
     expect(screen.queryByRole('alert')).toBeNull();
     expect(phone.getAttribute('aria-describedby')).toBeNull();
@@ -387,7 +385,7 @@ const renderOrder = async (
   fireEvent.change(within(form).getByRole('textbox', { name: 'Имя' }), {
     target: { value: ' Анна ' },
   });
-  fireEvent.change(within(form).getByRole('textbox', { name: 'Телефон' }), {
+  fireEvent.input(within(form).getByRole('textbox', { name: 'Телефон' }), {
     target: { value: '+7 (900) 123-45-67' },
   });
 

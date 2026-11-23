@@ -1,3 +1,5 @@
+import { normalizeLocalPhone } from '@/shared/lib';
+
 export interface CheckoutContactValues {
   customerName: string;
   customerPhone: string;
@@ -7,7 +9,7 @@ export interface CheckoutContactValues {
 export const validateCheckoutContacts = (values: CheckoutContactValues) => {
   const errors: Partial<Record<keyof CheckoutContactValues, string>> = {};
   const name = values.customerName.trim();
-  const phone = values.customerPhone.replace(/[\s()-]/g, '');
+  const phone = normalizeLocalPhone(values.customerPhone);
   const comment = values.customerComment.trim();
 
   if (!name) {
@@ -16,10 +18,10 @@ export const validateCheckoutContacts = (values: CheckoutContactValues) => {
     errors.customerName = 'Имя должно быть не длиннее 100 символов';
   }
 
-  if (!phone) {
+  if (!values.customerPhone.trim()) {
     errors.customerPhone = 'Введите телефон';
-  } else if (!/^\+?\d{10,15}$/.test(phone)) {
-    errors.customerPhone = 'Введите телефон из 10–15 цифр. В начале можно указать «+».';
+  } else if (!phone) {
+    errors.customerPhone = 'Введите номер в формате +7 (900) 123-45-67';
   }
 
   if (comment.length > 500) {
@@ -28,6 +30,6 @@ export const validateCheckoutContacts = (values: CheckoutContactValues) => {
 
   return {
     errors,
-    contacts: { customerName: name, customerPhone: phone, customerComment: comment },
+    contacts: { customerName: name, customerPhone: phone ?? '', customerComment: comment },
   };
 };

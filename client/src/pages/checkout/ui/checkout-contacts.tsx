@@ -3,6 +3,7 @@ import { useId } from 'react';
 import { Button } from '@/shared/ui/button';
 import { FormAlert } from '@/shared/ui/form-alert';
 import { FormField } from '@/shared/ui/form-field';
+import { PhoneInput } from '@/shared/ui/phone-input';
 import { TextInput } from '@/shared/ui/text-input';
 
 import type { CheckoutContactValues } from '../lib/validate-checkout-contacts';
@@ -84,15 +85,13 @@ export const CheckoutContacts = ({
       <FormField label="Телефон" invalid={Boolean(phoneError)} errorId={phoneErrorId}>
         {(controlProps) => (
           <>
-            <TextInput
+            <PhoneInput
               {...controlProps}
               name="customerPhone"
-              type="tel"
-              autoComplete="tel"
               required
               disabled={disabled}
               value={values.customerPhone}
-              onChange={(event) => updateField('customerPhone', event.target.value)}
+              onValueChange={(value) => updateField('customerPhone', value)}
               onBlur={() => touchField('customerPhone')}
             />
             {phoneError && <FormAlert id={phoneErrorId}>{phoneError}</FormAlert>}
