@@ -150,7 +150,9 @@ it.each(['/api/orders', `/api/orders/${orderSummary.id}`])(
 
 describe('POST /api/orders', () => {
   it('сохраняет заказ и его позиции перед удалением оформленных позиций из корзины', async () => {
-    const response = await api().post('/api/orders').send(body);
+    const response = await api()
+      .post('/api/orders')
+      .send({ ...body, customerPhone: '8 (900) 123-45-67' });
 
     expect(response.status).toBe(201);
     expect(response.body).toEqual(order);
@@ -195,6 +197,8 @@ describe('POST /api/orders', () => {
     { ...body, idempotencyKey: 'bad-key' },
     { ...body, customerName: ' ' },
     { ...body, customerPhone: '123' },
+    { ...body, customerPhone: '+447911123456' },
+    { ...body, customerPhone: null },
     { ...body, items: [] },
     { ...body, items: [body.items[0], body.items[0]] },
     { ...body, userId: 'someone-else' },

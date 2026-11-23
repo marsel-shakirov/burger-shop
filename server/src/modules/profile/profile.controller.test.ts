@@ -48,9 +48,20 @@ describe('PATCH /api/profile', () => {
     });
   });
 
+  it('очищает телефон при передаче null', async () => {
+    vi.mocked(updateProfileUseCase).mockResolvedValue({ ...profile, phone: null });
+
+    const response = await api().patch('/api/profile').send({ phone: null });
+
+    expect(response.status).toBe(200);
+    expect(response.body.phone).toBeNull();
+    expect(updateProfileUseCase).toHaveBeenCalledWith('user-1', { phone: null });
+  });
+
   it.each([
     ['name', { name: 'а'.repeat(51) }, 'invalid_name'],
     ['phone', { phone: '123' }, 'invalid_phone'],
+    ['phone', { phone: '+447911123456' }, 'invalid_phone'],
     ['birthDate', { birthDate: '1899-12-31' }, 'invalid_birth_date'],
     ['gender', { gender: 'other' }, 'invalid_gender'],
   ])('отдаёт код ошибки поля %s', async (_field, body, code) => {
