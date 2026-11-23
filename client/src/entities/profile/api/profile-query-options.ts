@@ -1,8 +1,20 @@
 import { type QueryClient, queryOptions } from '@tanstack/react-query';
 
-import { getProfile } from './get-profile';
+import { authFetch, createApiError, readJson, type RequestOptions } from '@/shared/api';
 
-export const PROFILE_QUERY_KEY = ['profile'] as const;
+import type { Profile } from '../model/profile.types';
+
+const PROFILE_QUERY_KEY = ['profile'] as const;
+
+const getProfile = async ({ signal }: RequestOptions = {}): Promise<Profile> => {
+  const response = await authFetch('/api/profile', { signal });
+
+  if (!response.ok) {
+    throw await createApiError(response);
+  }
+
+  return readJson<Profile>(response);
+};
 
 export const profileQueryOptions = (userId: string) =>
   queryOptions({
