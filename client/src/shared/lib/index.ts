@@ -1,5 +1,5 @@
 export { copyText, getPrefersReducedMotion, useIsStuck, usePrefersReducedMotion } from './dom';
-export { getFormString, getWeakPasswordMessage } from './form';
+export { getFormString, getWeakPasswordMessage, normalizeLocalPhone } from './form';
 export { formatItemsCount, formatPrice, pluralize } from './format';
 export { isOneOf } from './guards';
 export { getImagePriorityProps } from './image';
