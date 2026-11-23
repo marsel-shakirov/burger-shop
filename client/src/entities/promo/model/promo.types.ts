@@ -12,6 +12,8 @@ interface PromoBase {
   description: string;
   terms: string;
   theme: PromoTheme;
+  value: string;
+  valueCaption: string;
   link?: PromoLink;
   imageUrl?: string;
   imageSrcSet?: string;
@@ -19,15 +21,11 @@ interface PromoBase {
 
 export interface CouponPromo extends PromoBase {
   kind: 'coupon';
-  value: string;
-  valueCaption: string;
   code: string;
 }
 
 export interface BonusPromo extends PromoBase {
   kind: 'bonus';
-  value: string;
-  valueCaption: string;
   ctaLabel: string;
 }
 

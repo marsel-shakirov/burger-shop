@@ -55,6 +55,14 @@ export const PromoCard = ({ promo, to, priority, stub }: PromoCardProps) => {
         </div>
 
         <div className="@container relative flex origin-top-left items-center justify-between gap-3 rounded-b-2xl border-t-2 border-dashed border-stone-900/20 bg-paper px-5 py-3.5 text-stone-900 transition-transform duration-400 ease-[cubic-bezier(0.2,0.9,0.25,1.2)] has-data-copied:z-2 has-data-copied:translate-y-1.25 has-data-copied:rotate-[-1.6deg] motion-reduce:transition-none sm:flex-col sm:items-start sm:rounded-r-2xl sm:rounded-bl-none sm:border-t-0 sm:border-l-2 sm:px-6 sm:py-6.5 sm:has-data-copied:translate-x-1.5 sm:has-data-copied:translate-y-0 sm:has-data-copied:rotate-[1.4deg]">
+          <div className="min-w-0">
+            <p className="font-display text-[min(2.25rem,10.5cqi)] leading-[0.9] font-extrabold tracking-tighter whitespace-nowrap text-ketchup sm:text-[min(3.25rem,24cqi)] lg:text-[min(4rem,24cqi)]">
+              {promo.value}
+            </p>
+            <p className="mt-1 text-xs leading-tight font-bold text-stone-600">
+              {promo.valueCaption}
+            </p>
+          </div>
           {stub}
         </div>
 
