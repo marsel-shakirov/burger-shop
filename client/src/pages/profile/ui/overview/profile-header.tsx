@@ -4,7 +4,7 @@ import type { Profile } from '@/entities/profile';
 import { routes } from '@/shared/config';
 import { cn } from '@/shared/lib';
 
-import { ProfileAvatar } from './profile-avatar';
+import { ProfileAvatar } from '../profile-avatar';
 
 interface ProfileHeaderProps {
   name: Profile['name'];

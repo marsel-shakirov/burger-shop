@@ -3,7 +3,7 @@ import { useId } from 'react';
 import { formatBonusUnit, useBonus } from '@/entities/bonus';
 import { Skeleton } from '@/shared/ui/skeleton';
 
-import { BONUS_HISTORY_LIMIT } from '../config/profile.constants';
+import { BONUS_HISTORY_LIMIT } from '../../config/profile.constants';
 
 interface BonusBalanceProps {
   balance?: number;

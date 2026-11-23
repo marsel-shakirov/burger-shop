@@ -6,7 +6,7 @@ import { ChangeEmailModal, useEmailChangeNotice } from '@/features/change-email'
 import { ChangePasswordModal } from '@/features/change-password';
 import { EditProfileModal, type ProfileSection } from '@/features/edit-profile';
 
-import { useRemountableModal } from '../model/use-remountable-modal';
+import { useRemountableModal } from '../../model/use-remountable-modal';
 import { AccountSection } from './account-section';
 import { BirthdayPromo } from './birthday-promo';
 import { PersonalSummary } from './personal-summary';

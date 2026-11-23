@@ -1,8 +1,8 @@
 import { formatBirthDate, GENDER_LABEL, type Profile } from '@/entities/profile';
 import { cn } from '@/shared/lib';
 
+import { ProfileAvatar } from '../profile-avatar';
 import { EditActionButton } from './edit-action-button';
-import { ProfileAvatar } from './profile-avatar';
 
 interface PersonalSummaryProps {
   profile: Profile;

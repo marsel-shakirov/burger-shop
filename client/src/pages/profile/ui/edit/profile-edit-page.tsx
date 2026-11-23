@@ -1,6 +1,3 @@
-import { useQueryErrorResetBoundary } from '@tanstack/react-query';
-import { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import { Link } from 'react-router';
 
 import { useSessionUser } from '@/entities/session';
@@ -9,13 +6,12 @@ import { Container } from '@/shared/ui/container';
 import { ArrowIcon } from '@/shared/ui/icon';
 import { PageMeta } from '@/shared/ui/page-meta';
 
+import { ProfileContentBoundary } from '../profile-content-boundary';
 import { ProfileEditContent } from './profile-edit-content';
 import { ProfileEditSkeleton } from './profile-edit-skeleton';
-import { ProfileError } from './profile-error';
 
 export const ProfileEditPage = () => {
   const user = useSessionUser();
-  const { reset } = useQueryErrorResetBoundary();
 
   if (!user) {
     return null;
@@ -31,19 +27,9 @@ export const ProfileEditPage = () => {
         >
           <ArrowIcon className="size-3" />К профилю
         </Link>
-        <ErrorBoundary
-          onReset={reset}
-          resetKeys={[user.id]}
-          fallbackRender={(props) => (
-            <div className="max-w-md rounded-3xl border border-stone-200 bg-white p-5 sm:p-6">
-              <ProfileError {...props} />
-            </div>
-          )}
-        >
-          <Suspense fallback={<ProfileEditSkeleton />}>
-            <ProfileEditContent userId={user.id} email={user.email} />
-          </Suspense>
-        </ErrorBoundary>
+        <ProfileContentBoundary userId={user.id} fallback={<ProfileEditSkeleton />}>
+          <ProfileEditContent userId={user.id} email={user.email} />
+        </ProfileContentBoundary>
       </Container>
     </main>
   );

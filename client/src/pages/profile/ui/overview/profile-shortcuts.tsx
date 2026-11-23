@@ -25,11 +25,11 @@ export const ProfileShortcuts = () => {
           to={routes.favorites}
           className={cn(
             rowClassName,
-            'rounded-lg focus-ring transition-colors duration-150 hover:bg-white',
+            'group rounded-lg focus-ring transition-colors duration-150 hover:bg-white',
           )}
         >
-          <span className="grid size-9 place-items-center rounded-full bg-red-100 text-red-800">
-            <HeartIcon className="size-4" />
+          <span className="grid size-9 place-items-center rounded-full bg-red-100 text-red-700">
+            <HeartIcon className="size-4 group-hover:text-red-600" />
           </span>
           <span className="text-sm font-bold wrap-anywhere md:text-base">Избранное</span>
           <span className="max-w-24 text-right text-xs text-stone-600 md:max-w-none md:text-sm">
@@ -44,11 +44,11 @@ export const ProfileShortcuts = () => {
           to={routes.orders}
           className={cn(
             rowClassName,
-            'rounded-lg focus-ring transition-colors duration-150 hover:bg-white',
+            'group rounded-lg focus-ring transition-colors duration-150 hover:bg-white',
           )}
         >
           <span className="grid size-9 place-items-center rounded-full bg-stone-200 text-stone-600">
-            <BagIcon className="size-4" />
+            <BagIcon className="size-4 group-hover:text-stone-800" />
           </span>
           <span className="text-sm font-bold wrap-anywhere md:text-base">Покупки</span>
           <ArrowIcon className="col-start-4 size-2.5 rotate-180 text-stone-600" />
