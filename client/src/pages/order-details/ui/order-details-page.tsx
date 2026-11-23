@@ -17,8 +17,7 @@ import { ArrowIcon } from '@/shared/ui/icon';
 import { PageMeta } from '@/shared/ui/page-meta';
 import { Receipt } from '@/shared/ui/receipt';
 
-const orderIdPattern =
-  /^[\da-f]{8}-[\da-f]{4}-[1-8][\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$|^00000000-0000-0000-0000-000000000000$|^ffffffff-ffff-ffff-ffff-ffffffffffff$/i;
+import { isOrderId } from '../lib/is-order-id';
 
 const headingClassName = 'font-display text-3xl font-bold wrap-anywhere sm:text-4xl';
 
@@ -114,11 +113,7 @@ export const OrderDetailsPage = () => {
         >
           <ArrowIcon className="size-3" />К покупкам
         </Link>
-        {id?.length === 36 && orderIdPattern.test(id) ? (
-          <OrderDetailsContent userId={user.id} orderId={id} />
-        ) : (
-          <OrderNotFound />
-        )}
+        {isOrderId(id) ? <OrderDetailsContent userId={user.id} orderId={id} /> : <OrderNotFound />}
       </Container>
     </main>
   );
