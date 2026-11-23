@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } fr
 import { bonusQueryOptions } from '@/entities/bonus';
 import { cartQueryOptions, type mergeGuestCart } from '@/entities/cart';
 import { favoritesQueryOptions, type mergeGuestFavorites } from '@/entities/favorite';
-import { orderHistoryQueryOptions } from '@/entities/order';
+import { orderDetailsQueryOptions, orderHistoryQueryOptions } from '@/entities/order';
 import { profileQueryOptions } from '@/entities/profile';
 import type { SessionUser } from '@/entities/session';
 
@@ -50,8 +50,11 @@ const USER_QUERY_OPTIONS = [
   orderHistoryQueryOptions,
 ];
 
-const getUserQueryKeys = (userId: string) =>
-  USER_QUERY_OPTIONS.map((options) => options(userId).queryKey);
+const getUserQueryKeys = (userId: string) => [
+  ...USER_QUERY_OPTIONS.map((options) => options(userId).queryKey),
+  orderDetailsQueryOptions(userId, 'order-1').queryKey,
+  orderDetailsQueryOptions(userId, 'order-2').queryKey,
+];
 
 const PRODUCTS_QUERY_KEY = ['products'];
 

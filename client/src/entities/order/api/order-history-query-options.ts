@@ -2,7 +2,7 @@ import { infiniteQueryOptions, type QueryClient } from '@tanstack/react-query';
 
 import { authFetch, createApiError, readJson } from '@/shared/api';
 
-import type { OrderHistoryPage } from './order-history.types';
+import type { OrderHistoryPage } from './order.types';
 
 const ORDER_HISTORY_QUERY_KEY = ['order-history'] as const;
 

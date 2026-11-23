@@ -7,7 +7,7 @@ import {
   mergeGuestFavorites,
   removeFavoritesQueries,
 } from '@/entities/favorite';
-import { removeOrderHistoryQueries } from '@/entities/order';
+import { removeOrderDetailsQueries, removeOrderHistoryQueries } from '@/entities/order';
 import { removeProfileQueries } from '@/entities/profile';
 import type { SessionUser } from '@/entities/session';
 
@@ -22,6 +22,7 @@ export const syncUserData = (
     removeCartQueries(queryClient);
     removeBonusQueries(queryClient);
     removeOrderHistoryQueries(queryClient);
+    removeOrderDetailsQueries(queryClient);
   }
 
   if (user && user.id !== prevUser?.id) {

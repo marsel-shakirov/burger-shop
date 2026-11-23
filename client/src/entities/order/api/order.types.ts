@@ -12,3 +12,12 @@ export interface OrderHistoryPage {
   items: OrderSummary[];
   nextCursor: string | null;
 }
+
+export interface OrderDetails extends OrderSummary {
+  items: {
+    lineNumber: number;
+    productName: string;
+    unitPrice: number;
+    quantity: number;
+  }[];
+}
