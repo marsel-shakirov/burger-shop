@@ -4,7 +4,8 @@ import { useSessionUser } from '@/entities/session';
 import { LoadError } from '@/shared/ui/load-error';
 
 import type { OrderConfirmation } from '../model/use-checkout-submission';
-import { CheckoutContacts, type CheckoutDraft } from './checkout-contacts';
+import type { CheckoutDraft } from '../model/use-contact-fields';
+import { CheckoutContacts } from './checkout-contacts';
 import { type CheckoutLine, CheckoutSummary } from './checkout-summary';
 
 interface CheckoutOrderProps {

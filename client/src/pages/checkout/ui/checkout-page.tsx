@@ -10,7 +10,7 @@ import { LoadError } from '@/shared/ui/load-error';
 import { PageMeta } from '@/shared/ui/page-meta';
 
 import { type OrderConfirmation, useCheckoutSubmission } from '../model/use-checkout-submission';
-import type { CheckoutDraft } from './checkout-contacts';
+import type { CheckoutDraft } from '../model/use-contact-fields';
 import { CheckoutIssue, CheckoutResult } from './checkout-feedback';
 import { CheckoutOrder } from './checkout-order';
 

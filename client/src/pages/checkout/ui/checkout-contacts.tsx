@@ -1,23 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 
-import { profileQueryOptions } from '@/entities/profile';
 import { Button } from '@/shared/ui/button';
 import { FormAlert } from '@/shared/ui/form-alert';
 import { FormField } from '@/shared/ui/form-field';
 import { TextInput } from '@/shared/ui/text-input';
 
-import {
-  type CheckoutContactValues,
-  validateCheckoutContacts,
-} from '../lib/validate-checkout-contacts';
-
-type ContactField = keyof CheckoutContactValues;
-
-export interface CheckoutDraft {
-  values: Partial<CheckoutContactValues>;
-  updateField: (field: ContactField, value: string) => void;
-}
+import type { CheckoutContactValues } from '../lib/validate-checkout-contacts';
+import { type CheckoutDraft, useContactFields } from '../model/use-contact-fields';
 
 interface CheckoutContactsProps {
   userId: string;
@@ -41,46 +30,6 @@ export const PickupDetails = () => (
   </dl>
 );
 
-const useContactFields = (userId: string, draft: CheckoutDraft['values']) => {
-  const titleId = useId();
-  const { data: profile } = useQuery(profileQueryOptions(userId));
-  const [touched, setTouched] = useState<Partial<Record<ContactField, true>>>({});
-  const values = {
-    customerName: draft.customerName ?? profile?.name ?? '',
-    customerPhone: draft.customerPhone ?? profile?.phone ?? '',
-    customerComment: draft.customerComment ?? '',
-  };
-  const { contacts, errors } = validateCheckoutContacts(values);
-  const nameError = touched.customerName && errors.customerName;
-  const phoneError = touched.customerPhone && errors.customerPhone;
-  const commentError = touched.customerComment && errors.customerComment;
-  const nameErrorId = `${titleId}-name-error`;
-  const phoneErrorId = `${titleId}-phone-error`;
-  const commentErrorId = `${titleId}-comment-error`;
-
-  const touchField = (field: ContactField) => {
-    setTouched((previous) => ({ ...previous, [field]: true }));
-  };
-
-  const confirm = (onConfirm: CheckoutContactsProps['onConfirm']) => {
-    setTouched({ customerName: true, customerPhone: true, customerComment: true });
-    if (Object.keys(errors).length === 0) onConfirm(contacts);
-  };
-
-  return {
-    titleId,
-    values,
-    nameError,
-    phoneError,
-    commentError,
-    nameErrorId,
-    phoneErrorId,
-    commentErrorId,
-    touchField,
-    confirm,
-  };
-};
-
 export const CheckoutContacts = ({
   userId,
   isPending,
@@ -89,10 +38,15 @@ export const CheckoutContacts = ({
   draft,
   onConfirm,
 }: CheckoutContactsProps) => {
-  const fields = useContactFields(userId, draft.values);
-  const { titleId, values, nameError, phoneError, commentError, touchField } = fields;
+  const titleId = useId();
+  const { values, nameError, phoneError, commentError, touchField, confirm } = useContactFields(
+    userId,
+    draft.values,
+  );
   const { updateField } = draft;
-  const { nameErrorId, phoneErrorId, commentErrorId } = fields;
+  const nameErrorId = `${titleId}-name-error`;
+  const phoneErrorId = `${titleId}-phone-error`;
+  const commentErrorId = `${titleId}-comment-error`;
   const disabled = isPending || needsRetry;
 
   return (
@@ -102,7 +56,7 @@ export const CheckoutContacts = ({
       noValidate
       onSubmit={(event) => {
         event.preventDefault();
-        if (!disabled && !isBlocked) fields.confirm(onConfirm);
+        if (!disabled && !isBlocked) confirm(onConfirm);
       }}
     >
       <h2 id={titleId} className="text-lg font-bold">
