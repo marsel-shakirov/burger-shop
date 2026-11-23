@@ -19,12 +19,12 @@ const personalFields = {
 };
 
 describe('readProfileForm: раздел phone', () => {
-  it('возвращает только телефон без пробелов по краям', () => {
+  it('возвращает только нормализованный телефон', () => {
     const formData = createFormData({ ...personalFields, phone: '  +7 999 123-45-67  ' });
 
     expect(readProfileForm('phone', formData)).toEqual({
       ok: true,
-      update: { phone: '+7 999 123-45-67' },
+      update: { phone: '+79991234567' },
     });
   });
 
@@ -36,9 +36,16 @@ describe('readProfileForm: раздел phone', () => {
   });
 
   it('не проверяет дату рождения', () => {
-    const formData = createFormData({ phone: '+7 999', birthDay: '31', birthMonth: '4' });
+    const formData = createFormData({ phone: '+79991234567', birthDay: '31', birthMonth: '4' });
 
     expect(readProfileForm('phone', formData).ok).toBe(true);
+  });
+
+  it.each(['+7 999', '+44 7911 123456'])('отклоняет номер %s', (phone) => {
+    expect(readProfileForm('phone', createFormData({ phone }))).toEqual({
+      ok: false,
+      error: { field: 'phone', message: 'Введите номер в формате +7 (900) 123-45-67' },
+    });
   });
 });
 

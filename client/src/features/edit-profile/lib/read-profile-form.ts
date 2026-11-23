@@ -1,5 +1,5 @@
 import { GENDERS } from '@/entities/profile';
-import { getFormString, isOneOf } from '@/shared/lib';
+import { getFormString, isOneOf, normalizeLocalPhone } from '@/shared/lib';
 
 import type { ProfileFormError, ProfileSection, ProfileUpdate } from '../model/edit-profile.types';
 import { parseBirthDate } from './parse-birth-date';
@@ -12,7 +12,16 @@ export const readProfileForm = (section: ProfileSection, formData: FormData): Re
   const get = (name: string) => getFormString(formData, name);
 
   if (section === 'phone') {
-    return { ok: true, update: { phone: toNullable(get('phone')) } };
+    const input = toNullable(get('phone'));
+    const phone = input ? normalizeLocalPhone(input) : null;
+    if (input && !phone) {
+      return {
+        ok: false,
+        error: { field: 'phone', message: 'Введите номер в формате +7 (900) 123-45-67' },
+      };
+    }
+
+    return { ok: true, update: { phone } };
   }
 
   const birthDate = parseBirthDate(get('birthDay'), get('birthMonth'), get('birthYear'));

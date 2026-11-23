@@ -160,7 +160,7 @@ describe('useEditProfileForm: ошибка сервера', () => {
   it('показывает ошибку у нужного поля и не закрывает форму', async () => {
     const { result } = render('phone');
 
-    submit(result, { phone: '123' });
+    submit(result, { phone: '+79001234567' });
 
     await waitFor(() => expect(result.current.formError?.field).toBe('phone'));
     expect(onClose).not.toHaveBeenCalled();
@@ -169,7 +169,7 @@ describe('useEditProfileForm: ошибка сервера', () => {
 
   it('сбрасывает ошибку сервера при вводе', async () => {
     const { result } = render('phone');
-    submit(result, { phone: '123' });
+    submit(result, { phone: '+79001234567' });
     await waitFor(() => expect(result.current.formError).not.toBeNull());
 
     act(() => result.current.handleInput());

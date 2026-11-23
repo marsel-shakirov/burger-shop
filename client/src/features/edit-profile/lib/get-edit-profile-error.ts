@@ -4,10 +4,7 @@ import type { ProfileFormError } from '../model/edit-profile.types';
 
 const invalidFieldErrors = new Map<string, ProfileFormError>([
   ['invalid_name', { field: 'name', message: 'Имя должно быть не длиннее 50 символов' }],
-  [
-    'invalid_phone',
-    { field: 'phone', message: 'Проверьте номер: от 10 до 15 цифр, можно начать с +' },
-  ],
+  ['invalid_phone', { field: 'phone', message: 'Проверьте номер в формате +7 (900) 123-45-67' }],
   ['invalid_birth_date', { field: 'birthDate', message: 'Проверьте дату рождения' }],
   ['invalid_gender', { field: 'gender', message: 'Выберите пол из списка' }],
 ]);

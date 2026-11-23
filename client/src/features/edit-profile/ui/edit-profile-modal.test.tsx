@@ -110,7 +110,7 @@ describe('EditProfileModal: телефон', () => {
 
     const dialog = screen.getByRole('dialog', { name: 'Телефон' });
 
-    expect(getField('Номер для связи по заказам').value).toBe('+79990000000');
+    expect(getField('Номер для связи по заказам').value).toBe('+7 (999) 000-00-00');
     expect(within(dialog).queryByLabelText('Имя')).toBeNull();
   });
 
@@ -118,7 +118,7 @@ describe('EditProfileModal: телефон', () => {
     fetchMock.mockResolvedValue(Response.json({ code: 'invalid_phone' }, { status: 400 }));
     renderModal('phone');
 
-    fireEvent.change(getField('Номер для связи по заказам'), { target: { value: '123' } });
+    fireEvent.input(getField('Номер для связи по заказам'), { target: { value: '+79001234567' } });
     submit();
 
     expect((await screen.findByRole('alert')).textContent).toMatch(/Проверьте номер/);

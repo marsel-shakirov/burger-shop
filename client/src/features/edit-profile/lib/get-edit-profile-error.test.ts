@@ -50,7 +50,7 @@ describe('getEditProfileError: сетевые и неизвестные ошиб
 describe('getEditProfileError: ошибки полей', () => {
   it.each([
     ['invalid_name', 'name', 'Имя должно быть не длиннее 50 символов'],
-    ['invalid_phone', 'phone', 'Проверьте номер: от 10 до 15 цифр, можно начать с +'],
+    ['invalid_phone', 'phone', 'Проверьте номер в формате +7 (900) 123-45-67'],
     ['invalid_birth_date', 'birthDate', 'Проверьте дату рождения'],
     ['invalid_gender', 'gender', 'Выберите пол из списка'],
   ])('для кода %s привязывает ошибку к полю %s', (code, field, message) => {
@@ -60,7 +60,7 @@ describe('getEditProfileError: ошибки полей', () => {
   it('не зависит от HTTP-статуса ответа', () => {
     expect(getEditProfileError(apiError('invalid_phone', 422))).toEqual({
       field: 'phone',
-      message: 'Проверьте номер: от 10 до 15 цифр, можно начать с +',
+      message: 'Проверьте номер в формате +7 (900) 123-45-67',
     });
   });
 });
