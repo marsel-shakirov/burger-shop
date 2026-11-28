@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/api/docs",
+      "destination": "/swagger.html"
+    },
+    {
+      "source": "/api/docs/",
+      "destination": "/swagger.html"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://burger-shop-api-lac.vercel.app/api/:path*"
     },

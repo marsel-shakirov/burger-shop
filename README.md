@@ -58,7 +58,7 @@ npm run dev
 | `COOKIE_SECURE`       | Необязательная настройка флага `Secure` для cookie.                                                            |
 | `TRUST_PROXY`         | Необязательная настройка доверия к reverse proxy.                                                              |
 
-Для email-подтверждения в Supabase включите **Confirm email** и **Secure email change**, добавьте адреса `/api/auth/callback` и `/api/auth/email-callback` в **Redirect URLs** и настройте SMTP для реальных пользователей. Не добавляйте секреты в репозиторий.
+Для email-подтверждения в Supabase включите **Confirm email** и **Secure email change**, добавьте адреса `/api/auth/callback` и `/api/auth/email-callback` в **Redirect URLs** и настройте SMTP для реальных пользователей.
 
 ## Команды
 

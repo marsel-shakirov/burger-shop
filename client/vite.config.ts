@@ -14,6 +14,12 @@ export default defineConfig({
     tailwindcss(),
   ],
 
+  build: {
+    rolldownOptions: {
+      input: ['index.html', 'swagger.html'],
+    },
+  },
+
   server: {
     proxy: {
       '/api': 'http://localhost:3000',
